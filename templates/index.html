@@ -460,7 +460,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             font-weight: 500;
-            text-transform: capitalize;
         }
 
         /* Additional browser-specific fixes */
@@ -494,7 +493,6 @@
             font-size: 0.95rem !important;
             font-weight: 500 !important;
             border: none !important;
-            text-transform: capitalize !important;
         }
 
         select.form-input option:hover {
@@ -1040,7 +1038,7 @@
                                 <label for="tone" class="form-label">Tone</label>
                                 <div class="dropdown-wrapper">
                                     <select class="form-input" id="tone" name="tone" required>
-                                        <option value="">Select a tone...</option>
+                                        <option value="">Choose your tone...</option>
                                         <option value="Funny" {{ 'selected' if tone == 'Funny' else '' }}>
                                             Funny - Make them laugh
                                         </option>
