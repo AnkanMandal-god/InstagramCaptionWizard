@@ -41,6 +41,156 @@
             z-index: -1;
         }
 
+        .floating-bg-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            animation: floatAround 20s infinite linear;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -5s;
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1));
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .floating-shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            top: 30%;
+            right: 30%;
+            animation-delay: -15s;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+        }
+
+        .floating-shape:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            bottom: 40%;
+            right: 10%;
+            animation-delay: -8s;
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1));
+        }
+
+        .floating-shape:nth-child(6) {
+            width: 60px;
+            height: 60px;
+            top: 70%;
+            left: 40%;
+            animation-delay: -12s;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: particleFloat 15s infinite linear;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: -2s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: -4s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: -6s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: -8s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: -10s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: -12s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: -14s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: -16s; }
+        .particle:nth-child(10) { left: 95%; animation-delay: -18s; }
+
+        .floating-icons-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bg-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.05);
+            animation: iconFloat 25s infinite linear;
+        }
+
+        .bg-icon:nth-child(1) {
+            top: 15%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .bg-icon:nth-child(2) {
+            top: 25%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .bg-icon:nth-child(3) {
+            bottom: 30%;
+            left: 15%;
+            animation-delay: -10s;
+        }
+
+        .bg-icon:nth-child(4) {
+            bottom: 15%;
+            right: 20%;
+            animation-delay: -15s;
+        }
+
+        .bg-icon:nth-child(5) {
+            top: 50%;
+            left: 50%;
+            animation-delay: -20s;
+        }
+
         .container {
             position: relative;
             z-index: 1;
@@ -53,14 +203,52 @@
         }
 
         .main-header h1 {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             font-weight: 700;
             font-size: 3.5rem;
             margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        .title-word {
+            display: inline-block;
+            margin-right: 0.5rem;
+            position: relative;
+        }
+
+        .title-word.instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .title-word.caption {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite 1.5s;
+        }
+
+        .title-word.generator {
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite 3s;
+        }
+
+        .title-icon {
+            display: inline-block;
+            font-size: 3rem;
+            margin-right: 1rem;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: bounce 2s ease-in-out infinite;
         }
 
         .main-header .subtitle {
@@ -307,9 +495,94 @@
             }
         }
 
+        @keyframes floatAround {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) translateX(20px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(-40px) translateX(0px) rotate(180deg);
+            }
+            75% {
+                transform: translateY(-20px) translateX(-20px) rotate(270deg);
+            }
+            100% {
+                transform: translateY(0px) translateX(0px) rotate(360deg);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% {
+                transform: scale(1.05);
+                filter: brightness(1.2);
+            }
+            100% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes iconFloat {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.05;
+            }
+            25% {
+                transform: translateY(-30px) rotate(90deg);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translateY(-60px) rotate(180deg);
+                opacity: 0.05;
+            }
+            75% {
+                transform: translateY(-30px) rotate(270deg);
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(0px) rotate(360deg);
+                opacity: 0.05;
+            }
         }
 
         .caption-results {
@@ -327,6 +600,39 @@
     </style>
 </head>
 <body>
+    <!-- Floating Background Elements -->
+    <div class="floating-bg-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <!-- Floating Particles -->
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Floating Background Icons -->
+    <div class="floating-icons-bg">
+        <div class="bg-icon"><i class="fas fa-hashtag"></i></div>
+        <div class="bg-icon"><i class="fas fa-at"></i></div>
+        <div class="bg-icon"><i class="fas fa-heart"></i></div>
+        <div class="bg-icon"><i class="fas fa-star"></i></div>
+        <div class="bg-icon"><i class="fas fa-camera"></i></div>
+    </div>
+
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -341,8 +647,10 @@
                 <!-- Header -->
                 <div class="main-header">
                     <h1>
-                        <i class="fab fa-instagram"></i>
-                        Instagram Caption Generator
+                        <i class="fab fa-instagram title-icon"></i>
+                        <span class="title-word instagram">Instagram</span>
+                        <span class="title-word caption">Caption</span>
+                        <span class="title-word generator">Generator</span>
                     </h1>
                     <p class="subtitle">Create engaging captions for your Instagram posts with AI-powered creativity</p>
                 </div>
