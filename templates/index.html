@@ -271,7 +271,7 @@
             background: rgba(255, 255, 255, 0.08);
             color: white;
             border: none;
-            padding: 1.5rem;
+            padding: 1.2rem 1.5rem;
             position: relative;
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -428,15 +428,18 @@
 
         .features-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .feature-card {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 1.5rem;
             text-align: left;
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -471,14 +474,14 @@
         }
 
         .feature-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
             background: rgba(255, 255, 255, 0.1);
             color: white;
         }
@@ -499,17 +502,17 @@
         }
 
         .feature-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: white;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
         }
 
         .feature-description {
             color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 1rem;
+            font-size: 0.87rem;
+            line-height: 1.4;
+            margin-bottom: 0.8rem;
         }
 
         .feature-highlight {
@@ -667,6 +670,16 @@
                 padding: 1rem 0;
                 margin-bottom: 3rem;
             }
+            
+            .container .col-md-6 {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .features-section {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -680,6 +693,10 @@
             
             .main-header .subtitle {
                 font-size: 1.1rem;
+            }
+            
+            .feature-card {
+                padding: 1.2rem;
             }
         }
     </style>
@@ -720,7 +737,7 @@
 
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-6 col-lg-5">
                 <!-- Floating Icons -->
                 <div class="floating-icons">
                     <i class="fab fa-instagram"></i>
@@ -759,9 +776,9 @@
                             Generate Your Caption
                         </h5>
                     </div>
-                    <div class="card-body" style="padding: 2rem;">
+                    <div class="card-body" style="padding: 1.5rem;">
                         <form method="POST" id="captionForm">
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <label for="topic" class="form-label">
                                     <i class="fas fa-lightbulb me-2"></i>
                                     What's your post about?
@@ -776,7 +793,7 @@
                                 <div class="form-text">Describe the main subject or theme of your Instagram post</div>
                             </div>
 
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <label for="tone" class="form-label">
                                     <i class="fas fa-palette me-2"></i>
                                     Choose your tone
