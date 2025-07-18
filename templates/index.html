@@ -198,14 +198,15 @@
 
         .main-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
+            padding: 2rem 0;
             animation: fadeInUp 0.8s ease-out;
         }
 
         .main-header h1 {
             font-weight: 800;
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
@@ -213,12 +214,13 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-shadow: none;
+            line-height: 1.1;
         }
 
         .title-icon {
             display: inline-block;
-            font-size: 3rem;
-            margin-right: 1rem;
+            font-size: 4rem;
+            margin-right: 1.5rem;
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -226,10 +228,14 @@
         }
 
         .main-header .subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 300;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
             margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.4;
         }
 
         .floating-icons {
@@ -641,6 +647,41 @@
         .caption-item:nth-child(1) { animation-delay: 0.1s; }
         .caption-item:nth-child(2) { animation-delay: 0.2s; }
         .caption-item:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-header h1 {
+                font-size: 3rem;
+            }
+            
+            .title-icon {
+                font-size: 2.5rem;
+                margin-right: 1rem;
+            }
+            
+            .main-header .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .main-header {
+                padding: 1rem 0;
+                margin-bottom: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .title-icon {
+                font-size: 2rem;
+            }
+            
+            .main-header .subtitle {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
