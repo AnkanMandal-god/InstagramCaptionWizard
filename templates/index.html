@@ -985,6 +985,10 @@
             position: relative;
             overflow: hidden;
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 350px;
         }
 
         .feature-card:hover {
@@ -1033,20 +1037,26 @@
         .feature-description {
             color: rgba(255, 255, 255, 0.65);
             font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            text-align: center;
         }
 
         .feature-highlight {
             display: inline-block;
             background: rgba(255, 255, 255, 0.08);
-            padding: 0.4rem 1rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
+            margin-top: auto;
+            align-self: center;
         }
 
         .loading-spinner {
@@ -1468,33 +1478,43 @@
             .features-section {
                 max-width: 100%;
                 grid-template-columns: repeat(3, 1fr);
-                gap: 1.5rem;
+                gap: 2rem;
                 margin: 3rem 0;
-                padding: 0 1rem;
+                padding: 0 1.5rem;
             }
             
             .feature-card {
-                padding: 2rem 1.5rem;
-                min-height: 280px;
+                padding: 2.5rem 2rem;
+                min-height: 380px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
             }
             
+            .feature-icon {
+                margin-bottom: 2rem;
+                align-self: center;
+            }
+            
             .feature-title {
-                font-size: 1.1rem;
-                margin: 1rem 0 0.8rem 0;
+                font-size: 1.15rem;
+                margin: 0 0 1rem 0;
+                font-weight: 600;
             }
             
             .feature-description {
-                font-size: 0.85rem;
-                line-height: 1.5;
+                font-size: 0.9rem;
+                line-height: 1.65;
                 flex-grow: 1;
+                margin-bottom: 2rem;
+                padding: 0 0.5rem;
             }
             
             .feature-highlight {
-                margin-top: 1rem;
-                font-size: 0.8rem;
+                margin-top: auto;
+                font-size: 0.75rem;
+                padding: 0.6rem 1.2rem;
+                align-self: center;
             }
             
             .section-separator {
