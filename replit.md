@@ -11,10 +11,13 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
-- **Technology**: HTML templates with Bootstrap for styling
+- **Technology**: HTML templates with Bootstrap for styling and custom CSS
 - **Framework**: Flask's Jinja2 templating engine
 - **UI Components**: Bootstrap-based responsive design with Font Awesome icons
-- **Styling**: Uses Replit's Bootstrap dark theme and Font Awesome for icons
+- **Styling**: Uses Replit's Bootstrap dark theme with custom aesthetic enhancements
+- **Visual Design**: Custom gradient backgrounds, glass morphism effects, animations
+- **Typography**: Inter font family for modern, clean appearance
+- **Interactive Elements**: Hover effects, loading animations, smooth transitions
 
 ### Backend Architecture
 - **Framework**: Flask (Python web framework)
@@ -34,12 +37,15 @@ Preferred communication style: Simple, everyday language.
 - **OpenAI Integration**: Conditional initialization based on API key availability
 - **Logging**: Debug-level logging for troubleshooting
 - **Caption Generation**: Function to create 3 Instagram captions per request
+- **Tone Variety**: Supports 15 different tone options for diverse caption styles
 
 ### Template System
-- **Base Template**: Bootstrap-styled responsive design
-- **Form Handling**: POST method for caption generation requests
-- **Flash Messages**: User feedback system for success/error states
-- **Icons**: Font Awesome integration for visual elements
+- **Enhanced UI**: Modern glass morphism design with gradient backgrounds
+- **Form Handling**: POST method with loading animations and smooth transitions
+- **Flash Messages**: User feedback system with custom styling
+- **Interactive Elements**: Hover effects, copy-to-clipboard functionality, parallax scrolling
+- **Statistics Display**: Visual cards showing app capabilities and features
+- **Loading States**: Spinner animations and smooth form submission feedback
 
 ## Data Flow
 

@@ -6,18 +6,361 @@
     <title>Instagram Caption Generator</title>
     <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --border-radius: 15px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:%23ffffff;stop-opacity:0.1"/><stop offset="100%" style="stop-color:%23ffffff;stop-opacity:0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .main-header h1 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .main-header .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .floating-icons {
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-icons i {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            margin: 0 10px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-accent);
+        }
+
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            padding: 0.75rem 1rem;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-select option {
+            background: #2d3748;
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .caption-item {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .caption-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-secondary);
+        }
+
+        .caption-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(5px);
+        }
+
+        .copy-btn {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .alert {
+            border: none;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            animation: slideInDown 0.5s ease-out;
+        }
+
+        .alert-success {
+            background: rgba(72, 187, 120, 0.2);
+            color: #68d391;
+            border-left: 4px solid #68d391;
+        }
+
+        .alert-danger {
+            background: rgba(245, 101, 101, 0.2);
+            color: #fc8181;
+            border-left: 4px solid #fc8181;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .caption-results {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .caption-item {
+            animation: fadeInUp 0.4s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .caption-item:nth-child(1) { animation-delay: 0.1s; }
+        .caption-item:nth-child(2) { animation-delay: 0.2s; }
+        .caption-item:nth-child(3) { animation-delay: 0.3s; }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <!-- Floating Icons -->
+                <div class="floating-icons">
+                    <i class="fab fa-instagram"></i>
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-share"></i>
+                    <i class="fas fa-comment"></i>
+                </div>
+
                 <!-- Header -->
-                <div class="text-center mb-5">
-                    <h1 class="display-4 mb-3">
-                        <i class="fab fa-instagram text-primary"></i>
+                <div class="main-header">
+                    <h1>
+                        <i class="fab fa-instagram"></i>
                         Instagram Caption Generator
                     </h1>
-                    <p class="lead">Create engaging captions for your Instagram posts with AI-powered creativity</p>
+                    <p class="subtitle">Create engaging captions for your Instagram posts with AI-powered creativity</p>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-number">15+</div>
+                        <div class="text-muted">Tone Options</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">AI</div>
+                        <div class="text-muted">Powered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">∞</div>
+                        <div class="text-muted">Possibilities</div>
+                    </div>
                 </div>
 
                 <!-- Flash Messages -->
@@ -42,7 +385,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <form method="POST">
+                        <form method="POST" id="captionForm">
                             <div class="mb-3">
                                 <label for="topic" class="form-label">
                                     <i class="fas fa-lightbulb me-2"></i>
@@ -114,13 +457,19 @@
                             </div>
 
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">
+                                <button type="submit" class="btn btn-primary btn-lg" id="generateBtn">
                                     <i class="fas fa-magic me-2"></i>
                                     Generate Captions
                                 </button>
                             </div>
                         </form>
                     </div>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p class="text-muted">Generating your awesome captions...</p>
                 </div>
 
                 <!-- Generated Captions -->
@@ -143,7 +492,7 @@
                         <div class="caption-results">
                             {% for line in captions.split('\n') %}
                                 {% if line.strip() %}
-                                    <div class="caption-item p-3 mb-3 bg-secondary rounded">
+                                    <div class="caption-item">
                                         <div class="d-flex justify-content-between align-items-start">
                                             <div class="caption-text flex-grow-1">
                                                 {{ line.strip() }}
@@ -183,37 +532,124 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Copy to clipboard functionality -->
+    <!-- Enhanced JavaScript functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('captionForm');
+            const generateBtn = document.getElementById('generateBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
             const copyButtons = document.querySelectorAll('.copy-btn');
             
+            // Form submission with loading animation
+            form.addEventListener('submit', function(e) {
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating...';
+                loadingSpinner.style.display = 'block';
+                
+                // Scroll to loading spinner
+                loadingSpinner.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Copy to clipboard functionality
             copyButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const caption = this.getAttribute('data-caption');
                     
-                    // Create temporary textarea to copy text
-                    const tempTextarea = document.createElement('textarea');
-                    tempTextarea.value = caption;
-                    document.body.appendChild(tempTextarea);
-                    tempTextarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempTextarea);
-                    
-                    // Update button to show success
-                    const originalHTML = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check"></i>';
-                    this.classList.remove('btn-outline-primary');
-                    this.classList.add('btn-success');
-                    
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        this.innerHTML = originalHTML;
-                        this.classList.remove('btn-success');
-                        this.classList.add('btn-outline-primary');
-                    }, 2000);
+                    // Modern clipboard API with fallback
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(caption).then(() => {
+                            showCopySuccess(this);
+                        }).catch(() => {
+                            fallbackCopyTextToClipboard(caption);
+                            showCopySuccess(this);
+                        });
+                    } else {
+                        fallbackCopyTextToClipboard(caption);
+                        showCopySuccess(this);
+                    }
                 });
             });
+            
+            // Fallback copy function
+            function fallbackCopyTextToClipboard(text) {
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = text;
+                document.body.appendChild(tempTextarea);
+                tempTextarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextarea);
+            }
+            
+            // Show copy success feedback
+            function showCopySuccess(button) {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                button.classList.remove('btn-outline-primary');
+                button.classList.add('btn-success');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-outline-primary');
+                }, 2000);
+            }
+            
+            // Add typing animation to form inputs
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+            
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.card, .stat-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            // Parallax effect for floating icons
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelector('.floating-icons');
+                if (parallax) {
+                    const speed = scrolled * 0.5;
+                    parallax.style.transform = `translateY(${speed}px)`;
+                }
+            });
+            
+            // Random caption preview on page load
+            const sampleCaptions = [
+                "✨ Living my best life one post at a time",
+                "🌅 Chasing sunsets and dreams",
+                "💪 Stronger than yesterday",
+                "🎯 Focus on the goal, not the obstacles",
+                "😂 Life's too short for boring captions"
+            ];
+            
+            // Show random sample caption hint
+            const topicInput = document.getElementById('topic');
+            let hintIndex = 0;
+            
+            function rotatePlaceholder() {
+                if (topicInput && !topicInput.value) {
+                    hintIndex = (hintIndex + 1) % sampleCaptions.length;
+                    topicInput.placeholder = sampleCaptions[hintIndex];
+                }
+            }
+            
+            setInterval(rotatePlaceholder, 3000);
         });
     </script>
 </body>
