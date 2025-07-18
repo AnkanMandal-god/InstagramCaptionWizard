@@ -801,17 +801,17 @@
                 {% endwith %}
 
                 <!-- Caption Generation Form -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">
+                <div class="card mb-3" style="border-radius: 12px;">
+                    <div class="card-header" style="padding: 1rem 1.5rem;">
+                        <h5 class="mb-0" style="font-size: 1.1rem;">
                             <i class="fas fa-edit me-2"></i>
                             Generate Your Caption
                         </h5>
                     </div>
-                    <div class="card-body" style="padding: 2rem;">
+                    <div class="card-body" style="padding: 1.5rem;">
                         <form method="POST" id="captionForm">
-                            <div class="mb-3">
-                                <label for="topic" class="form-label">
+                            <div class="mb-3" style="margin-bottom: 1rem;">
+                                <label for="topic" class="form-label" style="font-size: 0.9rem; margin-bottom: 0.5rem;">
                                     <i class="fas fa-lightbulb me-2"></i>
                                     What's your post about?
                                 </label>
@@ -822,11 +822,11 @@
                                        placeholder="e.g., sunset at the beach, workout session, delicious pasta..."
                                        value="{{ topic if topic else '' }}"
                                        required>
-                                <div class="form-text">Describe the main subject or theme of your Instagram post</div>
+                                <div class="form-text" style="font-size: 0.8rem; margin-top: 0.3rem;">Describe the main subject or theme of your Instagram post</div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="tone" class="form-label">
+                            <div class="mb-3" style="margin-bottom: 1rem;">
+                                <label for="tone" class="form-label" style="font-size: 0.9rem; margin-bottom: 0.5rem;">
                                     <i class="fas fa-palette me-2"></i>
                                     Choose your tone
                                 </label>
@@ -880,8 +880,8 @@
                                 </select>
                             </div>
 
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg" id="generateBtn">
+                            <div class="d-grid" style="margin-top: 1.5rem;">
+                                <button type="submit" class="btn btn-primary" id="generateBtn" style="padding: 0.8rem 1.5rem; font-size: 0.95rem;">
                                     <i class="fas fa-magic me-2"></i>
                                     Generate Captions
                                 </button>
