@@ -442,76 +442,133 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
-        /* Modern Tone Grid */
+        /* Ultra Modern Tone Grid */
         .tone-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 0.75rem;
-            margin-top: 0.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+            padding: 0.5rem;
         }
 
         .tone-tag {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 0.6rem 1rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.85rem;
-            font-weight: 500;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 0.8rem 1.2rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.82rem;
+            font-weight: 600;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(20px);
             user-select: none;
             position: relative;
             overflow: hidden;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tone-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 25px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .tone-tag:hover::before {
+            opacity: 1;
         }
 
         .tone-tag:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(102, 126, 234, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.4);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 2px 10px rgba(102, 126, 234, 0.1);
         }
 
         .tone-tag.selected {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-color: rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-color: rgba(102, 126, 234, 0.6);
             color: white;
-            font-weight: 600;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.3);
+            font-weight: 700;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4), 0 4px 20px rgba(118, 75, 162, 0.2);
+            letter-spacing: 0.5px;
         }
 
-        .tone-tag.selected::before {
+        .tone-tag.selected::after {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 2;
         }
 
-        .tone-tag.selected:hover::before {
+        .tone-tag.selected:hover::after {
             left: 100%;
         }
 
         .tone-tag:active {
-            transform: translateY(0);
+            transform: translateY(-1px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        /* Add subtle glow effect */
+        .tone-tag.selected {
+            position: relative;
+        }
+
+        .tone-tag.selected::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            border-radius: 27px;
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(6px);
         }
 
         @media (max-width: 768px) {
             .tone-grid {
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-                gap: 0.5rem;
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+                gap: 0.4rem;
+                padding: 0.3rem;
             }
             
             .tone-tag {
-                padding: 0.5rem 0.8rem;
-                font-size: 0.8rem;
+                padding: 0.6rem 0.9rem;
+                font-size: 0.78rem;
+                border-radius: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tone-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.3rem;
+            }
+            
+            .tone-tag {
+                padding: 0.5rem 0.7rem;
+                font-size: 0.75rem;
             }
         }
 
