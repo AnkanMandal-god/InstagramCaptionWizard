@@ -25,10 +25,51 @@ else:
     logging.info("No OpenAI API key found, using mock fallback")
 
 def mock_generate_instagram_captions(topic, tone):
-    """Mock fallback function for generating Instagram captions"""
-    return f"""1. This is a cool {tone} caption about {topic}! 📸
-2. Keeping it {tone} while vibing with {topic}. 🎯
-3. {topic} never looked this {tone} before! 🚀"""
+    """Mock fallback function for generating Instagram captions with multi-tone support"""
+    
+    # Handle multiple tones
+    tones = [t.strip() for t in tone.split(',') if t.strip()]
+    
+    mock_captions = []
+    
+    for current_tone in tones:
+        tone_section = f"**{current_tone.title()} Tone:**\n"
+        
+        # Generate tone-specific mock captions
+        if current_tone.lower() in ['funny', 'humorous', 'comedy']:
+            tone_section += f"""1. When {topic} hits different and you can't stop laughing 😂 #FunnyMoments #{topic.replace(' ', '')}Life #Comedy
+2. Me trying to be serious about {topic} but failing miserably 🤪 #CannotBeSerious #{topic.replace(' ', '')}Humor #LOL
+3. {topic}: Because normal is overrated anyway! 🎭 #WeirdAndProud #{topic.replace(' ', '')}Fun #Hilarious"""
+        
+        elif current_tone.lower() in ['romantic', 'love', 'dreamy']:
+            tone_section += f"""1. Lost in the magic of {topic} with you by my side 💕 #RomanticMoments #{topic.replace(' ', '')}Love #TogetherForever
+2. Every moment with {topic} feels like a fairytale come true ✨ #LoveStory #{topic.replace(' ', '')}Dreams #Soulmate
+3. You, me, and {topic} - the perfect recipe for forever 💖 #EndlessLove #{topic.replace(' ', '')}Romance #MyHeart"""
+        
+        elif current_tone.lower() in ['adventurous', 'adventure', 'thrill']:
+            tone_section += f"""1. Life begins at the end of your comfort zone! {topic} adventure mode: ON 🏔️ #AdventureTime #{topic.replace(' ', '')}Adventure #ExploreMore
+2. Chasing thrills and making memories with {topic} 🌟 #LiveBoldly #{topic.replace(' ', '')}Explorer #AdventureSeeker
+3. Not all who wander are lost - sometimes they're just finding {topic}! 🗺️ #Wanderlust #{topic.replace(' ', '')}Journey #BoldChoices"""
+        
+        elif current_tone.lower() in ['chill', 'relaxed', 'calm']:
+            tone_section += f"""1. Just vibing with {topic} and loving every peaceful moment 🌅 #ChillVibes #{topic.replace(' ', '')}Life #RelaxMode
+2. Sometimes the best therapy is {topic} and good vibes ☮️ #CalmMoments #{topic.replace(' ', '')}Peace #Mindful
+3. Finding zen in {topic} - no rush, just pure bliss 🧘‍♀️ #SlowLiving #{topic.replace(' ', '')}Zen #Peaceful"""
+        
+        elif current_tone.lower() in ['professional', 'business', 'corporate']:
+            tone_section += f"""1. Elevating standards with {topic} - excellence is not negotiable 💼 #ProfessionalGrowth #{topic.replace(' ', '')}Excellence #Leadership
+2. Strategic focus on {topic} drives sustainable success 📈 #BusinessMindset #{topic.replace(' ', '')}Strategy #Innovation
+3. Investing in {topic} today for tomorrow's breakthrough results 🎯 #ProfessionalDevelopment #{topic.replace(' ', '')}Success #Growth"""
+        
+        else:
+            # Generic captions for any other tone
+            tone_section += f"""1. Embracing {topic} with a {current_tone} attitude! 🌟 #{current_tone.title()}Vibes #{topic.replace(' ', '')}Life #Authentic
+2. When {topic} meets {current_tone} energy - magic happens ✨ #{current_tone.title()}Mood #{topic.replace(' ', '')}Journey #RealTalk
+3. Living my {current_tone} truth through {topic} every single day 💫 #{current_tone.title()}Life #{topic.replace(' ', '')}Story #BeYou"""
+        
+        mock_captions.append(tone_section)
+    
+    return '\n\n'.join(mock_captions)
 
 def generate_instagram_captions(topic, tone):
     """Generate Instagram captions using OpenAI GPT-4o API with multi-tone support"""
@@ -112,6 +153,7 @@ def index():
         # Get form data
         topic = request.form.get('topic', '').strip()
         tone = request.form.get('tone', '').strip()
+        use_mock = request.form.get('use_mock', '').strip() == 'true'
         
         # Validate inputs
         if not topic:
@@ -121,6 +163,16 @@ def index():
         if not tone:
             flash('Please select a tone for your Instagram caption.', 'error')
             return redirect(url_for('index'))
+        
+        # Handle mock generation request
+        if use_mock:
+            captions = mock_generate_instagram_captions(topic, tone)
+            flash('Demo captions generated successfully! (Mock mode)', 'success')
+            return render_template('index.html', 
+                                 captions=captions, 
+                                 topic=topic, 
+                                 tone=tone,
+                                 is_mock=True)
         
         try:
             # Generate captions
@@ -136,11 +188,15 @@ def index():
             logging.error(f"Error generating captions: {e}")
             error_message = str(e)
             
-            # Provide user-friendly error messages
-            if "OpenAI API is not available" in error_message:
+            # Check if it's a quota exceeded error
+            if "quota exceeded" in error_message.lower() or "rate" in error_message.lower():
+                # Show quota exceeded page with option to use mock
+                return render_template('index.html', 
+                                     quota_exceeded=True,
+                                     topic=topic,
+                                     tone=tone)
+            elif "OpenAI API is not available" in error_message:
                 flash('OpenAI API is not configured. Please check your API key setup.', 'error')
-            elif "quota exceeded" in error_message.lower():
-                flash('OpenAI API quota exceeded. Please check your usage limits and try again later.', 'error')
             elif "authentication failed" in error_message.lower():
                 flash('OpenAI API authentication failed. Please check your API key.', 'error')
             else:

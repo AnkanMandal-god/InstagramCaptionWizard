@@ -39,6 +39,8 @@ Preferred communication style: Simple, everyday language.
 - **Caption Generation**: Function to create 3 Instagram captions per request
 - **Tone Variety**: Supports 27 different tone options for diverse caption styles
 - **Tone Memory**: LocalStorage-based system to remember previously used tones
+- **Quota Handling**: User-friendly quota exceeded detection with demo mode fallback
+- **Mock Generation**: Enhanced multi-tone mock caption system with tone-specific content
 
 ### Template System
 - **Professional UI**: Custom generator card with centered header, minimalist form design, and gradient buttons
@@ -56,7 +58,22 @@ Preferred communication style: Simple, everyday language.
 3. **API Call**: Application calls OpenAI API with structured prompt
 4. **Response Generation**: GPT-4o generates 3 numbered captions with emojis
 5. **Result Display**: Generated captions are displayed to user with success message
-6. **Error Handling**: Fallback to mock responses if API fails
+6. **Error Handling**: Graceful quota handling with demo mode option
+
+## User Experience Features
+
+### Quota Management
+- **Intelligent Detection**: Automatic detection of API quota exceeded errors
+- **User-Friendly Modal**: Beautiful modal interface explaining the situation
+- **Demo Mode Option**: One-click fallback to enhanced mock generation
+- **Helpful Tips**: Clear guidance on resolving quota issues
+- **Seamless Transition**: Preserves user's topic and tone selections
+
+### Enhanced Mock System
+- **Multi-Tone Support**: Handles complex tone combinations like "funny, romantic, adventurous"
+- **Tone-Specific Content**: Specialized captions for different tone categories
+- **Instagram-Ready Format**: Includes relevant hashtags and emojis
+- **Professional Quality**: High-quality demo content that matches real AI output
 
 ## External Dependencies
 

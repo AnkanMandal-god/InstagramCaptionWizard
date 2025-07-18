@@ -1254,6 +1254,121 @@
         .caption-item:nth-child(2) { animation-delay: 0.2s; }
         .caption-item:nth-child(3) { animation-delay: 0.3s; }
 
+        /* Quota Exceeded Modal Styles */
+        .quota-exceeded-modal {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            animation: fadeInUp 0.5s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quota-modal-content {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .quota-icon {
+            font-size: 4rem;
+            color: #ffa726;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .quota-title {
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quota-description {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .quota-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .demo-btn {
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        .quota-tips {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
+
+        .quota-tips p {
+            color: #ffffff;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .quota-tips ul {
+            color: #b0b0b0;
+            margin: 0;
+            padding-left: 1.2rem;
+        }
+
+        .quota-tips li {
+            margin-bottom: 0.3rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
         /* Responsive Design */
         @media (min-width: 769px) and (max-width: 1024px) {
             /* Tablet specific styles */
@@ -1478,6 +1593,39 @@
                 padding: 0.5rem 1rem;
                 font-size: 0.8rem;
             }
+            
+            .quota-exceeded-modal {
+                padding: 1.5rem;
+                margin: 1rem 0;
+            }
+            
+            .quota-icon {
+                font-size: 3rem;
+            }
+            
+            .quota-title {
+                font-size: 1.5rem;
+            }
+            
+            .quota-description {
+                font-size: 1rem;
+            }
+            
+            .quota-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .demo-btn, .back-btn {
+                width: 100%;
+                max-width: 250px;
+                justify-content: center;
+            }
+            
+            .quota-tips {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -1643,6 +1791,44 @@
                     <div class="spinner"></div>
                     <p class="text-muted">Generating your awesome captions...</p>
                 </div>
+
+                <!-- Quota Exceeded Modal -->
+                {% if quota_exceeded %}
+                <div class="quota-exceeded-modal">
+                    <div class="quota-modal-content">
+                        <div class="quota-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3 class="quota-title">API Quota Reached</h3>
+                        <p class="quota-description">
+                            Your OpenAI API quota has been exceeded. Don't worry - you can still try our demo mode!
+                        </p>
+                        <div class="quota-actions">
+                            <form method="POST" style="display: inline-block;">
+                                <input type="hidden" name="topic" value="{{ topic }}">
+                                <input type="hidden" name="tone" value="{{ tone }}">
+                                <input type="hidden" name="use_mock" value="true">
+                                <button type="submit" class="demo-btn">
+                                    <i class="fas fa-play-circle me-2"></i>
+                                    Try Demo Mode
+                                </button>
+                            </form>
+                            <a href="{{ url_for('index') }}" class="back-btn">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Go Back
+                            </a>
+                        </div>
+                        <div class="quota-tips">
+                            <p><strong>To resolve this:</strong></p>
+                            <ul>
+                                <li>Check your OpenAI account billing</li>
+                                <li>Add credits to your account</li>
+                                <li>Wait for your quota to reset</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
 
                 <!-- Generated Captions -->
                 {% if captions %}
