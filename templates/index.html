@@ -367,12 +367,26 @@
             transform: translateY(0);
         }
 
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-1px);
+        }
+
         .caption-item {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
@@ -383,28 +397,35 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 3px;
+            width: 4px;
+            height: 100%;
             background: var(--gradient-secondary);
         }
 
         .caption-item:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .caption-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .copy-btn {
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            border-radius: 8px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition);
+            font-size: 0.85rem;
         }
 
         .copy-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .alert {
@@ -873,11 +894,11 @@
                             Your Generated Captions
                         </h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 1.5rem;">
                         <div class="mb-3">
-                            <small class="text-muted">
+                            <small style="color: rgba(255, 255, 255, 0.6); font-size: 0.85rem;">
                                 <i class="fas fa-info-circle me-1"></i>
-                                Generated for: <strong>{{ topic }}</strong> with <strong>{{ tone }}</strong> tone
+                                Generated for: <strong style="color: rgba(255, 255, 255, 0.9);">{{ topic }}</strong> with <strong style="color: rgba(255, 255, 255, 0.9);">{{ tone }}</strong> tone
                             </small>
                         </div>
                         
@@ -885,11 +906,11 @@
                             {% for line in captions.split('\n') %}
                                 {% if line.strip() %}
                                     <div class="caption-item">
-                                        <div class="d-flex justify-content-between align-items-start">
+                                        <div class="d-flex justify-content-between align-items-center">
                                             <div class="caption-text flex-grow-1">
                                                 {{ line.strip() }}
                                             </div>
-                                            <button class="btn btn-sm btn-outline-primary ms-2 copy-btn" 
+                                            <button class="btn btn-sm btn-outline-primary ms-3 copy-btn" 
                                                     data-caption="{{ line.strip() }}" 
                                                     title="Copy to clipboard">
                                                 <i class="fas fa-copy"></i>
@@ -901,7 +922,7 @@
                         </div>
                         
                         <div class="text-center mt-4">
-                            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary" style="border-radius: 10px; padding: 0.7rem 2rem; font-size: 0.9rem;">
                                 <i class="fas fa-redo me-2"></i>
                                 Generate New Captions
                             </a>
