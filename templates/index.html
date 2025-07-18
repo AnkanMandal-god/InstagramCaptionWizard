@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Caption Generator</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <h1 class="display-4 mb-3">
+                        <i class="fab fa-instagram text-primary"></i>
+                        Instagram Caption Generator
+                    </h1>
+                    <p class="lead">Create engaging captions for your Instagram posts with AI-powered creativity</p>
+                </div>
+
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Caption Generation Form -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            Generate Your Caption
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="topic" class="form-label">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    What's your post about?
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="topic" 
+                                       name="topic" 
+                                       placeholder="e.g., sunset at the beach, workout session, delicious pasta..."
+                                       value="{{ topic if topic else '' }}"
+                                       required>
+                                <div class="form-text">Describe the main subject or theme of your Instagram post</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="tone" class="form-label">
+                                    <i class="fas fa-palette me-2"></i>
+                                    Choose your tone
+                                </label>
+                                <select class="form-select" id="tone" name="tone" required>
+                                    <option value="">Select a tone...</option>
+                                    <option value="Funny" {{ 'selected' if tone == 'Funny' else '' }}>
+                                        😂 Funny - Make them laugh
+                                    </option>
+                                    <option value="Serious" {{ 'selected' if tone == 'Serious' else '' }}>
+                                        🎯 Serious - Professional and thoughtful
+                                    </option>
+                                    <option value="Inspirational" {{ 'selected' if tone == 'Inspirational' else '' }}>
+                                        ✨ Inspirational - Motivate and uplift
+                                    </option>
+                                    <option value="Sarcastic" {{ 'selected' if tone == 'Sarcastic' else '' }}>
+                                        😏 Sarcastic - Witty and clever
+                                    </option>
+                                    <option value="Casual" {{ 'selected' if tone == 'Casual' else '' }}>
+                                        😎 Casual - Relaxed and friendly
+                                    </option>
+                                    <option value="Dramatic" {{ 'selected' if tone == 'Dramatic' else '' }}>
+                                        🎭 Dramatic - Bold and theatrical
+                                    </option>
+                                    <option value="Romantic" {{ 'selected' if tone == 'Romantic' else '' }}>
+                                        💕 Romantic - Sweet and loving
+                                    </option>
+                                    <option value="Mysterious" {{ 'selected' if tone == 'Mysterious' else '' }}>
+                                        🔮 Mysterious - Intriguing and enigmatic
+                                    </option>
+                                    <option value="Adventurous" {{ 'selected' if tone == 'Adventurous' else '' }}>
+                                        🚀 Adventurous - Bold and exciting
+                                    </option>
+                                    <option value="Grateful" {{ 'selected' if tone == 'Grateful' else '' }}>
+                                        🙏 Grateful - Thankful and appreciative
+                                    </option>
+                                    <option value="Playful" {{ 'selected' if tone == 'Playful' else '' }}>
+                                        🎉 Playful - Fun and energetic
+                                    </option>
+                                    <option value="Nostalgic" {{ 'selected' if tone == 'Nostalgic' else '' }}>
+                                        📸 Nostalgic - Remembering the past
+                                    </option>
+                                    <option value="Confident" {{ 'selected' if tone == 'Confident' else '' }}>
+                                        💪 Confident - Strong and self-assured
+                                    </option>
+                                    <option value="Chill" {{ 'selected' if tone == 'Chill' else '' }}>
+                                        🌊 Chill - Laid-back and peaceful
+                                    </option>
+                                    <option value="Trendy" {{ 'selected' if tone == 'Trendy' else '' }}>
+                                        🔥 Trendy - Hip and current
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-magic me-2"></i>
+                                    Generate Captions
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Generated Captions -->
+                {% if captions %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-star me-2"></i>
+                            Your Generated Captions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Generated for: <strong>{{ topic }}</strong> with <strong>{{ tone }}</strong> tone
+                            </small>
+                        </div>
+                        
+                        <div class="caption-results">
+                            {% for line in captions.split('\n') %}
+                                {% if line.strip() %}
+                                    <div class="caption-item p-3 mb-3 bg-secondary rounded">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="caption-text flex-grow-1">
+                                                {{ line.strip() }}
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary ms-2 copy-btn" 
+                                                    data-caption="{{ line.strip() }}" 
+                                                    title="Copy to clipboard">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                                <i class="fas fa-redo me-2"></i>
+                                Generate New Captions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Footer -->
+                <div class="text-center mt-5 py-4 border-top">
+                    <small class="text-muted">
+                        <i class="fas fa-robot me-2"></i>
+                        Powered by AI • Generate unlimited captions for your social media posts
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Copy to clipboard functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const caption = this.getAttribute('data-caption');
+                    
+                    // Create temporary textarea to copy text
+                    const tempTextarea = document.createElement('textarea');
+                    tempTextarea.value = caption;
+                    document.body.appendChild(tempTextarea);
+                    tempTextarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempTextarea);
+                    
+                    // Update button to show success
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-success');
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-outline-primary');
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
