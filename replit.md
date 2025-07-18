@@ -40,12 +40,13 @@ Preferred communication style: Simple, everyday language.
 - **Tone Variety**: Supports 15 different tone options for diverse caption styles
 
 ### Template System
-- **Enhanced UI**: Modern glass morphism design with gradient backgrounds
+- **Professional UI**: Custom generator card with centered header, minimalist form design, and gradient buttons
 - **Form Handling**: POST method with loading animations and smooth transitions
 - **Flash Messages**: User feedback system with custom styling
-- **Interactive Elements**: Hover effects, copy-to-clipboard functionality, parallax scrolling
-- **Statistics Display**: Visual cards showing app capabilities and features
+- **Interactive Elements**: Hover effects, copy-to-clipboard functionality, professional feature cards
+- **Statistics Display**: Centered feature cards with gradient icons and professional typography
 - **Loading States**: Spinner animations and smooth form submission feedback
+- **Section Separators**: Clean typography-based separators with gradient accent lines
 
 ## Data Flow
 

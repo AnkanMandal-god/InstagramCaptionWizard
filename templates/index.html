@@ -450,37 +450,89 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 0.7rem center;
-            background-size: 1.2rem;
-            padding-right: 2.5rem;
+            background-position: right 0.9rem center;
+            background-size: 1.1rem;
+            padding-right: 2.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        select.form-input:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        select.form-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.1), 0 4px 20px rgba(0, 0, 0, 0.15);
+            outline: none;
         }
 
         select.form-input option {
-            background: #6b6b6b !important;
+            background: linear-gradient(135deg, #2d3748, #4a5568) !important;
             color: white !important;
-            padding: 0.75rem !important;
+            padding: 0.8rem 1rem !important;
             font-size: 0.95rem !important;
-            font-weight: 400 !important;
+            font-weight: 500 !important;
             border: none !important;
+            border-radius: 6px !important;
+            margin: 2px 0 !important;
+            text-transform: capitalize !important;
+            transition: all 0.2s ease !important;
         }
 
         select.form-input option:hover {
-            background: #7a7a7a !important;
+            background: linear-gradient(135deg, #4a5568, #667eea) !important;
             color: white !important;
+            transform: translateY(-1px) !important;
         }
 
         select.form-input option:checked,
         select.form-input option:selected {
-            background: #667eea !important;
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
             color: white !important;
+            font-weight: 600 !important;
+        }
+
+        /* Custom dropdown wrapper for enhanced styling */
+        .dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .dropdown-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0.9rem;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+            z-index: 1;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-wrapper:hover::before {
+            border-top-color: rgba(102, 126, 234, 0.8);
         }
 
         /* Additional cross-browser support */
         select.form-input optgroup {
-            background: #6b6b6b !important;
-            color: white !important;
+            background: linear-gradient(135deg, #2d3748, #4a5568) !important;
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
         }
 
         /* Webkit specific styling */
@@ -489,12 +541,17 @@
         }
 
         select.form-input::-webkit-scrollbar-track {
-            background: #4a4a4a;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
         }
 
         select.form-input::-webkit-scrollbar-thumb {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 4px;
+        }
+
+        select.form-input::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
         }
 
         .generate-btn {
@@ -992,54 +1049,56 @@
 
                             <div class="form-group">
                                 <label for="tone" class="form-label">Tone</label>
-                                <select class="form-input" id="tone" name="tone" required>
-                                    <option value="">Select a tone...</option>
-                                    <option value="Funny" {{ 'selected' if tone == 'Funny' else '' }}>
-                                        😂 Funny - Make them laugh
-                                    </option>
-                                    <option value="Serious" {{ 'selected' if tone == 'Serious' else '' }}>
-                                        🎯 Serious - Professional and thoughtful
-                                    </option>
-                                    <option value="Inspirational" {{ 'selected' if tone == 'Inspirational' else '' }}>
-                                        ✨ Inspirational - Motivate and uplift
-                                    </option>
-                                    <option value="Sarcastic" {{ 'selected' if tone == 'Sarcastic' else '' }}>
-                                        😏 Sarcastic - Witty and clever
-                                    </option>
-                                    <option value="Casual" {{ 'selected' if tone == 'Casual' else '' }}>
-                                        😎 Casual - Relaxed and friendly
-                                    </option>
-                                    <option value="Dramatic" {{ 'selected' if tone == 'Dramatic' else '' }}>
-                                        🎭 Dramatic - Bold and theatrical
-                                    </option>
-                                    <option value="Romantic" {{ 'selected' if tone == 'Romantic' else '' }}>
-                                        💕 Romantic - Sweet and loving
-                                    </option>
-                                    <option value="Mysterious" {{ 'selected' if tone == 'Mysterious' else '' }}>
-                                        🔮 Mysterious - Intriguing and enigmatic
-                                    </option>
-                                    <option value="Adventurous" {{ 'selected' if tone == 'Adventurous' else '' }}>
-                                        🚀 Adventurous - Bold and exciting
-                                    </option>
-                                    <option value="Grateful" {{ 'selected' if tone == 'Grateful' else '' }}>
-                                        🙏 Grateful - Thankful and appreciative
-                                    </option>
-                                    <option value="Playful" {{ 'selected' if tone == 'Playful' else '' }}>
-                                        🎉 Playful - Fun and energetic
-                                    </option>
-                                    <option value="Nostalgic" {{ 'selected' if tone == 'Nostalgic' else '' }}>
-                                        📸 Nostalgic - Remembering the past
-                                    </option>
-                                    <option value="Confident" {{ 'selected' if tone == 'Confident' else '' }}>
-                                        💪 Confident - Strong and self-assured
-                                    </option>
-                                    <option value="Chill" {{ 'selected' if tone == 'Chill' else '' }}>
-                                        🌊 Chill - Laid-back and peaceful
-                                    </option>
-                                    <option value="Trendy" {{ 'selected' if tone == 'Trendy' else '' }}>
-                                        🔥 Trendy - Hip and current
-                                    </option>
-                                </select>
+                                <div class="dropdown-wrapper">
+                                    <select class="form-input" id="tone" name="tone" required>
+                                        <option value="">Select a tone...</option>
+                                        <option value="Funny" {{ 'selected' if tone == 'Funny' else '' }}>
+                                            Funny - Make them laugh
+                                        </option>
+                                        <option value="Serious" {{ 'selected' if tone == 'Serious' else '' }}>
+                                            Serious - Professional and thoughtful
+                                        </option>
+                                        <option value="Inspirational" {{ 'selected' if tone == 'Inspirational' else '' }}>
+                                            Inspirational - Motivate and uplift
+                                        </option>
+                                        <option value="Sarcastic" {{ 'selected' if tone == 'Sarcastic' else '' }}>
+                                            Sarcastic - Witty and clever
+                                        </option>
+                                        <option value="Casual" {{ 'selected' if tone == 'Casual' else '' }}>
+                                            Casual - Relaxed and friendly
+                                        </option>
+                                        <option value="Dramatic" {{ 'selected' if tone == 'Dramatic' else '' }}>
+                                            Dramatic - Bold and theatrical
+                                        </option>
+                                        <option value="Romantic" {{ 'selected' if tone == 'Romantic' else '' }}>
+                                            Romantic - Sweet and loving
+                                        </option>
+                                        <option value="Mysterious" {{ 'selected' if tone == 'Mysterious' else '' }}>
+                                            Mysterious - Intriguing and enigmatic
+                                        </option>
+                                        <option value="Adventurous" {{ 'selected' if tone == 'Adventurous' else '' }}>
+                                            Adventurous - Bold and exciting
+                                        </option>
+                                        <option value="Grateful" {{ 'selected' if tone == 'Grateful' else '' }}>
+                                            Grateful - Thankful and appreciative
+                                        </option>
+                                        <option value="Playful" {{ 'selected' if tone == 'Playful' else '' }}>
+                                            Playful - Fun and energetic
+                                        </option>
+                                        <option value="Nostalgic" {{ 'selected' if tone == 'Nostalgic' else '' }}>
+                                            Nostalgic - Remembering the past
+                                        </option>
+                                        <option value="Confident" {{ 'selected' if tone == 'Confident' else '' }}>
+                                            Confident - Strong and self-assured
+                                        </option>
+                                        <option value="Chill" {{ 'selected' if tone == 'Chill' else '' }}>
+                                            Chill - Laid-back and peaceful
+                                        </option>
+                                        <option value="Trendy" {{ 'selected' if tone == 'Trendy' else '' }}>
+                                            Trendy - Hip and current
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
 
                             <button type="submit" class="generate-btn" id="generateBtn">
