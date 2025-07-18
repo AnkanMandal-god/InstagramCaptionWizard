@@ -572,6 +572,68 @@
             }
         }
 
+        /* Extended Tones */
+        .tone-extended {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .tone-extended.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Load More Button */
+        .load-more-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .load-more-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 0.7rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            user-select: none;
+        }
+
+        .load-more-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .load-more-btn:active {
+            transform: translateY(0);
+        }
+
+        .load-more-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .load-more-btn.expanded .load-more-icon {
+            transform: rotate(180deg);
+        }
+
+        .load-more-text {
+            transition: all 0.3s ease;
+        }
+
         /* Additional cross-browser support */
         select.form-input optgroup {
             background: linear-gradient(135deg, #2d3748, #4a5568) !important;
@@ -1096,6 +1158,8 @@
                                 <label for="tone" class="form-label">Tone</label>
                                 <div class="tone-grid">
                                     <input type="hidden" id="tone" name="tone" value="{{ tone if tone else '' }}" required>
+                                    
+                                    <!-- Primary Tones (always visible) -->
                                     <div class="tone-tag" data-tone="Funny">Funny</div>
                                     <div class="tone-tag" data-tone="Serious">Serious</div>
                                     <div class="tone-tag" data-tone="Casual">Casual</div>
@@ -1108,9 +1172,28 @@
                                     <div class="tone-tag" data-tone="Trendy">Trendy</div>
                                     <div class="tone-tag" data-tone="Grateful">Grateful</div>
                                     <div class="tone-tag" data-tone="Nostalgic">Nostalgic</div>
-                                    <div class="tone-tag" data-tone="Inspirational">Inspirational</div>
-                                    <div class="tone-tag" data-tone="Mysterious">Mysterious</div>
-                                    <div class="tone-tag" data-tone="Adventurous">Adventurous</div>
+                                    
+                                    <!-- Extended Tones (hidden by default) -->
+                                    <div class="tone-tag tone-extended" data-tone="Inspirational">Inspirational</div>
+                                    <div class="tone-tag tone-extended" data-tone="Mysterious">Mysterious</div>
+                                    <div class="tone-tag tone-extended" data-tone="Adventurous">Adventurous</div>
+                                    <div class="tone-tag tone-extended" data-tone="Witty">Witty</div>
+                                    <div class="tone-tag tone-extended" data-tone="Sophisticated">Sophisticated</div>
+                                    <div class="tone-tag tone-extended" data-tone="Energetic">Energetic</div>
+                                    <div class="tone-tag tone-extended" data-tone="Dreamy">Dreamy</div>
+                                    <div class="tone-tag tone-extended" data-tone="Bold">Bold</div>
+                                    <div class="tone-tag tone-extended" data-tone="Minimalist">Minimalist</div>
+                                    <div class="tone-tag tone-extended" data-tone="Quirky">Quirky</div>
+                                    <div class="tone-tag tone-extended" data-tone="Elegant">Elegant</div>
+                                    <div class="tone-tag tone-extended" data-tone="Motivational">Motivational</div>
+                                </div>
+                                
+                                <!-- Load More Button -->
+                                <div class="load-more-container">
+                                    <button type="button" class="load-more-btn" id="loadMoreTones">
+                                        <span class="load-more-text">Show More Tones</span>
+                                        <i class="fas fa-chevron-down load-more-icon"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -1366,6 +1449,61 @@
                     // Update hidden input value
                     toneInput.value = this.getAttribute('data-tone');
                 });
+            });
+            
+            // Load more tones functionality
+            const loadMoreBtn = document.getElementById('loadMoreTones');
+            const extendedTones = document.querySelectorAll('.tone-extended');
+            const loadMoreText = document.querySelector('.load-more-text');
+            const loadMoreIcon = document.querySelector('.load-more-icon');
+            let isExpanded = false;
+            
+            // Check if current tone is in extended list
+            if (currentTone) {
+                const isExtendedTone = Array.from(extendedTones).some(tone => 
+                    tone.getAttribute('data-tone') === currentTone
+                );
+                
+                if (isExtendedTone) {
+                    // Show extended tones if current selection is in extended list
+                    extendedTones.forEach(tone => {
+                        tone.classList.add('show');
+                        tone.style.display = 'block';
+                    });
+                    loadMoreText.textContent = 'Show Less Tones';
+                    loadMoreBtn.classList.add('expanded');
+                    isExpanded = true;
+                }
+            }
+            
+            loadMoreBtn.addEventListener('click', function() {
+                if (isExpanded) {
+                    // Hide extended tones
+                    extendedTones.forEach((tone, index) => {
+                        setTimeout(() => {
+                            tone.classList.remove('show');
+                            setTimeout(() => {
+                                tone.style.display = 'none';
+                            }, 200);
+                        }, index * 50);
+                    });
+                    
+                    loadMoreText.textContent = 'Show More Tones';
+                    loadMoreBtn.classList.remove('expanded');
+                    isExpanded = false;
+                } else {
+                    // Show extended tones with staggered animation
+                    extendedTones.forEach((tone, index) => {
+                        tone.style.display = 'block';
+                        setTimeout(() => {
+                            tone.classList.add('show');
+                        }, index * 50);
+                    });
+                    
+                    loadMoreText.textContent = 'Show Less Tones';
+                    loadMoreBtn.classList.add('expanded');
+                    isExpanded = true;
+                }
             });
         });
     </script>
