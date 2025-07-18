@@ -396,29 +396,100 @@
             border-left: 4px solid #fc8181;
         }
 
-        .stats-section {
+        .features-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
             margin-bottom: 3rem;
         }
 
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: left;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .feature-card:nth-child(2)::before {
+            background: var(--gradient-secondary);
+        }
+
+        .feature-card:nth-child(3)::before {
             background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .feature-card:nth-child(1) .feature-icon {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            color: #667eea;
+        }
+
+        .feature-card:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2));
+            color: #f093fb;
+        }
+
+        .feature-card:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            color: #4facfe;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .feature-highlight {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .loading-spinner {
@@ -602,19 +673,31 @@
                     <p class="subtitle">Create engaging captions for your Instagram posts with AI-powered creativity</p>
                 </div>
 
-                <!-- Stats Section -->
-                <div class="stats-section">
-                    <div class="stat-card">
-                        <div class="stat-number">15+</div>
-                        <div class="text-muted">Tone Options</div>
+                <!-- Features Section -->
+                <div class="features-section">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="feature-title">15+ Tone Options</h3>
+                        <p class="feature-description">Choose from a wide variety of tones including funny, serious, inspirational, romantic, and more to match your content perfectly.</p>
+                        <div class="feature-highlight">Versatile & Creative</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number">AI</div>
-                        <div class="text-muted">Powered</div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="feature-title">AI-Powered</h3>
+                        <p class="feature-description">Powered by GPT-4o, the latest AI technology that understands context and creates engaging, human-like captions.</p>
+                        <div class="feature-highlight">Smart & Efficient</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number">∞</div>
-                        <div class="text-muted">Possibilities</div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h3 class="feature-title">Unlimited Possibilities</h3>
+                        <p class="feature-description">Generate countless unique captions that capture your personality and boost engagement on every post.</p>
+                        <div class="feature-highlight">Endless Creativity</div>
                     </div>
                 </div>
 
@@ -863,7 +946,7 @@
             });
             
             // Add hover effects to cards
-            const cards = document.querySelectorAll('.card, .stat-card');
+            const cards = document.querySelectorAll('.card, .feature-card');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-5px) scale(1.02)';
