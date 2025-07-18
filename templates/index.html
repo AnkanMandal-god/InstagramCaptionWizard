@@ -367,20 +367,6 @@
             transform: translateY(0);
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.9);
-            transition: var(--transition);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: white;
-            transform: translateY(-1px);
-        }
-
         /* Professional Generator Card */
         .generator-card {
             background: rgba(255, 255, 255, 0.02);
@@ -997,7 +983,6 @@
                             </div>
 
                             <button type="submit" class="generate-btn" id="generateBtn">
-                                <span class="btn-icon">✨</span>
                                 Generate Captions
                             </button>
                         </form>
@@ -1047,8 +1032,7 @@
                         </div>
                         
                         <div class="text-center mt-4">
-                            <a href="{{ url_for('index') }}" class="btn btn-secondary" style="border-radius: 10px; padding: 0.7rem 2rem; font-size: 0.9rem;">
-                                <i class="fas fa-redo me-2"></i>
+                            <a href="{{ url_for('index') }}" class="generate-btn" style="text-decoration: none; display: inline-flex;">
                                 Generate New Captions
                             </a>
                         </div>
