@@ -203,41 +203,16 @@
         }
 
         .main-header h1 {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 3.5rem;
             margin-bottom: 1rem;
             position: relative;
             display: inline-block;
-        }
-
-        .title-word {
-            display: inline-block;
-            margin-right: 0.5rem;
-            position: relative;
-        }
-
-        .title-word.instagram {
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        .title-word.caption {
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 3s ease-in-out infinite 1.5s;
-        }
-
-        .title-word.generator {
-            background: var(--gradient-secondary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 3s ease-in-out infinite 3s;
+            text-shadow: none;
         }
 
         .title-icon {
@@ -248,7 +223,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: bounce 2s ease-in-out infinite;
         }
 
         .main-header .subtitle {
@@ -513,32 +487,7 @@
             }
         }
 
-        @keyframes shimmer {
-            0% {
-                transform: scale(1);
-                filter: brightness(1);
-            }
-            50% {
-                transform: scale(1.05);
-                filter: brightness(1.2);
-            }
-            100% {
-                transform: scale(1);
-                filter: brightness(1);
-            }
-        }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
-        }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -648,9 +597,7 @@
                 <div class="main-header">
                     <h1>
                         <i class="fab fa-instagram title-icon"></i>
-                        <span class="title-word instagram">Instagram</span>
-                        <span class="title-word caption">Caption</span>
-                        <span class="title-word generator">Generator</span>
+                        Instagram Caption Generator
                     </h1>
                     <p class="subtitle">Create engaging captions for your Instagram posts with AI-powered creativity</p>
                 </div>
