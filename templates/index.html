@@ -1292,6 +1292,119 @@
             100% { transform: scale(1); }
         }
 
+        /* API Key Input Styles */
+        .api-key-section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .api-key-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .api-key-label {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .api-key-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .api-key-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .api-key-input:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .api-key-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .update-key-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .update-key-btn:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .update-key-btn:active {
+            transform: translateY(0);
+        }
+
+        .api-key-note {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .quota-divider {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 1.5rem 0;
+            position: relative;
+            background: rgba(26, 26, 46, 0.9);
+            padding: 0 1rem;
+            z-index: 1;
+        }
+
+        .quota-divider:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            z-index: 0;
+        }
+
         /* Responsive Design */
         @media (min-width: 769px) and (max-width: 1024px) {
             /* Tablet specific styles */
@@ -1549,6 +1662,25 @@
                 padding: 1rem;
                 font-size: 0.9rem;
             }
+            
+            .api-key-section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .api-key-input-group {
+                gap: 0.6rem;
+            }
+            
+            .api-key-input {
+                padding: 0.7rem;
+                font-size: 0.85rem;
+            }
+            
+            .update-key-btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -1711,8 +1843,39 @@
                         </div>
                         <h3 class="quota-title">API Quota Reached</h3>
                         <p class="quota-description">
-                            Your OpenAI API quota has been exceeded. Don't worry - you can still try our demo mode!
+                            Your OpenAI API quota has been exceeded. You can try demo mode or enter a different API key if you have one with remaining quota.
                         </p>
+                        
+                        <!-- API Key Input Form -->
+                        <div class="api-key-section">
+                            <form method="POST" action="{{ url_for('update_api_key') }}" class="api-key-form">
+                                <input type="hidden" name="topic" value="{{ topic }}">
+                                <input type="hidden" name="tone" value="{{ tone }}">
+                                <div class="api-key-input-group">
+                                    <label for="new_api_key" class="api-key-label">
+                                        <i class="fas fa-key me-1"></i>
+                                        Enter Your OpenAI API Key:
+                                    </label>
+                                    <input type="password" 
+                                           id="new_api_key" 
+                                           name="new_api_key" 
+                                           class="api-key-input" 
+                                           placeholder="sk-..." 
+                                           required>
+                                    <button type="submit" class="update-key-btn">
+                                        <i class="fas fa-sync-alt me-1"></i>
+                                        Update & Generate
+                                    </button>
+                                </div>
+                                <p class="api-key-note">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Your API key is used securely and not stored permanently
+                                </p>
+                            </form>
+                        </div>
+                        
+                        <div class="quota-divider">or</div>
+                        
                         <div class="quota-actions">
                             <form method="POST" style="display: inline-block;">
                                 <input type="hidden" name="topic" value="{{ topic }}">

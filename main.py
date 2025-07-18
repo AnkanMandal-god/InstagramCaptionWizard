@@ -176,6 +176,55 @@ Format your response as:
         else:
             raise Exception(f"OpenAI API error: {str(e)}")
 
+@app.route('/update-api-key', methods=['POST'])
+def update_api_key():
+    """Handle API key update from quota exceeded modal"""
+    global openai_client
+    
+    # Get form data
+    new_api_key = request.form.get('new_api_key', '').strip()
+    topic = request.form.get('topic', '').strip()
+    tone = request.form.get('tone', '').strip()
+    
+    if not new_api_key:
+        flash('Please enter a valid OpenAI API key.', 'error')
+        return render_template('index.html', 
+                             quota_exceeded=True,
+                             topic=topic,
+                             tone=tone)
+    
+    # Update the OpenAI client with the new key
+    try:
+        from openai import OpenAI
+        openai_client = OpenAI(api_key=new_api_key)
+        logging.info("OpenAI client updated with new API key")
+        
+        # Try to generate captions with the new key
+        captions = generate_instagram_captions(topic, tone)
+        flash('API key updated successfully! Captions generated.', 'success')
+        
+        return render_template('index.html', 
+                             captions=captions, 
+                             topic=topic, 
+                             tone=tone)
+        
+    except Exception as e:
+        logging.error(f"Failed to update API key or generate captions: {e}")
+        error_message = str(e)
+        
+        # Check for specific error types
+        if "authentication" in error_message.lower() or "invalid" in error_message.lower():
+            flash('Invalid API key. Please check your OpenAI API key and try again.', 'error')
+        elif "quota" in error_message.lower():
+            flash('The provided API key has also exceeded its quota. Please try a different key or use demo mode.', 'error')
+        else:
+            flash('Failed to update API key. Please try again.', 'error')
+        
+        return render_template('index.html', 
+                             quota_exceeded=True,
+                             topic=topic,
+                             tone=tone)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     """Main route that handles both GET and POST requests"""
