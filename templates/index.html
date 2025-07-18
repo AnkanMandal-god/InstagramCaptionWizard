@@ -144,52 +144,7 @@
         .particle:nth-child(9) { left: 90%; animation-delay: -16s; }
         .particle:nth-child(10) { left: 95%; animation-delay: -18s; }
 
-        .floating-icons-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
 
-        .bg-icon {
-            position: absolute;
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.05);
-            animation: iconFloat 25s infinite linear;
-        }
-
-        .bg-icon:nth-child(1) {
-            top: 15%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-
-        .bg-icon:nth-child(2) {
-            top: 25%;
-            right: 10%;
-            animation-delay: -5s;
-        }
-
-        .bg-icon:nth-child(3) {
-            bottom: 30%;
-            left: 15%;
-            animation-delay: -10s;
-        }
-
-        .bg-icon:nth-child(4) {
-            bottom: 15%;
-            right: 20%;
-            animation-delay: -15s;
-        }
-
-        .bg-icon:nth-child(5) {
-            top: 50%;
-            left: 50%;
-            animation-delay: -20s;
-        }
 
         .container {
             position: relative;
@@ -1218,28 +1173,7 @@
             }
         }
 
-        @keyframes iconFloat {
-            0% {
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0.05;
-            }
-            25% {
-                transform: translateY(-30px) rotate(90deg);
-                opacity: 0.1;
-            }
-            50% {
-                transform: translateY(-60px) rotate(180deg);
-                opacity: 0.05;
-            }
-            75% {
-                transform: translateY(-30px) rotate(270deg);
-                opacity: 0.1;
-            }
-            100% {
-                transform: translateY(0px) rotate(360deg);
-                opacity: 0.05;
-            }
-        }
+
 
         .caption-results {
             animation: fadeInUp 0.6s ease-out;
@@ -1677,14 +1611,7 @@
         <div class="particle"></div>
     </div>
 
-    <!-- Floating Background Icons -->
-    <div class="floating-icons-bg">
-        <div class="bg-icon"><i class="fas fa-hashtag"></i></div>
-        <div class="bg-icon"><i class="fas fa-at"></i></div>
-        <div class="bg-icon"><i class="fas fa-heart"></i></div>
-        <div class="bg-icon"><i class="fas fa-star"></i></div>
-        <div class="bg-icon"><i class="fas fa-camera"></i></div>
-    </div>
+
 
     <div class="container mt-5">
         <div class="row justify-content-center">
