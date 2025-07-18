@@ -656,6 +656,200 @@
             background: rgba(255, 193, 7, 0.12);
         }
 
+        /* Modern Results Section */
+        .results-container {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .results-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .highlight-text {
+            color: rgba(102, 126, 234, 0.9);
+            font-weight: 600;
+        }
+
+        .caption-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .caption-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .caption-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .caption-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .caption-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .caption-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .caption-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .copy-btn-modern {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            padding: 0.6rem 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn-modern:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.4);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-btn-modern:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn-modern.copied {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #22c55e;
+        }
+
+        .results-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .new-caption-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .new-caption-btn:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .new-caption-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .results-container {
+                padding: 1.5rem;
+            }
+            
+            .caption-card {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .caption-number {
+                width: 2rem;
+                height: 2rem;
+                font-size: 1rem;
+            }
+            
+            .caption-actions {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+
         /* Additional cross-browser support */
         select.form-input optgroup {
             background: linear-gradient(135deg, #2d3748, #4a5568) !important;
@@ -1247,45 +1441,44 @@
 
                 <!-- Generated Captions -->
                 {% if captions %}
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="fas fa-star me-2"></i>
-                            Your Generated Captions
-                        </h5>
-                    </div>
-                    <div class="card-body" style="padding: 2rem;">
-                        <div class="mb-3">
-                            <small style="color: rgba(255, 255, 255, 0.6); font-size: 0.85rem;">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Generated for: <strong style="color: rgba(255, 255, 255, 0.9);">{{ topic }}</strong> with <strong style="color: rgba(255, 255, 255, 0.9);">{{ tone }}</strong> tone
-                            </small>
+                <div class="results-container">
+                    <div class="results-header">
+                        <div class="results-title">
+                            <i class="fas fa-sparkles me-2"></i>
+                            Your AI-Generated Captions
                         </div>
-                        
-                        <div class="caption-results">
-                            {% for line in captions.split('\n') %}
-                                {% if line.strip() %}
-                                    <div class="caption-item">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="caption-text flex-grow-1">
-                                                {{ line.strip() }}
-                                            </div>
-                                            <button class="btn btn-sm btn-outline-primary ms-3 copy-btn" 
+                        <div class="results-subtitle">
+                            <i class="fas fa-tag me-1"></i>
+                            Topic: <span class="highlight-text">{{ topic }}</span> • Tone: <span class="highlight-text">{{ tone }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="caption-grid">
+                        {% for line in captions.split('\n') %}
+                            {% if line.strip() %}
+                                <div class="caption-card">
+                                    <div class="caption-number">{{ loop.index }}</div>
+                                    <div class="caption-content">
+                                        <div class="caption-text">{{ line.strip() }}</div>
+                                        <div class="caption-actions">
+                                            <button class="copy-btn-modern" 
                                                     data-caption="{{ line.strip() }}" 
                                                     title="Copy to clipboard">
                                                 <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
                                             </button>
                                         </div>
                                     </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        
-                        <div class="text-center mt-4">
-                            <a href="{{ url_for('index') }}" class="generate-btn" style="text-decoration: none; display: inline-flex;">
-                                Generate New Captions
-                            </a>
-                        </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="results-footer">
+                        <a href="{{ url_for('index') }}" class="new-caption-btn">
+                            <i class="fas fa-plus me-2"></i>
+                            Generate New Captions
+                        </a>
                     </div>
                 </div>
                 {% endif %}
@@ -1357,8 +1550,9 @@
                 loadingSpinner.scrollIntoView({ behavior: 'smooth' });
             });
             
-            // Copy to clipboard functionality
-            copyButtons.forEach(button => {
+            // Copy to clipboard functionality (legacy and modern)
+            const allCopyButtons = document.querySelectorAll('.copy-btn, .copy-btn-modern');
+            allCopyButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const caption = this.getAttribute('data-caption');
                     
@@ -1390,16 +1584,30 @@
             // Show copy success feedback
             function showCopySuccess(button) {
                 const originalHTML = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check"></i>';
-                button.classList.remove('btn-outline-primary');
-                button.classList.add('btn-success');
                 
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    button.innerHTML = originalHTML;
-                    button.classList.remove('btn-success');
-                    button.classList.add('btn-outline-primary');
-                }, 2000);
+                if (button.classList.contains('copy-btn-modern')) {
+                    // Modern button style
+                    button.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+                    button.classList.add('copied');
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        button.innerHTML = originalHTML;
+                        button.classList.remove('copied');
+                    }, 2000);
+                } else {
+                    // Legacy button style
+                    button.innerHTML = '<i class="fas fa-check"></i>';
+                    button.classList.remove('btn-outline-primary');
+                    button.classList.add('btn-success');
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        button.innerHTML = originalHTML;
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-outline-primary');
+                    }, 2000);
+                }
             }
             
             // Add typing animation to form inputs
