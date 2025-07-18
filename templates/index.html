@@ -1417,15 +1417,9 @@
         }
 
         .quota-divider {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin: 1.5rem 0;
             position: relative;
-            background: rgba(26, 26, 46, 0.9);
-            padding: 0 1rem;
-            z-index: 1;
+            margin: 2rem 0;
+            text-align: center;
         }
 
         .quota-divider:before {
@@ -1435,8 +1429,20 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            z-index: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: translateY(-50%);
+        }
+
+        .quota-divider:after {
+            content: 'or';
+            position: relative;
+            background: rgba(26, 26, 46, 0.95);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            font-weight: 400;
+            padding: 0 0.8rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         /* Responsive Design */
@@ -1924,7 +1930,7 @@
                             </form>
                         </div>
                         
-                        <div class="quota-divider">or</div>
+                        <div class="quota-divider"></div>
                         
                         <div class="quota-actions">
                             <form method="POST" style="display: inline-block;">
