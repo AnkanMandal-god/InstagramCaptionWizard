@@ -25,7 +25,7 @@ else:
     logging.info("No OpenAI API key found, using mock fallback")
 
 def clean_caption_content(content):
-    """Remove tone headers from caption content and return clean captions"""
+    """Remove tone headers and number prefixes from caption content"""
     lines = content.split('\n')
     cleaned_lines = []
     
@@ -34,7 +34,14 @@ def clean_caption_content(content):
         # Skip tone headers like "**Serious Tone:**" or "**Motivational Tone:**"
         if line.startswith('**') and line.endswith('Tone:**'):
             continue
-        # Keep numbered captions and other content
+        # Remove number prefixes like "1. ", "2. ", "3. " etc.
+        if line and len(line) > 3:
+            # Check if line starts with number followed by dot and space
+            if line[0].isdigit() and line[1:3] == '. ':
+                line = line[3:]  # Remove "1. " prefix
+            elif len(line) > 4 and line[0].isdigit() and line[1].isdigit() and line[2:4] == '. ':
+                line = line[4:]  # Remove "10. " prefix for double digits
+        # Keep clean caption content
         if line:
             cleaned_lines.append(line)
     
@@ -87,7 +94,8 @@ def mock_generate_instagram_captions(topic, tone):
         tone_section += captions
         mock_captions.append(tone_section)
     
-    return '\n\n'.join(mock_captions)
+    combined_captions = '\n\n'.join(mock_captions)
+    return clean_caption_content(combined_captions)
 
 def generate_instagram_captions(topic, tone):
     """Generate Instagram captions using OpenAI GPT-4o API with multi-tone support"""

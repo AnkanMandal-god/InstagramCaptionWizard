@@ -695,8 +695,6 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             backdrop-filter: blur(10px);
-            display: flex;
-            gap: 1rem;
         }
 
         .caption-card:hover {
@@ -706,20 +704,7 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
         }
 
-        .caption-number {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
+
 
         .caption-content {
             flex: 1;
@@ -817,14 +802,6 @@
             
             .caption-card {
                 padding: 1rem;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .caption-number {
-                width: 2rem;
-                height: 2rem;
-                font-size: 1rem;
             }
             
             .caption-actions {
@@ -1765,7 +1742,7 @@
 
                 <!-- Generated Captions -->
                 {% if captions %}
-                <div class="results-container">
+                <div class="results-container" id="results">
                     <div class="results-header">
                         <div class="results-title">
                             <i class="fas fa-sparkles me-2"></i>
@@ -1781,7 +1758,6 @@
                         {% for line in captions.split('\n') %}
                             {% if line.strip() %}
                                 <div class="caption-card">
-                                    <div class="caption-number">{{ loop.index }}</div>
                                     <div class="caption-content">
                                         <div class="caption-text">{{ line.strip() }}</div>
                                         <div class="caption-actions">
@@ -1989,6 +1965,19 @@
             }
             
             setInterval(rotatePlaceholder, 3000);
+            
+            // Auto-scroll to results section if captions are present
+            {% if captions %}
+            setTimeout(() => {
+                const resultsSection = document.getElementById('results');
+                if (resultsSection) {
+                    resultsSection.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }
+            }, 500);
+            {% endif %}
             
             // Tone selection functionality
             const toneInput = document.getElementById('tone');
