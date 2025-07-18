@@ -27,10 +27,17 @@ else:
 def generate_instagram_captions(topic, tone):
     """Generate Instagram captions using OpenAI API or mock fallback"""
     
+    # Handle multiple tones
+    if ',' in tone:
+        tones = [t.strip() for t in tone.split(',')]
+        tone_description = f"blend of {', '.join(tones[:-1])}, and {tones[-1]}" if len(tones) > 1 else tone
+    else:
+        tone_description = tone
+    
     # Try OpenAI API first if available
     if openai_client:
         try:
-            prompt = f"""Generate 3 engaging Instagram captions about {topic} with a {tone} tone. 
+            prompt = f"""Generate 3 engaging Instagram captions about {topic} with a {tone_description} tone. 
             Each caption should be creative, include relevant emojis, and be suitable for social media.
             Format the response as a numbered list (1., 2., 3.)."""
             
