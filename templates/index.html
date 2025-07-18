@@ -1410,9 +1410,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="tone" class="form-label">Tone <span class="selection-info">(Select one or more)</span></label>
+                                <label for="tone" class="form-label">Tone <span class="selection-info">(Select one or more, or type custom)</span></label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="tone" 
+                                       name="tone" 
+                                       placeholder="e.g., funny, sarcastic, professional"
+                                       value="{{ tone if tone else '' }}"
+                                       required>
                                 <div class="tone-grid">
-                                    <input type="hidden" id="tone" name="tone" value="{{ tone if tone else '' }}" required>
+                                    <input type="hidden" id="toneHidden" name="toneHidden" value="{{ tone if tone else '' }}">
                                     
                                     <!-- Primary Tones (always visible) -->
                                     <div class="tone-tag" data-tone="Funny">Funny</div>
@@ -1738,6 +1745,22 @@
                 toneInput.value = selectedTones.join(', ');
             };
             
+            // Handle typing in the tone input field
+            toneInput.addEventListener('input', function() {
+                const inputValue = this.value;
+                selectedTones = inputValue.split(',').map(t => t.trim()).filter(t => t);
+                
+                // Update visual selection of tags
+                toneTags.forEach(tag => {
+                    const toneValue = tag.getAttribute('data-tone');
+                    if (selectedTones.includes(toneValue)) {
+                        tag.classList.add('multi-selected');
+                    } else {
+                        tag.classList.remove('multi-selected');
+                    }
+                });
+            });
+            
             toneTags.forEach(tag => {
                 tag.addEventListener('click', function() {
                     const toneValue = this.getAttribute('data-tone');
@@ -1752,7 +1775,7 @@
                         selectedTones.push(toneValue);
                     }
                     
-                    // Update hidden input value
+                    // Update text input value
                     updateToneInput();
                 });
             });
