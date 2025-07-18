@@ -37,7 +37,8 @@ Preferred communication style: Simple, everyday language.
 - **OpenAI Integration**: Conditional initialization based on API key availability
 - **Logging**: Debug-level logging for troubleshooting
 - **Caption Generation**: Function to create 3 Instagram captions per request
-- **Tone Variety**: Supports 15 different tone options for diverse caption styles
+- **Tone Variety**: Supports 27 different tone options for diverse caption styles
+- **Tone Memory**: LocalStorage-based system to remember previously used tones
 
 ### Template System
 - **Professional UI**: Custom generator card with centered header, minimalist form design, and gradient buttons

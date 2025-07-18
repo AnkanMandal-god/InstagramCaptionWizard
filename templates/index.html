@@ -634,6 +634,28 @@
             transition: all 0.3s ease;
         }
 
+        /* Recently Used Tones Styling */
+        .tone-tag.recently-used {
+            border-color: rgba(255, 193, 7, 0.4);
+            background: rgba(255, 193, 7, 0.08);
+            position: relative;
+        }
+
+        .tone-tag.recently-used::after {
+            content: '⭐';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 3px rgba(255, 193, 7, 0.5));
+        }
+
+        .tone-tag.recently-used:hover {
+            border-color: rgba(255, 193, 7, 0.6);
+            background: rgba(255, 193, 7, 0.12);
+        }
+
         /* Additional cross-browser support */
         select.form-input optgroup {
             background: linear-gradient(135deg, #2d3748, #4a5568) !important;
@@ -1186,6 +1208,19 @@
                                     <div class="tone-tag tone-extended" data-tone="Quirky">Quirky</div>
                                     <div class="tone-tag tone-extended" data-tone="Elegant">Elegant</div>
                                     <div class="tone-tag tone-extended" data-tone="Motivational">Motivational</div>
+                                    <div class="tone-tag tone-extended" data-tone="Artistic">Artistic</div>
+                                    <div class="tone-tag tone-extended" data-tone="Professional">Professional</div>
+                                    <div class="tone-tag tone-extended" data-tone="Rebellious">Rebellious</div>
+                                    <div class="tone-tag tone-extended" data-tone="Zen">Zen</div>
+                                    <div class="tone-tag tone-extended" data-tone="Vintage">Vintage</div>
+                                    <div class="tone-tag tone-extended" data-tone="Luxurious">Luxurious</div>
+                                    <div class="tone-tag tone-extended" data-tone="Philosophical">Philosophical</div>
+                                    <div class="tone-tag tone-extended" data-tone="Empowering">Empowering</div>
+                                    <div class="tone-tag tone-extended" data-tone="Poetic">Poetic</div>
+                                    <div class="tone-tag tone-extended" data-tone="Authentic">Authentic</div>
+                                    <div class="tone-tag tone-extended" data-tone="Thoughtful">Thoughtful</div>
+                                    <div class="tone-tag tone-extended" data-tone="Ambitious">Ambitious</div>
+                                    <div class="tone-tag tone-extended" data-tone="Spontaneous">Spontaneous</div>
                                 </div>
                                 
                                 <!-- Load More Button -->
@@ -1268,8 +1303,8 @@
                         <div class="feature-icon">
                             <i class="fas fa-palette"></i>
                         </div>
-                        <h3 class="feature-title">15+ Tone Options</h3>
-                        <p class="feature-description">Choose from a wide variety of tones including funny, serious, inspirational, romantic, and more to match your content perfectly.</p>
+                        <h3 class="feature-title">27+ Tone Options</h3>
+                        <p class="feature-description">Choose from a comprehensive variety of tones including funny, serious, inspirational, romantic, artistic, sophisticated, and many more to match your content perfectly.</p>
                         <div class="feature-highlight">Versatile & Creative</div>
                     </div>
                     <div class="feature-card">
@@ -1447,34 +1482,82 @@
                     this.classList.add('selected');
                     
                     // Update hidden input value
-                    toneInput.value = this.getAttribute('data-tone');
+                    const selectedTone = this.getAttribute('data-tone');
+                    toneInput.value = selectedTone;
+                    
+                    // Save to recent tones
+                    saveRecentTone(selectedTone);
                 });
             });
             
-            // Load more tones functionality
+            // Load more tones functionality with memory
             const loadMoreBtn = document.getElementById('loadMoreTones');
             const extendedTones = document.querySelectorAll('.tone-extended');
             const loadMoreText = document.querySelector('.load-more-text');
             const loadMoreIcon = document.querySelector('.load-more-icon');
             let isExpanded = false;
             
-            // Check if current tone is in extended list
-            if (currentTone) {
-                const isExtendedTone = Array.from(extendedTones).some(tone => 
-                    tone.getAttribute('data-tone') === currentTone
-                );
-                
-                if (isExtendedTone) {
-                    // Show extended tones if current selection is in extended list
-                    extendedTones.forEach(tone => {
-                        tone.classList.add('show');
-                        tone.style.display = 'block';
-                    });
-                    loadMoreText.textContent = 'Show Less Tones';
-                    loadMoreBtn.classList.add('expanded');
-                    isExpanded = true;
+            // Load previously used tones from localStorage
+            const getRecentTones = () => {
+                const recent = localStorage.getItem('recentTones');
+                return recent ? JSON.parse(recent) : [];
+            };
+            
+            const saveRecentTone = (tone) => {
+                let recent = getRecentTones();
+                // Remove if already exists
+                recent = recent.filter(t => t !== tone);
+                // Add to beginning
+                recent.unshift(tone);
+                // Keep only last 10 tones
+                recent = recent.slice(0, 10);
+                localStorage.setItem('recentTones', JSON.stringify(recent));
+            };
+            
+            // Highlight recently used tones
+            const highlightRecentTones = () => {
+                const recent = getRecentTones();
+                toneTags.forEach(tag => {
+                    const toneValue = tag.getAttribute('data-tone');
+                    if (recent.includes(toneValue)) {
+                        tag.classList.add('recently-used');
+                    }
+                });
+            };
+            
+            // Check if current tone is in extended list or load expanded state
+            const shouldShowExtended = () => {
+                if (currentTone) {
+                    const isExtendedTone = Array.from(extendedTones).some(tone => 
+                        tone.getAttribute('data-tone') === currentTone
+                    );
+                    if (isExtendedTone) return true;
                 }
+                
+                // Check if user has used extended tones recently
+                const recent = getRecentTones();
+                const hasRecentExtended = recent.some(tone => {
+                    return Array.from(extendedTones).some(extTone => 
+                        extTone.getAttribute('data-tone') === tone
+                    );
+                });
+                
+                return hasRecentExtended;
+            };
+            
+            if (shouldShowExtended()) {
+                // Show extended tones
+                extendedTones.forEach(tone => {
+                    tone.classList.add('show');
+                    tone.style.display = 'block';
+                });
+                loadMoreText.textContent = 'Show Less Tones';
+                loadMoreBtn.classList.add('expanded');
+                isExpanded = true;
             }
+            
+            // Highlight recently used tones
+            highlightRecentTones();
             
             loadMoreBtn.addEventListener('click', function() {
                 if (isExpanded) {
