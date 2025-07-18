@@ -1780,14 +1780,15 @@
             
             loadMoreBtn.addEventListener('click', function() {
                 if (isExpanded) {
-                    // Hide extended tones with softer transition
-                    extendedTones.forEach((tone, index) => {
+                    // Hide extended tones in reverse order, slightly faster
+                    const reversedTones = Array.from(extendedTones).reverse();
+                    reversedTones.forEach((tone, index) => {
                         setTimeout(() => {
                             tone.classList.remove('show');
                             setTimeout(() => {
                                 tone.style.display = 'none';
-                            }, 400);
-                        }, index * 80);
+                            }, 600);
+                        }, index * 40);
                     });
                     
                     loadMoreText.textContent = 'Show More Tones';
