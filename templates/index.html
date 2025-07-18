@@ -578,16 +578,21 @@
 
         /* Extended Tones */
         .tone-extended {
-            display: none;
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            max-height: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
         }
 
         .tone-extended.show {
-            display: block;
             opacity: 1;
             transform: translateY(0);
+            max-height: 200px;
+            margin: 0;
+            padding: 0.8rem 1.2rem;
         }
 
         /* Load More Button */
@@ -1776,7 +1781,6 @@
                 // Show extended tones
                 extendedTones.forEach(tone => {
                     tone.classList.add('show');
-                    tone.style.display = 'block';
                 });
                 loadMoreText.textContent = 'Show Less Tones';
                 loadMoreBtn.classList.add('expanded');
@@ -1790,9 +1794,6 @@
                     reversedTones.forEach((tone, index) => {
                         setTimeout(() => {
                             tone.classList.remove('show');
-                            setTimeout(() => {
-                                tone.style.display = 'none';
-                            }, 600);
                         }, index * 40);
                     });
                     
@@ -1802,7 +1803,6 @@
                 } else {
                     // Show extended tones with staggered animation
                     extendedTones.forEach((tone, index) => {
-                        tone.style.display = 'block';
                         setTimeout(() => {
                             tone.classList.add('show');
                         }, index * 50);
