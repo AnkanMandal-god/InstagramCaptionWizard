@@ -1371,15 +1371,49 @@
             transform: translateY(0);
         }
 
-        .api-key-note {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
+        .api-key-security {
             text-align: center;
-            margin: 0;
+            margin-top: 1rem;
+        }
+
+        .api-key-note {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 0 0.8rem 0;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.3rem;
+        }
+
+        .api-key-note i {
+            color: rgba(34, 197, 94, 0.8);
+        }
+
+        .security-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            text-align: left;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .security-features li {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .security-features li i {
+            color: rgba(34, 197, 94, 0.7);
+            font-size: 0.7rem;
+            flex-shrink: 0;
         }
 
         .quota-divider {
@@ -1681,6 +1715,14 @@
                 padding: 0.7rem 1.2rem;
                 font-size: 0.85rem;
             }
+            
+            .security-features {
+                max-width: 280px;
+            }
+            
+            .security-features li {
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
@@ -1867,10 +1909,18 @@
                                         Update & Generate
                                     </button>
                                 </div>
-                                <p class="api-key-note">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    Your API key is used securely and not stored permanently
-                                </p>
+                                <div class="api-key-security">
+                                    <p class="api-key-note">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        <strong>Your API key is completely secure</strong>
+                                    </p>
+                                    <ul class="security-features">
+                                        <li><i class="fas fa-check me-1"></i>Never stored or saved anywhere</li>
+                                        <li><i class="fas fa-check me-1"></i>Used only for this single request</li>
+                                        <li><i class="fas fa-check me-1"></i>Not shared with any third parties</li>
+                                        <li><i class="fas fa-check me-1"></i>Processed securely in memory only</li>
+                                    </ul>
+                                </div>
                             </form>
                         </div>
                         
