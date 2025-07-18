@@ -442,91 +442,77 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
-        /* Sleek Minimalist Dropdown */
-        .custom-dropdown {
-            position: relative;
-            display: block;
-            width: 100%;
+        /* Modern Tone Grid */
+        .tone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
         }
 
-        .custom-dropdown select {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
+        .tone-tag {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 0.6rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
             cursor: pointer;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            -o-appearance: none;
-            -ms-appearance: none;
-            appearance: none;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            padding: 0.9rem 2.5rem 0.9rem 1rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(20px);
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .custom-dropdown select::-ms-expand {
-            display: none;
-        }
-
-        .custom-dropdown select:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(102, 126, 234, 0.4);
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .custom-dropdown select:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(102, 126, 234, 0.6);
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15), 0 8px 30px rgba(0, 0, 0, 0.2);
-            outline: none;
-        }
-
-        .custom-dropdown select option {
-            background: rgba(42, 42, 42, 0.85);
-            color: #ffffff;
-            padding: 10px 14px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(10px);
+            user-select: none;
+            position: relative;
+            overflow: hidden;
         }
 
-        .custom-dropdown select option:hover {
-            background: rgba(64, 64, 64, 0.9);
-            color: #ffffff;
+        .tone-tag:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .custom-dropdown select option:checked,
-        .custom-dropdown select option:selected {
-            background: rgba(102, 126, 234, 0.9);
-            color: #ffffff;
+        .tone-tag.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: white;
             font-weight: 600;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.3);
         }
 
-        .dropdown-arrow {
+        .tone-tag.selected::before {
+            content: '';
             position: absolute;
-            right: 0.8rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.5);
-            pointer-events: none;
-            transition: all 0.2s ease;
-            z-index: 2;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
 
-        .custom-dropdown:hover .dropdown-arrow {
-            color: rgba(102, 126, 234, 0.7);
+        .tone-tag.selected:hover::before {
+            left: 100%;
         }
 
-        .custom-dropdown select:focus ~ .dropdown-arrow {
-            color: rgba(102, 126, 234, 0.9);
+        .tone-tag:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .tone-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 0.5rem;
+            }
+            
+            .tone-tag {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
         }
 
         /* Additional cross-browser support */
@@ -1051,30 +1037,23 @@
 
                             <div class="form-group">
                                 <label for="tone" class="form-label">Tone</label>
-                                <div class="custom-dropdown">
-                                    <select class="form-input" id="tone" name="tone" required>
-                                        <option value="">Choose your tone...</option>
-                                        <option value="Funny" {{ 'selected' if tone == 'Funny' else '' }}>Funny</option>
-                                        <option value="Serious" {{ 'selected' if tone == 'Serious' else '' }}>Serious</option>
-                                        <option value="Inspirational" {{ 'selected' if tone == 'Inspirational' else '' }}>Inspirational</option>
-                                        <option value="Sarcastic" {{ 'selected' if tone == 'Sarcastic' else '' }}>Sarcastic</option>
-                                        <option value="Casual" {{ 'selected' if tone == 'Casual' else '' }}>Casual</option>
-                                        <option value="Dramatic" {{ 'selected' if tone == 'Dramatic' else '' }}>Dramatic</option>
-                                        <option value="Romantic" {{ 'selected' if tone == 'Romantic' else '' }}>Romantic</option>
-                                        <option value="Mysterious" {{ 'selected' if tone == 'Mysterious' else '' }}>Mysterious</option>
-                                        <option value="Adventurous" {{ 'selected' if tone == 'Adventurous' else '' }}>Adventurous</option>
-                                        <option value="Grateful" {{ 'selected' if tone == 'Grateful' else '' }}>Grateful</option>
-                                        <option value="Playful" {{ 'selected' if tone == 'Playful' else '' }}>Playful</option>
-                                        <option value="Nostalgic" {{ 'selected' if tone == 'Nostalgic' else '' }}>Nostalgic</option>
-                                        <option value="Confident" {{ 'selected' if tone == 'Confident' else '' }}>Confident</option>
-                                        <option value="Chill" {{ 'selected' if tone == 'Chill' else '' }}>Chill</option>
-                                        <option value="Trendy" {{ 'selected' if tone == 'Trendy' else '' }}>Trendy</option>
-                                    </select>
-                                    <div class="dropdown-arrow">
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                            <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </div>
+                                <div class="tone-grid">
+                                    <input type="hidden" id="tone" name="tone" value="{{ tone if tone else '' }}" required>
+                                    <div class="tone-tag" data-tone="Funny">Funny</div>
+                                    <div class="tone-tag" data-tone="Serious">Serious</div>
+                                    <div class="tone-tag" data-tone="Casual">Casual</div>
+                                    <div class="tone-tag" data-tone="Dramatic">Dramatic</div>
+                                    <div class="tone-tag" data-tone="Romantic">Romantic</div>
+                                    <div class="tone-tag" data-tone="Sarcastic">Sarcastic</div>
+                                    <div class="tone-tag" data-tone="Playful">Playful</div>
+                                    <div class="tone-tag" data-tone="Chill">Chill</div>
+                                    <div class="tone-tag" data-tone="Confident">Confident</div>
+                                    <div class="tone-tag" data-tone="Trendy">Trendy</div>
+                                    <div class="tone-tag" data-tone="Grateful">Grateful</div>
+                                    <div class="tone-tag" data-tone="Nostalgic">Nostalgic</div>
+                                    <div class="tone-tag" data-tone="Inspirational">Inspirational</div>
+                                    <div class="tone-tag" data-tone="Mysterious">Mysterious</div>
+                                    <div class="tone-tag" data-tone="Adventurous">Adventurous</div>
                                 </div>
                             </div>
 
@@ -1303,6 +1282,34 @@
             }
             
             setInterval(rotatePlaceholder, 3000);
+            
+            // Tone selection functionality
+            const toneInput = document.getElementById('tone');
+            const toneTags = document.querySelectorAll('.tone-tag');
+            const currentTone = toneInput.value;
+            
+            // Set initial selection if there's a value
+            if (currentTone) {
+                toneTags.forEach(tag => {
+                    if (tag.getAttribute('data-tone') === currentTone) {
+                        tag.classList.add('selected');
+                    }
+                });
+            }
+            
+            // Handle tone selection
+            toneTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // Remove selected class from all tags
+                    toneTags.forEach(t => t.classList.remove('selected'));
+                    
+                    // Add selected class to clicked tag
+                    this.classList.add('selected');
+                    
+                    // Update hidden input value
+                    toneInput.value = this.getAttribute('data-tone');
+                });
+            });
         });
     </script>
 </body>
