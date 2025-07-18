@@ -24,6 +24,22 @@ if OPENAI_API_KEY:
 else:
     logging.info("No OpenAI API key found, using mock fallback")
 
+def clean_caption_content(content):
+    """Remove tone headers from caption content and return clean captions"""
+    lines = content.split('\n')
+    cleaned_lines = []
+    
+    for line in lines:
+        line = line.strip()
+        # Skip tone headers like "**Serious Tone:**" or "**Motivational Tone:**"
+        if line.startswith('**') and line.endswith('Tone:**'):
+            continue
+        # Keep numbered captions and other content
+        if line:
+            cleaned_lines.append(line)
+    
+    return '\n'.join(cleaned_lines)
+
 def mock_generate_instagram_captions(topic, tone):
     """Mock fallback function for generating Instagram captions with multi-tone support"""
     
@@ -33,11 +49,8 @@ def mock_generate_instagram_captions(topic, tone):
     mock_captions = []
     
     for current_tone in tones:
-        # Only add tone header if there are multiple tones
-        if len(tones) > 1:
-            tone_section = f"**{current_tone.title()} Tone:**\n"
-        else:
-            tone_section = ""
+        # Never add tone headers - just show clean captions
+        tone_section = ""
         
         # Generate tone-specific mock captions
         if current_tone.lower() in ['funny', 'humorous', 'comedy', 'playful']:
@@ -138,7 +151,12 @@ Format your response as:
             temperature=0.8
         )
         
-        return response.choices[0].message.content.strip()
+        content = response.choices[0].message.content.strip()
+        
+        # Clean the content to remove tone headers
+        cleaned_captions = clean_caption_content(content)
+        
+        return cleaned_captions
         
     except Exception as e:
         logging.error(f"OpenAI API error: {e}")
