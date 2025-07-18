@@ -590,6 +590,7 @@
         .load-more-container {
             display: flex;
             justify-content: center;
+            gap: 0.75rem;
             margin-top: 1rem;
         }
 
@@ -636,24 +637,48 @@
 
         /* Recently Used Tones Styling */
         .tone-tag.recently-used {
-            border-color: rgba(255, 193, 7, 0.4);
-            background: rgba(255, 193, 7, 0.08);
+            border-color: rgba(102, 126, 234, 0.4);
+            background: rgba(102, 126, 234, 0.08);
             position: relative;
         }
 
-        .tone-tag.recently-used::after {
-            content: '⭐';
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            font-size: 0.7rem;
-            opacity: 0.7;
-            filter: drop-shadow(0 0 3px rgba(255, 193, 7, 0.5));
+        .tone-tag.recently-used:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            background: rgba(102, 126, 234, 0.12);
         }
 
-        .tone-tag.recently-used:hover {
-            border-color: rgba(255, 193, 7, 0.6);
-            background: rgba(255, 193, 7, 0.12);
+        /* Clear History Button */
+        .clear-history-btn {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            border-radius: 20px;
+            padding: 0.7rem 1.2rem;
+            color: rgba(220, 38, 38, 0.9);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            user-select: none;
+        }
+
+        .clear-history-btn:hover {
+            background: rgba(220, 38, 38, 0.15);
+            border-color: rgba(220, 38, 38, 0.4);
+            color: rgba(220, 38, 38, 1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
+        }
+
+        .clear-history-btn:active {
+            transform: translateY(0);
+        }
+
+        .clear-history-btn.hidden {
+            display: none;
         }
 
         /* Modern Results Section */
@@ -1423,6 +1448,10 @@
                                         <span class="load-more-text">Show More Tones</span>
                                         <i class="fas fa-chevron-down load-more-icon"></i>
                                     </button>
+                                    <button type="button" class="clear-history-btn" id="clearHistoryBtn" title="Clear tone history">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <span>Clear History</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -1720,6 +1749,26 @@
                 // Keep only last 10 tones
                 recent = recent.slice(0, 10);
                 localStorage.setItem('recentTones', JSON.stringify(recent));
+                updateClearButtonVisibility();
+            };
+
+            const clearRecentTones = () => {
+                localStorage.removeItem('recentTones');
+                // Remove recently-used class from all tags
+                toneTags.forEach(tag => {
+                    tag.classList.remove('recently-used');
+                });
+                updateClearButtonVisibility();
+            };
+
+            const updateClearButtonVisibility = () => {
+                const clearBtn = document.getElementById('clearHistoryBtn');
+                const recent = getRecentTones();
+                if (recent.length > 0) {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
             };
             
             // Highlight recently used tones
@@ -1766,6 +1815,17 @@
             
             // Highlight recently used tones
             highlightRecentTones();
+            
+            // Initialize clear button visibility
+            updateClearButtonVisibility();
+            
+            // Clear history button functionality
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+            clearHistoryBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear your tone history?')) {
+                    clearRecentTones();
+                }
+            });
             
             loadMoreBtn.addEventListener('click', function() {
                 if (isExpanded) {
