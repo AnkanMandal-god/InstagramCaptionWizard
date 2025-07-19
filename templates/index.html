@@ -1871,54 +1871,60 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             z-index: 10000;
             display: none;
-            transition: all 0.5s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(3px);
         }
 
         .tutorial-overlay.active {
             display: block;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.3s ease-out;
         }
 
         .tutorial-spotlight {
             position: absolute;
-            border: 3px solid #667eea;
-            border-radius: 12px;
-            box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.8), 
-                        0 0 30px rgba(102, 126, 234, 0.6),
-                        inset 0 0 0 3px rgba(255, 255, 255, 0.2);
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-            animation: pulse 2s infinite;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.85), 
+                        0 0 20px rgba(102, 126, 234, 0.5);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            pointer-events: none;
         }
 
-        @keyframes pulse {
+        .tutorial-spotlight.pulse {
+            animation: spotlightPulse 2s infinite;
+        }
+
+        @keyframes spotlightPulse {
             0%, 100% {
-                box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.8), 
-                           0 0 30px rgba(102, 126, 234, 0.6),
-                           inset 0 0 0 3px rgba(255, 255, 255, 0.2);
+                border-color: #667eea;
+                box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.85), 
+                           0 0 20px rgba(102, 126, 234, 0.5);
             }
             50% {
-                box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.8), 
-                           0 0 50px rgba(102, 126, 234, 0.8),
-                           inset 0 0 0 3px rgba(255, 255, 255, 0.4);
+                border-color: #764ba2;
+                box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.85), 
+                           0 0 30px rgba(118, 75, 162, 0.7);
             }
         }
 
         .tutorial-tooltip {
-            position: absolute;
+            position: fixed;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1.5rem 2rem;
+            padding: 1.8rem 2.2rem;
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            max-width: 350px;
-            font-size: 0.95rem;
-            line-height: 1.5;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            max-width: 380px;
+            min-width: 320px;
+            font-size: 1rem;
+            line-height: 1.6;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: slideIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 10001;
         }
 
         .tutorial-tooltip::before {
@@ -1973,23 +1979,25 @@
         }
 
         .tutorial-tooltip h4 {
-            margin: 0 0 0.8rem 0;
-            font-size: 1.1rem;
-            font-weight: 600;
+            margin: 0 0 1rem 0;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .tutorial-tooltip p {
-            margin: 0 0 1rem 0;
-            color: rgba(255, 255, 255, 0.9);
+            margin: 0 0 1.2rem 0;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1rem;
         }
 
         .tutorial-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1.2rem;
-            gap: 1rem;
+            margin-top: 1.5rem;
+            gap: 1.2rem;
         }
 
         .tutorial-progress {
@@ -2008,31 +2016,36 @@
         }
 
         .tutorial-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            padding: 0.7rem 1.3rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            white-space: nowrap;
         }
 
         .tutorial-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .tutorial-btn.primary {
-            background: rgba(255, 255, 255, 0.9);
+            background: white;
             color: #667eea;
             font-weight: 600;
+            border: 1px solid white;
         }
 
         .tutorial-btn.primary:hover {
-            background: white;
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
         .tutorial-step-counter {
@@ -2059,24 +2072,11 @@
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
             transition: all 0.3s ease;
             z-index: 1000;
-            animation: bounce 2s infinite;
         }
 
         .tutorial-start-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
         }
 
         .tutorial-start-btn.hidden {
@@ -2760,43 +2760,37 @@
                     title: "Welcome to Caption Generator!",
                     description: "Let's take a quick tour to help you create amazing Instagram captions. This will only take a minute!",
                     target: null,
-                    position: { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
-                    spotlightSize: { width: 400, height: 300 }
+                    position: "center"
                 },
                 {
                     title: "Enter Your Topic",
                     description: "Start by describing what your post is about. Be specific for better results - like 'sunset beach walk' or 'homemade pasta dinner'.",
                     target: "#topic",
-                    position: "bottom",
-                    spotlightSize: { width: 0, height: 0, padding: 15 }
+                    position: "bottom"
                 },
                 {
                     title: "Choose Your Tone",
                     description: "Select multiple tones to create unique captions that blend different styles. Try combinations like 'funny + romantic' or 'professional + inspirational'.",
                     target: ".tone-selector",
-                    position: "top",
-                    spotlightSize: { width: 0, height: 0, padding: 20 }
+                    position: "top"
                 },
                 {
                     title: "Generate Captions",
                     description: "Click this button to generate 3 unique captions that blend all your selected tones together. Each caption will capture your chosen mood perfectly.",
                     target: "#generateBtn",
-                    position: "top",
-                    spotlightSize: { width: 0, height: 0, padding: 15 }
+                    position: "top"
                 },
                 {
                     title: "Explore Features",
                     description: "Discover our key features: multi-tone blending, AI power, unlimited possibilities, and custom API key support for extended use.",
                     target: ".features-section",
-                    position: "top",
-                    spotlightSize: { width: 0, height: 0, padding: 25 }
+                    position: "top"
                 },
                 {
                     title: "You're Ready!",
                     description: "That's it! Start creating engaging captions for your Instagram posts. Need help again? Click the question mark button anytime.",
                     target: null,
-                    position: { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
-                    spotlightSize: { width: 400, height: 300 }
+                    position: "center"
                 }
             ];
 
@@ -2804,6 +2798,8 @@
                 currentStep = 0;
                 tutorialOverlay.classList.add('active');
                 tutorialStartBtn.classList.add('hidden');
+                // Show spotlight for centered steps
+                tutorialSpotlight.style.display = 'block';
                 updateTutorialStep();
             }
 
@@ -2842,73 +2838,64 @@
             }
 
             function positionTutorialElements(step) {
-                if (step.target) {
+                // Clear previous positioning
+                tutorialSpotlight.style.transform = '';
+                tutorialTooltip.style.transform = '';
+                tutorialTooltip.className = 'tutorial-tooltip';
+                
+                if (step.target && step.position !== 'center') {
                     const target = document.querySelector(step.target);
                     if (target) {
-                        const rect = target.getBoundingClientRect();
-                        const padding = step.spotlightSize.padding || 10;
-                        
-                        // Position spotlight
-                        tutorialSpotlight.style.top = `${rect.top - padding}px`;
-                        tutorialSpotlight.style.left = `${rect.left - padding}px`;
-                        tutorialSpotlight.style.width = `${rect.width + (padding * 2)}px`;
-                        tutorialSpotlight.style.height = `${rect.height + (padding * 2)}px`;
-                        
-                        // Position tooltip
-                        const tooltipRect = tutorialTooltip.getBoundingClientRect();
-                        let tooltipTop, tooltipLeft;
-                        
-                        tutorialTooltip.className = 'tutorial-tooltip';
-                        
-                        if (step.position === 'bottom') {
-                            tooltipTop = rect.bottom + padding + 20;
-                            tooltipLeft = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
-                            tutorialTooltip.classList.add('top');
-                        } else if (step.position === 'top') {
-                            tooltipTop = rect.top - tooltipRect.height - padding - 20;
-                            tooltipLeft = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
-                            tutorialTooltip.classList.add('bottom');
-                        } else if (step.position === 'left') {
-                            tooltipTop = rect.top + (rect.height / 2) - (tooltipRect.height / 2);
-                            tooltipLeft = rect.left - tooltipRect.width - padding - 20;
-                            tutorialTooltip.classList.add('right');
-                        } else if (step.position === 'right') {
-                            tooltipTop = rect.top + (rect.height / 2) - (tooltipRect.height / 2);
-                            tooltipLeft = rect.right + padding + 20;
-                            tutorialTooltip.classList.add('left');
-                        }
-                        
-                        // Ensure tooltip stays within viewport
-                        const viewportWidth = window.innerWidth;
-                        const viewportHeight = window.innerHeight;
-                        
-                        if (tooltipLeft < 20) tooltipLeft = 20;
-                        if (tooltipLeft + tooltipRect.width > viewportWidth - 20) {
-                            tooltipLeft = viewportWidth - tooltipRect.width - 20;
-                        }
-                        if (tooltipTop < 20) tooltipTop = 20;
-                        if (tooltipTop + tooltipRect.height > viewportHeight - 20) {
-                            tooltipTop = viewportHeight - tooltipRect.height - 20;
-                        }
-                        
-                        tutorialTooltip.style.top = `${tooltipTop}px`;
-                        tutorialTooltip.style.left = `${tooltipLeft}px`;
-                        
-                        // Scroll target into view
+                        // Scroll target into view first
                         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        setTimeout(() => {
+                            const rect = target.getBoundingClientRect();
+                            const padding = 20;
+                            
+                            // Position spotlight around target
+                            tutorialSpotlight.style.top = `${rect.top - padding}px`;
+                            tutorialSpotlight.style.left = `${rect.left - padding}px`;
+                            tutorialSpotlight.style.width = `${rect.width + (padding * 2)}px`;
+                            tutorialSpotlight.style.height = `${rect.height + (padding * 2)}px`;
+                            tutorialSpotlight.classList.add('pulse');
+                            
+                            // Position tooltip
+                            let tooltipTop, tooltipLeft;
+                            const viewportWidth = window.innerWidth;
+                            const viewportHeight = window.innerHeight;
+                            
+                            if (step.position === 'bottom') {
+                                tooltipTop = rect.bottom + padding + 30;
+                                tooltipLeft = Math.max(20, Math.min(rect.left + (rect.width / 2) - 190, viewportWidth - 400));
+                                tutorialTooltip.classList.add('top');
+                            } else if (step.position === 'top') {
+                                tooltipTop = rect.top - padding - 200;
+                                tooltipLeft = Math.max(20, Math.min(rect.left + (rect.width / 2) - 190, viewportWidth - 400));
+                                tutorialTooltip.classList.add('bottom');
+                            }
+                            
+                            // Ensure tooltip stays within viewport
+                            if (tooltipTop < 20) tooltipTop = 20;
+                            if (tooltipTop > viewportHeight - 250) tooltipTop = viewportHeight - 250;
+                            
+                            tutorialTooltip.style.top = `${tooltipTop}px`;
+                            tutorialTooltip.style.left = `${tooltipLeft}px`;
+                        }, 100);
                     }
                 } else {
                     // Center positioning for welcome/completion steps
+                    tutorialSpotlight.style.display = 'block';
                     tutorialSpotlight.style.top = '50%';
                     tutorialSpotlight.style.left = '50%';
-                    tutorialSpotlight.style.width = `${step.spotlightSize.width}px`;
-                    tutorialSpotlight.style.height = `${step.spotlightSize.height}px`;
+                    tutorialSpotlight.style.width = '400px';
+                    tutorialSpotlight.style.height = '200px';
                     tutorialSpotlight.style.transform = 'translate(-50%, -50%)';
+                    tutorialSpotlight.classList.remove('pulse');
                     
-                    tutorialTooltip.style.top = step.position.top;
-                    tutorialTooltip.style.left = step.position.left;
-                    tutorialTooltip.style.transform = step.position.transform;
-                    tutorialTooltip.className = 'tutorial-tooltip';
+                    tutorialTooltip.style.top = '50%';
+                    tutorialTooltip.style.left = '50%';
+                    tutorialTooltip.style.transform = 'translate(-50%, -50%)';
                 }
             }
 
@@ -2939,14 +2926,14 @@
                 }
             });
 
-            // Check if first-time user and show tutorial
-            const hasSeenTutorial = localStorage.getItem('hasSeenTutorial');
-            if (!hasSeenTutorial) {
-                setTimeout(() => {
-                    showTutorial();
-                    localStorage.setItem('hasSeenTutorial', 'true');
-                }, 1500); // Show after page loads
-            }
+            // Check if first-time user and show tutorial (disabled for now)
+            // const hasSeenTutorial = localStorage.getItem('hasSeenTutorial');
+            // if (!hasSeenTutorial) {
+            //     setTimeout(() => {
+            //         showTutorial();
+            //         localStorage.setItem('hasSeenTutorial', 'true');
+            //     }, 1500); // Show after page loads
+            // }
 
             // Reposition tutorial on window resize
             window.addEventListener('resize', function() {
