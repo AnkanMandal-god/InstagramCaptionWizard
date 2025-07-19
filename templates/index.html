@@ -1885,10 +1885,18 @@
         }
 
         .tutorial-spotlight {
-            position: absolute;
-            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), 
+                        transparent 120px, 
+                        rgba(0, 0, 0, 0.7) 180px);
             pointer-events: none;
             z-index: 10001;
+            display: none;
+            transition: all 0.3s ease;
         }
 
         .tutorial-spotlight-cutout {
@@ -2137,6 +2145,7 @@
 <body>
     <!-- Tutorial Overlay -->
     <div class="tutorial-overlay" id="tutorialOverlay">
+        <div class="tutorial-spotlight" id="tutorialSpotlight"></div>
         <div class="tutorial-tooltip" id="tutorialTooltip">
             <h4 id="tutorialTitle">Welcome to Caption Generator!</h4>
             <p id="tutorialDescription">Let's take a quick tour to help you create amazing Instagram captions.</p>
@@ -2831,7 +2840,6 @@
                 
                 // Hide spotlight
                 tutorialSpotlight.style.display = 'none';
-                tutorialSpotlightCutout.classList.remove('pulse');
             }
 
             function updateTutorialStep() {
@@ -2912,9 +2920,12 @@
                         const baseRect = target.getBoundingClientRect();
                         const padding = 20; // Account for outline offset
                         
-                        // Hide spotlight completely - no more blue boxes
-                        tutorialSpotlight.style.display = 'none';
-                        tutorialSpotlightCutout.classList.remove('pulse');
+                        // Create simple spotlight effect
+                        const centerX = baseRect.left + (baseRect.width / 2);
+                        const centerY = baseRect.top + (baseRect.height / 2);
+                        tutorialSpotlight.style.setProperty('--spotlight-x', `${centerX}px`);
+                        tutorialSpotlight.style.setProperty('--spotlight-y', `${centerY}px`);
+                        tutorialSpotlight.style.display = 'block';
                         
                         // Apply visual effects AFTER positioning
                         target.style.position = 'relative';
@@ -2994,7 +3005,7 @@
                         tutorialTooltip.style.display = 'block';
                     }
                 } else {
-                    // Center tutorial (no target)
+                    // Center tutorial (no target) - hide spotlight
                     tutorialSpotlight.style.display = 'none';
                     tutorialTooltip.style.top = '50%';
                     tutorialTooltip.style.left = '50%';
