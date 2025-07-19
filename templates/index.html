@@ -1871,10 +1871,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 10000;
             display: none;
             transition: all 0.3s ease;
+            pointer-events: none;
         }
 
         .tutorial-overlay.active {
@@ -1931,7 +1932,7 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            z-index: 10001;
+            z-index: 10002;
             pointer-events: auto;
         }
 
@@ -2813,38 +2814,23 @@
                 if (step.target && step.position !== 'center') {
                     const target = document.querySelector(step.target);
                     if (target) {
+                        // Make target highly visible
+                        target.style.position = 'relative';
+                        target.style.zIndex = '10003';
+                        target.style.filter = 'brightness(1.2) drop-shadow(0 0 20px rgba(102, 126, 234, 0.8))';
+                        
                         // Scroll target into view first
                         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         
                         setTimeout(() => {
                             const rect = target.getBoundingClientRect();
-                            const padding = 20;
+                            const padding = 15;
                             
-                            // Create overlay cutout effect using CSS clip-path
-                            const cutoutX = rect.left - padding;
-                            const cutoutY = rect.top - padding;
-                            const cutoutWidth = rect.width + (padding * 2);
-                            const cutoutHeight = rect.height + (padding * 2);
-                            
-                            // Use clip-path to cut out the highlighted area from overlay
-                            tutorialOverlay.style.clipPath = `polygon(
-                                0 0, 
-                                0 100%, 
-                                ${cutoutX}px 100%, 
-                                ${cutoutX}px ${cutoutY}px, 
-                                ${cutoutX + cutoutWidth}px ${cutoutY}px, 
-                                ${cutoutX + cutoutWidth}px ${cutoutY + cutoutHeight}px, 
-                                ${cutoutX}px ${cutoutY + cutoutHeight}px, 
-                                ${cutoutX}px 100%, 
-                                100% 100%, 
-                                100% 0
-                            )`;
-                            
-                            // Position and show the spotlight border
-                            tutorialSpotlightCutout.style.top = `${cutoutY}px`;
-                            tutorialSpotlightCutout.style.left = `${cutoutX}px`;
-                            tutorialSpotlightCutout.style.width = `${cutoutWidth}px`;
-                            tutorialSpotlightCutout.style.height = `${cutoutHeight}px`;
+                            // Position and show the spotlight border around target
+                            tutorialSpotlightCutout.style.top = `${rect.top - padding}px`;
+                            tutorialSpotlightCutout.style.left = `${rect.left - padding}px`;
+                            tutorialSpotlightCutout.style.width = `${rect.width + (padding * 2)}px`;
+                            tutorialSpotlightCutout.style.height = `${rect.height + (padding * 2)}px`;
                             tutorialSpotlightCutout.classList.add('pulse');
                             tutorialSpotlight.style.display = 'block';
                             
@@ -2871,8 +2857,14 @@
                         }, 100);
                     }
                 } else {
-                    // Remove clip-path and hide spotlight for center steps
-                    tutorialOverlay.style.clipPath = 'none';
+                    // Reset any highlighted elements
+                    document.querySelectorAll('[style*="z-index: 10003"]').forEach(el => {
+                        el.style.position = '';
+                        el.style.zIndex = '';
+                        el.style.filter = '';
+                    });
+                    
+                    // Hide spotlight for center steps
                     tutorialSpotlight.style.display = 'none';
                     tutorialSpotlightCutout.classList.remove('pulse');
                     
