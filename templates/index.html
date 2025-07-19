@@ -2032,6 +2032,19 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
+        .tutorial-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 80px;
+        }
+
+        .tutorial-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
         .tutorial-step-counter {
             font-size: 0.8rem;
             opacity: 0.8;
@@ -2115,7 +2128,7 @@
                     <div class="tutorial-progress-bar" id="tutorialProgressBar"></div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <button class="tutorial-btn" id="tutorialPrev" style="display: none;">Previous</button>
+                    <button class="tutorial-btn secondary" id="tutorialPrev" style="display: none;">Previous</button>
                     <button class="tutorial-btn primary" id="tutorialNext">Start Tour</button>
                     <span class="tutorial-step-counter" id="tutorialCounter">1/6</span>
                 </div>
@@ -2770,8 +2783,8 @@
                 {
                     title: "Explore Features", 
                     description: "Discover our key features: multi-tone blending, AI power, unlimited possibilities, and custom API key support for extended use.",
-                    target: "#features-container",
-                    position: "top"
+                    target: ".section-separator",
+                    position: "bottom"
                 },
                 {
                     title: "You're Ready!",
@@ -2847,7 +2860,7 @@
                 });
                 
                 // Also reset by common selectors to ensure cleanup
-                ['#topic', '.tone-grid', '#generateBtn', '.features-section', '#features-container'].forEach(selector => {
+                ['#topic', '.tone-grid', '#generateBtn', '.features-section', '#features-container', '.section-separator'].forEach(selector => {
                     const element = document.querySelector(selector);
                     if (element) {
                         element.style.position = '';
