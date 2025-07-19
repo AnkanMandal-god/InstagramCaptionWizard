@@ -1,271 +1,81 @@
 import os
 import logging
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash
 
-# Set up logging for debugging
-logging.basicConfig(level=logging.DEBUG)
+try:
+    from openai import OpenAI
+    openai_available = True
+except ImportError:
+    openai_available = False
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key")
 
-# Initialize OpenAI client if API key is available
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-openai_client = None
+use_mock = os.environ.get("USE_MOCK", "false").lower() == "true"
 
-if OPENAI_API_KEY:
-    try:
-        from openai import OpenAI
-        openai_client = OpenAI(api_key=OPENAI_API_KEY)
-        logging.info("OpenAI client initialized successfully")
-    except ImportError:
-        logging.warning("OpenAI library not available, using mock fallback")
-    except Exception as e:
-        logging.error(f"Failed to initialize OpenAI client: {e}")
-else:
-    logging.info("No OpenAI API key found, using mock fallback")
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
 
-def clean_caption_content(content):
-    """Remove tone headers and number prefixes from caption content"""
-    lines = content.split('\n')
-    cleaned_lines = []
-    
-    for line in lines:
-        line = line.strip()
-        # Skip tone headers like "**Serious Tone:**" or "**Motivational Tone:**"
-        if line.startswith('**') and line.endswith('Tone:**'):
-            continue
-        # Remove number prefixes like "1. ", "2. ", "3. " etc.
-        if line and len(line) > 3:
-            # Check if line starts with number followed by dot and space
-            if line[0].isdigit() and line[1:3] == '. ':
-                line = line[3:]  # Remove "1. " prefix
-            elif len(line) > 4 and line[0].isdigit() and line[1].isdigit() and line[2:4] == '. ':
-                line = line[4:]  # Remove "10. " prefix for double digits
-        # Keep clean caption content
-        if line:
-            cleaned_lines.append(line)
-    
-    return '\n'.join(cleaned_lines)
-
-def mock_generate_instagram_captions(topic, tone):
-    """Mock fallback function for generating Instagram captions that blend multiple tones"""
-    
-    # Handle multiple tones
-    tones = [t.strip().lower() for t in tone.split(',') if t.strip()]
-    
-    # Create tone description for hashtags
-    tone_hashtags = ''.join([f"#{t.title()}" for t in tones])
-    
-    # Generate 3 captions that blend all selected tones
-    if 'funny' in tones and 'romantic' in tones:
-        captions = f"""1. When {topic} makes you laugh until you fall in love all over again 😂💕 #FunnyLove #{topic.replace(' ', '')}Moments {tone_hashtags}
-2. Found someone who thinks my {topic} jokes are actually romantic... keeper! 🤪❤️ #LaughingTogether #{topic.replace(' ', '')}Love {tone_hashtags}
-3. They say laughter is the best medicine, but {topic} with you is pure magic 😍🎭 #RomanticComedy #{topic.replace(' ', '')}Life {tone_hashtags}"""
-    
-    elif 'adventurous' in tones and 'chill' in tones:
-        captions = f"""1. Finding adventure in {topic} while keeping my zen intact 🏔️☮️ #AdventurousZen #{topic.replace(' ', '')}Balance {tone_hashtags}
-2. Sometimes the best adventures happen when you're completely relaxed about {topic} 🌊✨ #ChillAdventure #{topic.replace(' ', '')}Vibes {tone_hashtags}
-3. Peaceful exploration of {topic} - because not all adventures need adrenaline 🧘‍♀️🗺️ #MindfulAdventure #{topic.replace(' ', '')}Journey {tone_hashtags}"""
-    
-    elif 'professional' in tones and 'funny' in tones:
-        captions = f"""1. Bringing humor to the workplace: {topic} edition 💼😄 #ProfessionallyFunny #{topic.replace(' ', '')}Success {tone_hashtags}
-2. When {topic} meets corporate comedy - productivity through laughter! 📈🎭 #BusinessHumor #{topic.replace(' ', '')}Growth {tone_hashtags}
-3. Serious about success, silly about everything else - especially {topic} 🎯😂 #WorkHardLaughHard #{topic.replace(' ', '')}Life {tone_hashtags}"""
-    
-    elif len(tones) > 2:
-        # For multiple complex tones
-        tone_blend = ', '.join(tones[:-1]) + f', and {tones[-1]}'
-        captions = f"""1. {topic} hits different when you blend {tone_blend} energy together ✨ #{topic.replace(' ', '')}Fusion {tone_hashtags} #Authentic
-2. Why choose one vibe when {topic} can be {tone_blend} all at once? 🌟 #{topic.replace(' ', '')}Multifaceted {tone_hashtags} #RealTalk
-3. Embracing every shade of {topic} - {tone_blend} and unapologetically me 💫 #{topic.replace(' ', '')}Journey {tone_hashtags} #BeYou"""
-    
-    else:
-        # Default blended approach for any two tones
-        tone_blend = ' and '.join(tones)
-        captions = f"""1. When {topic} meets {tone_blend} energy - pure magic happens ✨ #{topic.replace(' ', '')}Magic {tone_hashtags} #Authentic
-2. Blending {tone_blend} vibes with {topic} for the perfect mood 🌟 #{topic.replace(' ', '')}Vibes {tone_hashtags} #RealTalk
-3. {topic} through a {tone_blend} lens - this is how I see the world 💫 #{topic.replace(' ', '')}Perspective {tone_hashtags} #BeYou"""
-    
-    return clean_caption_content(captions)
+# OpenAI client
+openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY and openai_available else None
 
 def generate_instagram_captions(topic, tone):
-    """Generate Instagram captions using OpenAI GPT-4o API that blend multiple tones"""
-    
-    # Handle multiple tones
-    tones = [t.strip() for t in tone.split(',') if t.strip()]
-    
-    if not openai_client:
-        # If no OpenAI client available, show error message
-        raise Exception("OpenAI API is not available. Please check your API key configuration.")
-    
-    try:
-        # Build tone description for multiple tones
-        if len(tones) == 1:
-            tone_description = tones[0]
-        elif len(tones) == 2:
-            tone_description = f"{tones[0]} and {tones[1]} combined"
-        else:
-            tone_description = f"{', '.join(tones[:-1])}, and {tones[-1]} blended together"
-        
-        # Create comprehensive prompt for blended tone caption generation
-        prompt = f"""Generate Instagram captions for the topic "{topic}" that seamlessly blend {tone_description} into each caption.
+    if not openai_client or use_mock:
+        return f"""1. {topic} - Channeling some {tone} vibes! #SampleCaption\n2. Mocked caption for {topic} in a {tone} tone!\n3. Just a demo caption: \"{topic}\" [{tone}]"""
+
+    prompt = f"""Generate 3 engaging Instagram captions for the topic: "{topic}" with a {tone} tone.
 
 Requirements:
-- Create exactly 3 unique captions where EACH caption embodies ALL selected tones simultaneously
-- Each caption should be a fusion of {tone_description}, not separate tones
-- Include relevant hashtags that capture the blended mood and topic
-- Add appropriate emojis that enhance the combined message
-- Make each caption Instagram-ready (engaging, shareable, authentic)
-- Keep captions concise but impactful
+- Each caption should be unique and creative
+- Include relevant hashtags
+- Keep captions engaging and social media friendly
+- Match the requested tone: {tone}
+- Format as a numbered list"""
 
-Selected tones to blend: {', '.join(tones)}
-
-IMPORTANT: Generate 3 captions that each contain elements of ALL selected tones blended together.
-
-Format your response as exactly 3 numbered captions:
-1. [blended caption with emojis and hashtags]
-2. [blended caption with emojis and hashtags] 
-3. [blended caption with emojis and hashtags]"""
-        
-        # the newest OpenAI model is "gpt-4o" which was released May 13, 2024.
-        # do not change this unless explicitly requested by the user
+    try:
         response = openai_client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "You are an expert social media content creator specializing in Instagram captions. You create engaging, authentic captions that drive engagement and match specific tones perfectly."},
+                {"role": "system", "content": "You are a creative Instagram expert."},
                 {"role": "user", "content": prompt}
             ],
-            max_tokens=800,
+            max_tokens=500,
             temperature=0.8
         )
-        
-        content = response.choices[0].message.content.strip()
-        
-        # Clean the content to remove tone headers
-        cleaned_captions = clean_caption_content(content)
-        
-        return cleaned_captions
-        
+        return response.choices[0].message.content.strip()
     except Exception as e:
-        logging.error(f"OpenAI API error: {e}")
-        # Check for quota exceeded or other specific errors
-        if "quota" in str(e).lower() or "rate" in str(e).lower():
-            raise Exception("OpenAI API quota exceeded. Please check your usage limits and try again later.")
-        elif "authentication" in str(e).lower():
-            raise Exception("OpenAI API authentication failed. Please check your API key.")
-        else:
-            raise Exception(f"OpenAI API error: {str(e)}")
+        logging.error(f"OpenAI error: {str(e)}")
+        raise Exception("Failed to generate captions: " + str(e))
 
-@app.route('/update-api-key', methods=['POST'])
-def update_api_key():
-    """Handle API key update from quota exceeded modal"""
-    global openai_client
-    
-    # Get form data
-    new_api_key = request.form.get('new_api_key', '').strip()
-    topic = request.form.get('topic', '').strip()
-    tone = request.form.get('tone', '').strip()
-    
-    if not new_api_key:
-        flash('Please enter a valid OpenAI API key.', 'error')
-        return render_template('index.html', 
-                             quota_exceeded=True,
-                             topic=topic,
-                             tone=tone)
-    
-    # Update the OpenAI client with the new key
-    try:
-        from openai import OpenAI
-        openai_client = OpenAI(api_key=new_api_key)
-        logging.info("OpenAI client updated with new API key")
-        
-        # Try to generate captions with the new key
-        captions = generate_instagram_captions(topic, tone)
-        flash('API key updated successfully! Captions generated.', 'success')
-        
-        return render_template('index.html', 
-                             captions=captions, 
-                             topic=topic, 
-                             tone=tone)
-        
-    except Exception as e:
-        logging.error(f"Failed to update API key or generate captions: {e}")
-        error_message = str(e)
-        
-        # Check for specific error types
-        if "authentication" in error_message.lower() or "invalid" in error_message.lower():
-            flash('Invalid API key. Please check your OpenAI API key and try again.', 'error')
-        elif "quota" in error_message.lower():
-            flash('The provided API key has also exceeded its quota. Please try a different key or use demo mode.', 'error')
-        else:
-            flash('Failed to update API key. Please try again.', 'error')
-        
-        return render_template('index.html', 
-                             quota_exceeded=True,
-                             topic=topic,
-                             tone=tone)
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def index():
-    """Main route that handles both GET and POST requests"""
-    
-    if request.method == 'POST':
-        # Get form data
-        topic = request.form.get('topic', '').strip()
-        tone = request.form.get('tone', '').strip()
-        use_mock = request.form.get('use_mock', '').strip() == 'true'
-        
-        # Validate inputs
-        if not topic:
-            flash('Please enter a topic for your Instagram caption.', 'error')
-            return redirect(url_for('index'))
-        
-        if not tone:
-            flash('Please select a tone for your Instagram caption.', 'error')
-            return redirect(url_for('index'))
-        
-        # Handle mock generation request
-        if use_mock:
-            captions = mock_generate_instagram_captions(topic, tone)
-            flash('Demo captions generated successfully! (Mock mode)', 'success')
-            return render_template('index.html', 
-                                 captions=captions, 
-                                 topic=topic, 
-                                 tone=tone,
-                                 is_mock=True)
-        
-        try:
-            # Generate captions
-            captions = generate_instagram_captions(topic, tone)
-            flash('Captions generated successfully!', 'success')
-            
-            return render_template('index.html', 
-                                 captions=captions, 
-                                 topic=topic, 
-                                 tone=tone)
-            
-        except Exception as e:
-            logging.error(f"Error generating captions: {e}")
-            error_message = str(e)
-            
-            # Check if it's a quota exceeded error
-            if "quota exceeded" in error_message.lower() or "rate" in error_message.lower():
-                # Show quota exceeded page with option to use mock
-                return render_template('index.html', 
-                                     quota_exceeded=True,
-                                     topic=topic,
-                                     tone=tone)
-            elif "OpenAI API is not available" in error_message:
-                flash('OpenAI API is not configured. Please check your API key setup.', 'error')
-            elif "authentication failed" in error_message.lower():
-                flash('OpenAI API authentication failed. Please check your API key.', 'error')
-            else:
-                flash('An error occurred while generating captions. Please try again.', 'error')
-            
-            return redirect(url_for('index'))
-    
-    # GET request - show the form
-    return render_template('index.html')
+    captions = None
+    error = None
+    tutorial_mode = request.args.get("tutorial_mode", "false").lower() == "true"
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    topic = request.form.get("topic", "")
+    tone = request.form.get("tone", "")
+
+    if request.method == "POST":
+        if not topic:
+            error = "Please enter a topic."
+        elif not tone:
+            error = "Please select a tone."
+        else:
+            try:
+                captions = generate_instagram_captions(topic, tone)
+                flash("Captions generated successfully!", "success")
+            except Exception as e:
+                error = str(e)
+                flash(error, "error")
+
+    return render_template("index.html",
+                           captions=captions,
+                           error=error,
+                           topic=topic,
+                           tone=tone,
+                           tutorial_mode=tutorial_mode)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
