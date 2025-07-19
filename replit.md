@@ -43,6 +43,7 @@ Preferred communication style: Simple, everyday language.
 - **Quota Handling**: User-friendly quota exceeded detection with demo mode fallback
 - **Custom API Key Support**: Seamless personal OpenAI API key integration for unlimited access
 - **Mock Generation**: Enhanced tone-blending mock caption system with combined tone content
+- **Tutorial System**: Animated walkthrough for first-time users with interactive spotlight and progress tracking
 
 ### Template System
 - **Professional UI**: Custom generator card with centered header, minimalist form design, and gradient buttons
@@ -52,6 +53,7 @@ Preferred communication style: Simple, everyday language.
 - **Features Display**: Four feature cards highlighting tone blending, AI power, unlimited possibilities, and custom API key support
 - **Loading States**: Spinner animations and smooth form submission feedback
 - **Section Separators**: Clean typography-based separators with gradient accent lines
+- **Tutorial Interface**: Animated overlay with spotlight effects, progress indicators, and step-by-step guidance
 
 ## Data Flow
 
@@ -79,6 +81,16 @@ Preferred communication style: Simple, everyday language.
 - **Unified Caption Generation**: Each caption reflects ALL selected tones simultaneously
 - **Instagram-Ready Format**: Includes relevant hashtags and emojis that capture the blended mood
 - **Professional Quality**: High-quality content that authentically combines multiple emotional tones
+
+### Tutorial Walkthrough System
+- **First-Time User Detection**: Automatically shows tutorial for new users using localStorage tracking
+- **Interactive Spotlight**: Animated spotlight highlighting key interface elements with pulsing border effects
+- **6-Step Journey**: Comprehensive tour covering topic input, tone selection, generation, features, and completion
+- **Smart Positioning**: Dynamic tooltip positioning with viewport boundary detection and smooth animations
+- **Progress Tracking**: Visual progress bar and step counter with forward/backward navigation
+- **Accessibility Features**: Skip option, overlay click to close, and keyboard-friendly interface
+- **Mobile Optimized**: Responsive design with adjusted tooltip sizes and positioning for mobile devices
+- **Persistent Access**: Floating help button for returning users to retake the tour anytime
 
 ## External Dependencies
 

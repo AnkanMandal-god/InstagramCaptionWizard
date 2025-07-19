@@ -1864,9 +1864,284 @@
                 font-size: 0.7rem;
             }
         }
+        /* Tutorial Walkthrough Styles */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: none;
+            transition: all 0.5s ease;
+        }
+
+        .tutorial-overlay.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tutorial-spotlight {
+            position: absolute;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.8), 
+                        0 0 30px rgba(102, 126, 234, 0.6),
+                        inset 0 0 0 3px rgba(255, 255, 255, 0.2);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.8), 
+                           0 0 30px rgba(102, 126, 234, 0.6),
+                           inset 0 0 0 3px rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.8), 
+                           0 0 50px rgba(102, 126, 234, 0.8),
+                           inset 0 0 0 3px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .tutorial-tooltip {
+            position: absolute;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 350px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .tutorial-tooltip::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .tutorial-tooltip.top::before {
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px 8px 0 8px;
+            border-color: #667eea transparent transparent transparent;
+        }
+
+        .tutorial-tooltip.bottom::before {
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 8px 8px 8px;
+            border-color: transparent transparent #667eea transparent;
+        }
+
+        .tutorial-tooltip.left::before {
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 8px 0 8px 8px;
+            border-color: transparent transparent transparent #667eea;
+        }
+
+        .tutorial-tooltip.right::before {
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 8px 8px 8px 0;
+            border-color: transparent #667eea transparent transparent;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tutorial-tooltip h4 {
+            margin: 0 0 0.8rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .tutorial-tooltip p {
+            margin: 0 0 1rem 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .tutorial-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.2rem;
+            gap: 1rem;
+        }
+
+        .tutorial-progress {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .tutorial-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+            border-radius: 2px;
+            transition: width 0.6s ease;
+        }
+
+        .tutorial-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tutorial-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .tutorial-btn.primary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .tutorial-btn.primary:hover {
+            background: white;
+            transform: translateY(-1px);
+        }
+
+        .tutorial-step-counter {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-left: 0.5rem;
+        }
+
+        .tutorial-start-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: bounce 2s infinite;
+        }
+
+        .tutorial-start-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .tutorial-start-btn.hidden {
+            display: none;
+        }
+
+        /* Mobile Tutorial Adjustments */
+        @media (max-width: 768px) {
+            .tutorial-tooltip {
+                max-width: 280px;
+                padding: 1.2rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .tutorial-controls {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .tutorial-progress {
+                order: -1;
+                width: 100%;
+            }
+
+            .tutorial-start-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1rem;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
+    <!-- Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorialOverlay">
+        <div class="tutorial-spotlight" id="tutorialSpotlight"></div>
+        <div class="tutorial-tooltip" id="tutorialTooltip">
+            <h4 id="tutorialTitle">Welcome to Caption Generator!</h4>
+            <p id="tutorialDescription">Let's take a quick tour to help you create amazing Instagram captions.</p>
+            <div class="tutorial-controls">
+                <button class="tutorial-btn" id="tutorialSkip">Skip Tour</button>
+                <div class="tutorial-progress">
+                    <div class="tutorial-progress-bar" id="tutorialProgressBar"></div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="tutorial-btn" id="tutorialPrev" style="display: none;">Previous</button>
+                    <button class="tutorial-btn primary" id="tutorialNext">Start Tour</button>
+                    <span class="tutorial-step-counter" id="tutorialCounter">1/6</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutorial Start Button -->
+    <button class="tutorial-start-btn" id="tutorialStartBtn" title="Take a tour">
+        <i class="fas fa-question"></i>
+    </button>
+
     <!-- Floating Background Elements -->
     <div class="floating-bg-elements">
         <div class="floating-shape"></div>
@@ -2461,6 +2736,222 @@
                     loadMoreText.textContent = 'Show Less Tones';
                     loadMoreBtn.classList.add('expanded');
                     isExpanded = true;
+                }
+            });
+
+            // Tutorial System
+            const tutorialOverlay = document.getElementById('tutorialOverlay');
+            const tutorialSpotlight = document.getElementById('tutorialSpotlight');
+            const tutorialTooltip = document.getElementById('tutorialTooltip');
+            const tutorialTitle = document.getElementById('tutorialTitle');
+            const tutorialDescription = document.getElementById('tutorialDescription');
+            const tutorialProgressBar = document.getElementById('tutorialProgressBar');
+            const tutorialCounter = document.getElementById('tutorialCounter');
+            const tutorialNext = document.getElementById('tutorialNext');
+            const tutorialPrev = document.getElementById('tutorialPrev');
+            const tutorialSkip = document.getElementById('tutorialSkip');
+            const tutorialStartBtn = document.getElementById('tutorialStartBtn');
+
+            let currentStep = 0;
+            const totalSteps = 6;
+
+            const tutorialSteps = [
+                {
+                    title: "Welcome to Caption Generator!",
+                    description: "Let's take a quick tour to help you create amazing Instagram captions. This will only take a minute!",
+                    target: null,
+                    position: { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
+                    spotlightSize: { width: 400, height: 300 }
+                },
+                {
+                    title: "Enter Your Topic",
+                    description: "Start by describing what your post is about. Be specific for better results - like 'sunset beach walk' or 'homemade pasta dinner'.",
+                    target: "#topic",
+                    position: "bottom",
+                    spotlightSize: { width: 0, height: 0, padding: 15 }
+                },
+                {
+                    title: "Choose Your Tone",
+                    description: "Select multiple tones to create unique captions that blend different styles. Try combinations like 'funny + romantic' or 'professional + inspirational'.",
+                    target: ".tone-selector",
+                    position: "top",
+                    spotlightSize: { width: 0, height: 0, padding: 20 }
+                },
+                {
+                    title: "Generate Captions",
+                    description: "Click this button to generate 3 unique captions that blend all your selected tones together. Each caption will capture your chosen mood perfectly.",
+                    target: "#generateBtn",
+                    position: "top",
+                    spotlightSize: { width: 0, height: 0, padding: 15 }
+                },
+                {
+                    title: "Explore Features",
+                    description: "Discover our key features: multi-tone blending, AI power, unlimited possibilities, and custom API key support for extended use.",
+                    target: ".features-section",
+                    position: "top",
+                    spotlightSize: { width: 0, height: 0, padding: 25 }
+                },
+                {
+                    title: "You're Ready!",
+                    description: "That's it! Start creating engaging captions for your Instagram posts. Need help again? Click the question mark button anytime.",
+                    target: null,
+                    position: { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
+                    spotlightSize: { width: 400, height: 300 }
+                }
+            ];
+
+            function showTutorial() {
+                currentStep = 0;
+                tutorialOverlay.classList.add('active');
+                tutorialStartBtn.classList.add('hidden');
+                updateTutorialStep();
+            }
+
+            function hideTutorial() {
+                tutorialOverlay.classList.remove('active');
+                tutorialStartBtn.classList.remove('hidden');
+            }
+
+            function updateTutorialStep() {
+                const step = tutorialSteps[currentStep];
+                
+                // Update content
+                tutorialTitle.textContent = step.title;
+                tutorialDescription.textContent = step.description;
+                tutorialCounter.textContent = `${currentStep + 1}/${totalSteps}`;
+                
+                // Update progress bar
+                const progress = ((currentStep + 1) / totalSteps) * 100;
+                tutorialProgressBar.style.width = `${progress}%`;
+                
+                // Update navigation buttons
+                tutorialPrev.style.display = currentStep > 0 ? 'block' : 'none';
+                
+                if (currentStep === 0) {
+                    tutorialNext.textContent = 'Start Tour';
+                } else if (currentStep === totalSteps - 1) {
+                    tutorialNext.textContent = 'Finish';
+                    tutorialNext.classList.add('primary');
+                } else {
+                    tutorialNext.textContent = 'Next';
+                    tutorialNext.classList.remove('primary');
+                }
+                
+                // Position spotlight and tooltip
+                positionTutorialElements(step);
+            }
+
+            function positionTutorialElements(step) {
+                if (step.target) {
+                    const target = document.querySelector(step.target);
+                    if (target) {
+                        const rect = target.getBoundingClientRect();
+                        const padding = step.spotlightSize.padding || 10;
+                        
+                        // Position spotlight
+                        tutorialSpotlight.style.top = `${rect.top - padding}px`;
+                        tutorialSpotlight.style.left = `${rect.left - padding}px`;
+                        tutorialSpotlight.style.width = `${rect.width + (padding * 2)}px`;
+                        tutorialSpotlight.style.height = `${rect.height + (padding * 2)}px`;
+                        
+                        // Position tooltip
+                        const tooltipRect = tutorialTooltip.getBoundingClientRect();
+                        let tooltipTop, tooltipLeft;
+                        
+                        tutorialTooltip.className = 'tutorial-tooltip';
+                        
+                        if (step.position === 'bottom') {
+                            tooltipTop = rect.bottom + padding + 20;
+                            tooltipLeft = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+                            tutorialTooltip.classList.add('top');
+                        } else if (step.position === 'top') {
+                            tooltipTop = rect.top - tooltipRect.height - padding - 20;
+                            tooltipLeft = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+                            tutorialTooltip.classList.add('bottom');
+                        } else if (step.position === 'left') {
+                            tooltipTop = rect.top + (rect.height / 2) - (tooltipRect.height / 2);
+                            tooltipLeft = rect.left - tooltipRect.width - padding - 20;
+                            tutorialTooltip.classList.add('right');
+                        } else if (step.position === 'right') {
+                            tooltipTop = rect.top + (rect.height / 2) - (tooltipRect.height / 2);
+                            tooltipLeft = rect.right + padding + 20;
+                            tutorialTooltip.classList.add('left');
+                        }
+                        
+                        // Ensure tooltip stays within viewport
+                        const viewportWidth = window.innerWidth;
+                        const viewportHeight = window.innerHeight;
+                        
+                        if (tooltipLeft < 20) tooltipLeft = 20;
+                        if (tooltipLeft + tooltipRect.width > viewportWidth - 20) {
+                            tooltipLeft = viewportWidth - tooltipRect.width - 20;
+                        }
+                        if (tooltipTop < 20) tooltipTop = 20;
+                        if (tooltipTop + tooltipRect.height > viewportHeight - 20) {
+                            tooltipTop = viewportHeight - tooltipRect.height - 20;
+                        }
+                        
+                        tutorialTooltip.style.top = `${tooltipTop}px`;
+                        tutorialTooltip.style.left = `${tooltipLeft}px`;
+                        
+                        // Scroll target into view
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                } else {
+                    // Center positioning for welcome/completion steps
+                    tutorialSpotlight.style.top = '50%';
+                    tutorialSpotlight.style.left = '50%';
+                    tutorialSpotlight.style.width = `${step.spotlightSize.width}px`;
+                    tutorialSpotlight.style.height = `${step.spotlightSize.height}px`;
+                    tutorialSpotlight.style.transform = 'translate(-50%, -50%)';
+                    
+                    tutorialTooltip.style.top = step.position.top;
+                    tutorialTooltip.style.left = step.position.left;
+                    tutorialTooltip.style.transform = step.position.transform;
+                    tutorialTooltip.className = 'tutorial-tooltip';
+                }
+            }
+
+            // Event listeners
+            tutorialStartBtn.addEventListener('click', showTutorial);
+            tutorialSkip.addEventListener('click', hideTutorial);
+            
+            tutorialNext.addEventListener('click', function() {
+                if (currentStep < totalSteps - 1) {
+                    currentStep++;
+                    updateTutorialStep();
+                } else {
+                    hideTutorial();
+                }
+            });
+            
+            tutorialPrev.addEventListener('click', function() {
+                if (currentStep > 0) {
+                    currentStep--;
+                    updateTutorialStep();
+                }
+            });
+
+            // Close tutorial on overlay click
+            tutorialOverlay.addEventListener('click', function(e) {
+                if (e.target === tutorialOverlay) {
+                    hideTutorial();
+                }
+            });
+
+            // Check if first-time user and show tutorial
+            const hasSeenTutorial = localStorage.getItem('hasSeenTutorial');
+            if (!hasSeenTutorial) {
+                setTimeout(() => {
+                    showTutorial();
+                    localStorage.setItem('hasSeenTutorial', 'true');
+                }, 1500); // Show after page loads
+            }
+
+            // Reposition tutorial on window resize
+            window.addEventListener('resize', function() {
+                if (tutorialOverlay.classList.contains('active')) {
+                    updateTutorialStep();
                 }
             });
         });
