@@ -2908,27 +2908,27 @@
                 if (step.target && step.position !== 'center') {
                     const target = document.querySelector(step.target);
                     if (target) {
-                        // Make target highly visible with enhanced highlighting
-                        target.style.position = 'relative';
-                        target.style.zIndex = '10003';
-                        target.style.filter = 'brightness(1.4) contrast(1.2) drop-shadow(0 0 30px rgba(102, 126, 234, 1)) drop-shadow(0 0 50px rgba(118, 75, 162, 0.8))';
-                        target.style.transform = 'scale(1.05)';
-                        target.style.transition = 'all 0.3s ease';
-                        target.style.outline = '4px solid rgba(102, 126, 234, 1)';
-                        target.style.outlineOffset = '8px';
-                        target.style.borderRadius = '12px';
-                        target.style.boxShadow = '0 0 40px rgba(102, 126, 234, 0.8), 0 0 80px rgba(118, 75, 162, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)';
-                        target.style.background = target.style.background || 'rgba(102, 126, 234, 0.1)';
-                        
-                        // Add pulsing animation
-                        target.style.animation = 'tutorialHighlight 2s ease-in-out infinite';
-                        
-                        // Scroll target into view first
+                        // Scroll target into view first, then apply highlighting
                         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         
+                        // Wait for scroll to complete, then apply effects and calculate positions
                         setTimeout(() => {
-                            const rect = target.getBoundingClientRect();
-                            const padding = 15;
+                            // Apply highlighting effects without transforms that affect positioning
+                            target.style.position = 'relative';
+                            target.style.zIndex = '10003';
+                            target.style.filter = 'brightness(1.4) contrast(1.2) drop-shadow(0 0 30px rgba(102, 126, 234, 1)) drop-shadow(0 0 50px rgba(118, 75, 162, 0.8))';
+                            target.style.transition = 'all 0.3s ease';
+                            target.style.outline = '4px solid rgba(102, 126, 234, 1)';
+                            target.style.outlineOffset = '8px';
+                            target.style.borderRadius = '12px';
+                            target.style.boxShadow = '0 0 40px rgba(102, 126, 234, 0.8), 0 0 80px rgba(118, 75, 162, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)';
+                            target.style.background = target.style.background || 'rgba(102, 126, 234, 0.1)';
+                            target.style.animation = 'tutorialHighlight 2s ease-in-out infinite';
+                            
+                            // Calculate positions AFTER effects are applied
+                            setTimeout(() => {
+                                const rect = target.getBoundingClientRect();
+                                const padding = 15;
                             
                             // Position and show the spotlight border around target
                             tutorialSpotlightCutout.style.top = `${rect.top - padding}px`;
@@ -2992,27 +2992,24 @@
                                 }
                             }
                             
-                            // Final safety check with proper margins
-                            tooltipTop = Math.max(margin, Math.min(tooltipTop, viewportHeight - tooltipHeight - margin));
-                            tooltipLeft = Math.max(margin, Math.min(tooltipLeft, viewportWidth - tooltipWidth - margin));
-                            
-                            tutorialTooltip.style.top = `${tooltipTop}px`;
-                            tutorialTooltip.style.left = `${tooltipLeft}px`;
-                            tutorialTooltip.style.transform = 'none';
-                        }, 100);
+                                // Final safety check with proper margins
+                                tooltipTop = Math.max(margin, Math.min(tooltipTop, viewportHeight - tooltipHeight - margin));
+                                tooltipLeft = Math.max(margin, Math.min(tooltipLeft, viewportWidth - tooltipWidth - margin));
+                                
+                                tutorialTooltip.style.top = `${tooltipTop}px`;
+                                tutorialTooltip.style.left = `${tooltipLeft}px`;
+                                tutorialTooltip.style.transform = 'none';
+                                tutorialTooltip.style.display = 'block';
+                            }, 100); // Additional wait for effects to settle
+                        }, 300); // Wait for smooth scroll to complete
                     }
                 } else {
-                    // Reset any highlighted elements for center steps
-                    resetHighlightedElements();
-                    
-                    // Hide spotlight for center steps
+                    // Center tutorial (no target)
                     tutorialSpotlight.style.display = 'none';
-                    tutorialSpotlightCutout.classList.remove('pulse');
-                    
-                    // Center positioning for welcome/completion steps
                     tutorialTooltip.style.top = '50%';
                     tutorialTooltip.style.left = '50%';
                     tutorialTooltip.style.transform = 'translate(-50%, -50%)';
+                    tutorialTooltip.style.display = 'block';
                 }
             }
 
