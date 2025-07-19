@@ -1875,7 +1875,6 @@
             z-index: 10000;
             display: none;
             transition: all 0.3s ease;
-            pointer-events: none;
         }
 
         .tutorial-overlay.active {
@@ -2779,6 +2778,17 @@
             function hideTutorial() {
                 tutorialOverlay.classList.remove('active');
                 tutorialStartBtn.classList.remove('hidden');
+                
+                // Reset any highlighted elements
+                document.querySelectorAll('[style*="z-index: 10003"]').forEach(el => {
+                    el.style.position = '';
+                    el.style.zIndex = '';
+                    el.style.filter = '';
+                });
+                
+                // Hide spotlight
+                tutorialSpotlight.style.display = 'none';
+                tutorialSpotlightCutout.classList.remove('pulse');
             }
 
             function updateTutorialStep() {
