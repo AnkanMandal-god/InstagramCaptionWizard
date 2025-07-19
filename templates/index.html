@@ -2794,19 +2794,7 @@
                 tutorialStartBtn.classList.remove('hidden');
                 
                 // Reset any highlighted elements
-                document.querySelectorAll('[style*="z-index: 10003"]').forEach(el => {
-                    el.style.position = '';
-                    el.style.zIndex = '';
-                    el.style.filter = '';
-                    el.style.transform = '';
-                    el.style.transition = '';
-                    el.style.outline = '';
-                    el.style.outlineOffset = '';
-                    el.style.borderRadius = '';
-                    el.style.boxShadow = '';
-                    el.style.background = '';
-                    el.style.animation = '';
-                });
+                resetHighlightedElements();
                 
                 // Hide spotlight
                 tutorialSpotlight.style.display = 'none';
@@ -2843,6 +2831,9 @@
             }
 
             function positionTutorialElements(step) {
+                // First, reset ALL previously highlighted elements
+                resetHighlightedElements();
+                
                 if (step.target && step.position !== 'center') {
                     const target = document.querySelector(step.target);
                     if (target) {
@@ -2926,20 +2917,8 @@
                         }, 100);
                     }
                 } else {
-                    // Reset any highlighted elements
-                    document.querySelectorAll('[style*="z-index: 10003"]').forEach(el => {
-                        el.style.position = '';
-                        el.style.zIndex = '';
-                        el.style.filter = '';
-                        el.style.transform = '';
-                        el.style.transition = '';
-                        el.style.outline = '';
-                        el.style.outlineOffset = '';
-                        el.style.borderRadius = '';
-                        el.style.boxShadow = '';
-                        el.style.background = '';
-                        el.style.animation = '';
-                    });
+                    // Reset any highlighted elements for center steps
+                    resetHighlightedElements();
                     
                     // Hide spotlight for center steps
                     tutorialSpotlight.style.display = 'none';
@@ -2950,6 +2929,41 @@
                     tutorialTooltip.style.left = '50%';
                     tutorialTooltip.style.transform = 'translate(-50%, -50%)';
                 }
+            }
+
+            function resetHighlightedElements() {
+                // Reset any previously highlighted elements
+                document.querySelectorAll('[style*="z-index: 10003"]').forEach(el => {
+                    el.style.position = '';
+                    el.style.zIndex = '';
+                    el.style.filter = '';
+                    el.style.transform = '';
+                    el.style.transition = '';
+                    el.style.outline = '';
+                    el.style.outlineOffset = '';
+                    el.style.borderRadius = '';
+                    el.style.boxShadow = '';
+                    el.style.background = '';
+                    el.style.animation = '';
+                });
+                
+                // Also reset by common selectors to ensure cleanup
+                ['#topic', '.tone-grid', '#generateBtn', '.features-section'].forEach(selector => {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        element.style.position = '';
+                        element.style.zIndex = '';
+                        element.style.filter = '';
+                        element.style.transform = '';
+                        element.style.transition = '';
+                        element.style.outline = '';
+                        element.style.outlineOffset = '';
+                        element.style.borderRadius = '';
+                        element.style.boxShadow = '';
+                        element.style.background = '';
+                        element.style.animation = '';
+                    }
+                });
             }
 
             // Event listeners
