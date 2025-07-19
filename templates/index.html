@@ -1875,7 +1875,6 @@
             z-index: 10000;
             display: none;
             transition: all 0.3s ease;
-            pointer-events: none;
         }
 
         .tutorial-overlay.active {
@@ -1887,29 +1886,34 @@
 
         .tutorial-spotlight {
             position: absolute;
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.85), 
-                        0 0 20px rgba(102, 126, 234, 0.5);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: none;
             pointer-events: none;
-            z-index: 9998;
+            z-index: 10001;
         }
 
-        .tutorial-spotlight.pulse {
+        .tutorial-spotlight-cutout {
+            position: absolute;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+            background: transparent;
+            transition: all 0.4s ease;
+        }
+
+        .tutorial-spotlight-cutout.pulse {
             animation: spotlightPulse 2s infinite;
         }
 
         @keyframes spotlightPulse {
             0%, 100% {
                 border-color: #667eea;
-                box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.85), 
-                           0 0 20px rgba(102, 126, 234, 0.5);
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+                transform: scale(1);
             }
             50% {
                 border-color: #764ba2;
-                box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.85), 
-                           0 0 30px rgba(118, 75, 162, 0.7);
+                box-shadow: 0 0 40px rgba(118, 75, 162, 1);
+                transform: scale(1.02);
             }
         }
 
@@ -2085,7 +2089,9 @@
 <body>
     <!-- Tutorial Overlay -->
     <div class="tutorial-overlay" id="tutorialOverlay">
-        <div class="tutorial-spotlight" id="tutorialSpotlight"></div>
+        <div class="tutorial-spotlight" id="tutorialSpotlight">
+            <div class="tutorial-spotlight-cutout" id="tutorialSpotlightCutout"></div>
+        </div>
         <div class="tutorial-tooltip" id="tutorialTooltip">
             <h4 id="tutorialTitle">Welcome to Caption Generator!</h4>
             <p id="tutorialDescription">Let's take a quick tour to help you create amazing Instagram captions.</p>
@@ -2708,6 +2714,7 @@
             // Tutorial System
             const tutorialOverlay = document.getElementById('tutorialOverlay');
             const tutorialSpotlight = document.getElementById('tutorialSpotlight');
+            const tutorialSpotlightCutout = document.getElementById('tutorialSpotlightCutout');
             const tutorialTooltip = document.getElementById('tutorialTooltip');
             const tutorialTitle = document.getElementById('tutorialTitle');
             const tutorialDescription = document.getElementById('tutorialDescription');
@@ -2806,10 +2813,6 @@
                 if (step.target && step.position !== 'center') {
                     const target = document.querySelector(step.target);
                     if (target) {
-                        // Make target element visible above overlay
-                        target.style.position = 'relative';
-                        target.style.zIndex = '10002';
-                        
                         // Scroll target into view first
                         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         
@@ -2817,12 +2820,33 @@
                             const rect = target.getBoundingClientRect();
                             const padding = 20;
                             
-                            // Position spotlight around target
-                            tutorialSpotlight.style.top = `${rect.top - padding}px`;
-                            tutorialSpotlight.style.left = `${rect.left - padding}px`;
-                            tutorialSpotlight.style.width = `${rect.width + (padding * 2)}px`;
-                            tutorialSpotlight.style.height = `${rect.height + (padding * 2)}px`;
-                            tutorialSpotlight.classList.add('pulse');
+                            // Create overlay cutout effect using CSS clip-path
+                            const cutoutX = rect.left - padding;
+                            const cutoutY = rect.top - padding;
+                            const cutoutWidth = rect.width + (padding * 2);
+                            const cutoutHeight = rect.height + (padding * 2);
+                            
+                            // Use clip-path to cut out the highlighted area from overlay
+                            tutorialOverlay.style.clipPath = `polygon(
+                                0 0, 
+                                0 100%, 
+                                ${cutoutX}px 100%, 
+                                ${cutoutX}px ${cutoutY}px, 
+                                ${cutoutX + cutoutWidth}px ${cutoutY}px, 
+                                ${cutoutX + cutoutWidth}px ${cutoutY + cutoutHeight}px, 
+                                ${cutoutX}px ${cutoutY + cutoutHeight}px, 
+                                ${cutoutX}px 100%, 
+                                100% 100%, 
+                                100% 0
+                            )`;
+                            
+                            // Position and show the spotlight border
+                            tutorialSpotlightCutout.style.top = `${cutoutY}px`;
+                            tutorialSpotlightCutout.style.left = `${cutoutX}px`;
+                            tutorialSpotlightCutout.style.width = `${cutoutWidth}px`;
+                            tutorialSpotlightCutout.style.height = `${cutoutHeight}px`;
+                            tutorialSpotlightCutout.classList.add('pulse');
+                            tutorialSpotlight.style.display = 'block';
                             
                             // Position tooltip
                             let tooltipTop, tooltipLeft;
@@ -2847,14 +2871,12 @@
                         }, 100);
                     }
                 } else {
-                    // Reset any highlighted elements
-                    document.querySelectorAll('[style*="z-index: 10002"]').forEach(el => {
-                        el.style.position = '';
-                        el.style.zIndex = '';
-                    });
+                    // Remove clip-path and hide spotlight for center steps
+                    tutorialOverlay.style.clipPath = 'none';
+                    tutorialSpotlight.style.display = 'none';
+                    tutorialSpotlightCutout.classList.remove('pulse');
                     
                     // Center positioning for welcome/completion steps
-                    tutorialSpotlight.classList.remove('pulse');
                     tutorialTooltip.style.top = '50%';
                     tutorialTooltip.style.left = '50%';
                     tutorialTooltip.style.transform = 'translate(-50%, -50%)';
