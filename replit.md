@@ -36,11 +36,12 @@ Preferred communication style: Simple, everyday language.
 - **Flask App**: Core web application with secret key management
 - **OpenAI Integration**: Conditional initialization based on API key availability
 - **Logging**: Debug-level logging for troubleshooting
-- **Caption Generation**: Function to create 3 Instagram captions per request
+- **Caption Generation**: Function to create 3 Instagram captions per request with tone blending
+- **Tone Blending**: Multiple selected tones are seamlessly combined into unified captions
 - **Tone Variety**: Supports 27 different tone options for diverse caption styles
 - **Tone Memory**: LocalStorage-based system to remember previously used tones
 - **Quota Handling**: User-friendly quota exceeded detection with demo mode fallback
-- **Mock Generation**: Enhanced multi-tone mock caption system with tone-specific content
+- **Mock Generation**: Enhanced tone-blending mock caption system with combined tone content
 
 ### Template System
 - **Professional UI**: Custom generator card with centered header, minimalist form design, and gradient buttons
@@ -53,12 +54,13 @@ Preferred communication style: Simple, everyday language.
 
 ## Data Flow
 
-1. **User Input**: User provides topic and tone through web form
+1. **User Input**: User provides topic and selects multiple tones through web form
 2. **Request Processing**: Flask handles POST request and extracts form data
-3. **API Call**: Application calls OpenAI API with structured prompt
-4. **Response Generation**: GPT-4o generates 3 numbered captions with emojis
-5. **Result Display**: Generated captions are displayed to user with success message
-6. **Error Handling**: Graceful quota handling with demo mode option
+3. **Tone Blending**: System combines multiple selected tones into unified prompts
+4. **API Call**: Application calls OpenAI API with tone-blending structured prompt
+5. **Response Generation**: GPT-4o generates 3 captions that blend all selected tones
+6. **Result Display**: Generated blended captions are displayed to user with success message
+7. **Error Handling**: Graceful quota handling with demo mode option
 
 ## User Experience Features
 
@@ -69,11 +71,12 @@ Preferred communication style: Simple, everyday language.
 - **Helpful Tips**: Clear guidance on resolving quota issues
 - **Seamless Transition**: Preserves user's topic and tone selections
 
-### Enhanced Mock System
-- **Multi-Tone Support**: Handles complex tone combinations like "funny, romantic, adventurous"
-- **Tone-Specific Content**: Specialized captions for different tone categories
-- **Instagram-Ready Format**: Includes relevant hashtags and emojis
-- **Professional Quality**: High-quality demo content that matches real AI output
+### Enhanced Tone Blending System
+- **Multi-Tone Fusion**: Seamlessly blends multiple tones into unified captions (e.g., "funny + romantic")
+- **Intelligent Combinations**: Smart handling of tone pairs like "adventurous + chill" or "professional + funny"
+- **Unified Caption Generation**: Each caption reflects ALL selected tones simultaneously
+- **Instagram-Ready Format**: Includes relevant hashtags and emojis that capture the blended mood
+- **Professional Quality**: High-quality content that authentically combines multiple emotional tones
 
 ## External Dependencies
 
