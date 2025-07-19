@@ -1921,13 +1921,13 @@
             position: fixed;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1.2rem 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-            max-width: 300px;
-            min-width: 280px;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            padding: 1rem 1.3rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 280px;
+            min-width: 260px;
+            font-size: 0.85rem;
+            line-height: 1.4;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -2739,13 +2739,13 @@
                     title: "Enter Your Topic",
                     description: "Start by describing what your post is about. Be specific for better results - like 'sunset beach walk' or 'homemade pasta dinner'.",
                     target: "#topic",
-                    position: "bottom"
+                    position: "right"
                 },
                 {
                     title: "Choose Your Tone",
                     description: "Select multiple tones to create unique captions that blend different styles. Try combinations like 'funny + romantic' or 'professional + inspirational'.",
                     target: ".tone-selector",
-                    position: "top"
+                    position: "right"
                 },
                 {
                     title: "Generate Captions",
@@ -2850,16 +2850,18 @@
                             const viewportHeight = window.innerHeight;
                             
                             if (step.position === 'bottom') {
-                                tooltipTop = rect.bottom + padding + 25;
-                                tooltipLeft = Math.max(15, Math.min(rect.left + (rect.width / 2) - 150, viewportWidth - 315));
+                                tooltipTop = Math.min(rect.bottom + padding + 20, viewportHeight - 180);
+                                tooltipLeft = Math.max(20, Math.min(rect.left + (rect.width / 2) - 140, viewportWidth - 300));
                             } else if (step.position === 'top') {
-                                tooltipTop = rect.top - padding - 150;
-                                tooltipLeft = Math.max(15, Math.min(rect.left + (rect.width / 2) - 150, viewportWidth - 315));
+                                tooltipTop = Math.max(20, rect.top - padding - 160);
+                                tooltipLeft = Math.max(20, Math.min(rect.left + (rect.width / 2) - 140, viewportWidth - 300));
+                            } else if (step.position === 'right') {
+                                tooltipTop = Math.max(20, Math.min(rect.top + (rect.height / 2) - 80, viewportHeight - 180));
+                                tooltipLeft = Math.min(rect.right + padding + 20, viewportWidth - 300);
+                            } else if (step.position === 'left') {
+                                tooltipTop = Math.max(20, Math.min(rect.top + (rect.height / 2) - 80, viewportHeight - 180));
+                                tooltipLeft = Math.max(20, rect.left - padding - 300);
                             }
-                            
-                            // Ensure tooltip stays within viewport
-                            if (tooltipTop < 15) tooltipTop = 15;
-                            if (tooltipTop > viewportHeight - 170) tooltipTop = viewportHeight - 170;
                             
                             tutorialTooltip.style.top = `${tooltipTop}px`;
                             tutorialTooltip.style.left = `${tooltipLeft}px`;
