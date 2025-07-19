@@ -2405,7 +2405,7 @@
                 </div>
 
                 <!-- Features Section -->
-                <div class="features-section">
+                <div id="features-container" class="features-section">
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-palette"></i>
@@ -2770,8 +2770,8 @@
                 {
                     title: "Explore Features", 
                     description: "Discover our key features: multi-tone blending, AI power, unlimited possibilities, and custom API key support for extended use.",
-                    target: ".features-section",
-                    position: "left"
+                    target: "#features-container",
+                    position: "top"
                 },
                 {
                     title: "You're Ready!",
@@ -2847,7 +2847,7 @@
                 });
                 
                 // Also reset by common selectors to ensure cleanup
-                ['#topic', '.tone-grid', '#generateBtn', '.features-section'].forEach(selector => {
+                ['#topic', '.tone-grid', '#generateBtn', '.features-section', '#features-container'].forEach(selector => {
                     const element = document.querySelector(selector);
                     if (element) {
                         element.style.position = '';
