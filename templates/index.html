@@ -2751,13 +2751,13 @@
                     title: "Generate Captions",
                     description: "Click this button to generate 3 unique captions that blend all your selected tones together. Each caption will capture your chosen mood perfectly.",
                     target: "#generateBtn",
-                    position: "top"
+                    position: "left"
                 },
                 {
-                    title: "Explore Features",
+                    title: "Explore Features", 
                     description: "Discover our key features: multi-tone blending, AI power, unlimited possibilities, and custom API key support for extended use.",
                     target: ".features-section",
-                    position: "top"
+                    position: "left"
                 },
                 {
                     title: "You're Ready!",
@@ -2858,9 +2858,17 @@
                             } else if (step.position === 'right') {
                                 tooltipTop = Math.max(20, Math.min(rect.top + (rect.height / 2) - 80, viewportHeight - 180));
                                 tooltipLeft = Math.min(rect.right + padding + 20, viewportWidth - 300);
+                                // If there's not enough space on the right, position to the left instead
+                                if (tooltipLeft > viewportWidth - 320) {
+                                    tooltipLeft = Math.max(20, rect.left - padding - 300);
+                                }
                             } else if (step.position === 'left') {
                                 tooltipTop = Math.max(20, Math.min(rect.top + (rect.height / 2) - 80, viewportHeight - 180));
                                 tooltipLeft = Math.max(20, rect.left - padding - 300);
+                                // If there's not enough space on the left, position to the right instead
+                                if (tooltipLeft < 30) {
+                                    tooltipLeft = Math.min(rect.right + padding + 20, viewportWidth - 300);
+                                }
                             }
                             
                             tutorialTooltip.style.top = `${tooltipTop}px`;
