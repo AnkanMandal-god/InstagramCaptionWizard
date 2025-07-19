@@ -2798,8 +2798,20 @@
                 currentStep = 0;
                 tutorialOverlay.classList.add('active');
                 tutorialStartBtn.classList.add('hidden');
-                // Show spotlight for centered steps
+                
+                // Initialize tooltip at center immediately
                 tutorialSpotlight.style.display = 'block';
+                tutorialSpotlight.style.top = '50%';
+                tutorialSpotlight.style.left = '50%';
+                tutorialSpotlight.style.width = '400px';
+                tutorialSpotlight.style.height = '200px';
+                tutorialSpotlight.style.transform = 'translate(-50%, -50%)';
+                tutorialSpotlight.classList.remove('pulse');
+                
+                tutorialTooltip.style.top = '50%';
+                tutorialTooltip.style.left = '50%';
+                tutorialTooltip.style.transform = 'translate(-50%, -50%)';
+                
                 updateTutorialStep();
             }
 
@@ -2838,9 +2850,7 @@
             }
 
             function positionTutorialElements(step) {
-                // Clear previous positioning
-                tutorialSpotlight.style.transform = '';
-                tutorialTooltip.style.transform = '';
+                // Clear previous class states
                 tutorialTooltip.className = 'tutorial-tooltip';
                 
                 if (step.target && step.position !== 'center') {
@@ -2852,6 +2862,10 @@
                         setTimeout(() => {
                             const rect = target.getBoundingClientRect();
                             const padding = 20;
+                            
+                            // Clear transform for absolute positioning
+                            tutorialSpotlight.style.transform = '';
+                            tutorialTooltip.style.transform = '';
                             
                             // Position spotlight around target
                             tutorialSpotlight.style.top = `${rect.top - padding}px`;
@@ -2884,18 +2898,15 @@
                         }, 100);
                     }
                 } else {
-                    // Center positioning for welcome/completion steps
-                    tutorialSpotlight.style.display = 'block';
-                    tutorialSpotlight.style.top = '50%';
-                    tutorialSpotlight.style.left = '50%';
-                    tutorialSpotlight.style.width = '400px';
-                    tutorialSpotlight.style.height = '200px';
-                    tutorialSpotlight.style.transform = 'translate(-50%, -50%)';
+                    // Center positioning for welcome/completion steps - only update content, keep position
                     tutorialSpotlight.classList.remove('pulse');
                     
-                    tutorialTooltip.style.top = '50%';
-                    tutorialTooltip.style.left = '50%';
-                    tutorialTooltip.style.transform = 'translate(-50%, -50%)';
+                    // Only set center positioning if not already set
+                    if (tutorialTooltip.style.transform !== 'translate(-50%, -50%)') {
+                        tutorialTooltip.style.top = '50%';
+                        tutorialTooltip.style.left = '50%';
+                        tutorialTooltip.style.transform = 'translate(-50%, -50%)';
+                    }
                 }
             }
 
