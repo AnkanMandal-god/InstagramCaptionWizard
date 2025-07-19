@@ -1924,13 +1924,13 @@
             position: fixed;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem 1.3rem;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            max-width: 280px;
-            min-width: 260px;
-            font-size: 0.85rem;
-            line-height: 1.4;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            max-width: 240px;
+            min-width: 220px;
+            font-size: 0.8rem;
+            line-height: 1.3;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -2862,37 +2862,44 @@
                             const viewportWidth = window.innerWidth;
                             const viewportHeight = window.innerHeight;
                             
+                            const tooltipWidth = 240;
+                            const tooltipHeight = 140;
+                            
                             if (step.position === 'bottom') {
-                                tooltipTop = Math.min(rect.bottom + padding + 20, viewportHeight - 180);
-                                tooltipLeft = Math.max(20, Math.min(rect.left + (rect.width / 2) - 140, viewportWidth - 300));
+                                tooltipTop = Math.min(rect.bottom + padding + 15, viewportHeight - tooltipHeight - 10);
+                                tooltipLeft = Math.max(10, Math.min(rect.left + (rect.width / 2) - 120, viewportWidth - tooltipWidth - 10));
                             } else if (step.position === 'top') {
-                                tooltipTop = Math.max(20, rect.top - padding - 160);
-                                tooltipLeft = Math.max(20, Math.min(rect.left + (rect.width / 2) - 140, viewportWidth - 300));
+                                tooltipTop = Math.max(10, rect.top - padding - tooltipHeight);
+                                tooltipLeft = Math.max(10, Math.min(rect.left + (rect.width / 2) - 120, viewportWidth - tooltipWidth - 10));
                             } else if (step.position === 'right') {
-                                tooltipTop = Math.max(20, Math.min(rect.top + (rect.height / 2) - 80, viewportHeight - 180));
-                                tooltipLeft = rect.right + padding + 20;
-                                // If there's not enough space on the right, position to the left instead
-                                if (tooltipLeft + 280 > viewportWidth) {
-                                    tooltipLeft = Math.max(20, rect.left - padding - 280);
-                                    // If still not enough space on left, position above/below centered
-                                    if (tooltipLeft < 20) {
-                                        tooltipLeft = Math.max(20, Math.min(rect.left + (rect.width / 2) - 140, viewportWidth - 280));
-                                        tooltipTop = rect.top > 200 ? rect.top - padding - 160 : rect.bottom + padding + 20;
+                                tooltipTop = Math.max(10, Math.min(rect.top + (rect.height / 2) - 70, viewportHeight - tooltipHeight - 10));
+                                tooltipLeft = rect.right + padding + 15;
+                                // If no space on right, try left
+                                if (tooltipLeft + tooltipWidth > viewportWidth - 10) {
+                                    tooltipLeft = rect.left - padding - tooltipWidth;
+                                    // If no space on left either, position above/below
+                                    if (tooltipLeft < 10) {
+                                        tooltipLeft = Math.max(10, Math.min(rect.left + (rect.width / 2) - 120, viewportWidth - tooltipWidth - 10));
+                                        tooltipTop = rect.top > tooltipHeight + 20 ? rect.top - padding - tooltipHeight : rect.bottom + padding + 15;
                                     }
                                 }
                             } else if (step.position === 'left') {
-                                tooltipTop = Math.max(20, Math.min(rect.top + (rect.height / 2) - 80, viewportHeight - 180));
-                                tooltipLeft = rect.left - padding - 280;
-                                // If there's not enough space on the left, position to the right instead
-                                if (tooltipLeft < 20) {
-                                    tooltipLeft = rect.right + padding + 20;
-                                    // If still not enough space on right, position above/below centered
-                                    if (tooltipLeft + 280 > viewportWidth) {
-                                        tooltipLeft = Math.max(20, Math.min(rect.left + (rect.width / 2) - 140, viewportWidth - 280));
-                                        tooltipTop = rect.top > 200 ? rect.top - padding - 160 : rect.bottom + padding + 20;
+                                tooltipTop = Math.max(10, Math.min(rect.top + (rect.height / 2) - 70, viewportHeight - tooltipHeight - 10));
+                                tooltipLeft = rect.left - padding - tooltipWidth;
+                                // If no space on left, try right
+                                if (tooltipLeft < 10) {
+                                    tooltipLeft = rect.right + padding + 15;
+                                    // If no space on right either, position above/below
+                                    if (tooltipLeft + tooltipWidth > viewportWidth - 10) {
+                                        tooltipLeft = Math.max(10, Math.min(rect.left + (rect.width / 2) - 120, viewportWidth - tooltipWidth - 10));
+                                        tooltipTop = rect.top > tooltipHeight + 20 ? rect.top - padding - tooltipHeight : rect.bottom + padding + 15;
                                     }
                                 }
                             }
+                            
+                            // Final safety check to ensure tooltip stays within viewport
+                            tooltipTop = Math.max(10, Math.min(tooltipTop, viewportHeight - tooltipHeight - 10));
+                            tooltipLeft = Math.max(10, Math.min(tooltipLeft, viewportWidth - tooltipWidth - 10));
                             
                             tutorialTooltip.style.top = `${tooltipTop}px`;
                             tutorialTooltip.style.left = `${tooltipLeft}px`;
