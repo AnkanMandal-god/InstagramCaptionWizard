@@ -2908,100 +2908,97 @@
                 if (step.target && step.position !== 'center') {
                     const target = document.querySelector(step.target);
                     if (target) {
-                        // Scroll target into view first, then apply highlighting
-                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Use instant scroll to avoid timing issues
+                        target.scrollIntoView({ behavior: 'instant', block: 'center' });
                         
-                        // Wait for scroll to complete, then apply effects and calculate positions
-                        setTimeout(() => {
-                            // Apply highlighting effects without transforms that affect positioning
-                            target.style.position = 'relative';
-                            target.style.zIndex = '10003';
-                            target.style.filter = 'brightness(1.4) contrast(1.2) drop-shadow(0 0 30px rgba(102, 126, 234, 1)) drop-shadow(0 0 50px rgba(118, 75, 162, 0.8))';
-                            target.style.transition = 'all 0.3s ease';
-                            target.style.outline = '4px solid rgba(102, 126, 234, 1)';
-                            target.style.outlineOffset = '8px';
-                            target.style.borderRadius = '12px';
-                            target.style.boxShadow = '0 0 40px rgba(102, 126, 234, 0.8), 0 0 80px rgba(118, 75, 162, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)';
-                            target.style.background = target.style.background || 'rgba(102, 126, 234, 0.1)';
-                            target.style.animation = 'tutorialHighlight 2s ease-in-out infinite';
+                        // Calculate base position BEFORE applying any effects
+                        const baseRect = target.getBoundingClientRect();
+                        const padding = 20; // Account for outline offset
+                        
+                        // Position spotlight immediately based on unmodified element
+                        tutorialSpotlightCutout.style.top = `${baseRect.top - padding}px`;
+                        tutorialSpotlightCutout.style.left = `${baseRect.left - padding}px`;
+                        tutorialSpotlightCutout.style.width = `${baseRect.width + (padding * 2)}px`;
+                        tutorialSpotlightCutout.style.height = `${baseRect.height + (padding * 2)}px`;
+                        tutorialSpotlightCutout.classList.add('pulse');
+                        tutorialSpotlight.style.display = 'block';
+                        
+                        // Apply visual effects AFTER positioning
+                        target.style.position = 'relative';
+                        target.style.zIndex = '10003';
+                        target.style.filter = 'brightness(1.4) contrast(1.2) drop-shadow(0 0 20px rgba(102, 126, 234, 0.8))';
+                        target.style.transition = 'all 0.3s ease';
+                        target.style.outline = '3px solid rgba(102, 126, 234, 1)';
+                        target.style.outlineOffset = '6px';
+                        target.style.borderRadius = '8px';
+                        target.style.boxShadow = '0 0 30px rgba(102, 126, 234, 0.6), 0 0 60px rgba(118, 75, 162, 0.4)';
+                        target.style.animation = 'tutorialHighlight 2s ease-in-out infinite';
+                        
+                        // Position tooltip using the original base rect
+                        const rect = baseRect;
+                        
+                        // Position tooltip with correct dimensions
+                        let tooltipTop, tooltipLeft;
+                        const viewportWidth = window.innerWidth;
+                        const viewportHeight = window.innerHeight;
+                        
+                        // Get actual tooltip dimensions
+                        const tooltipRect = tutorialTooltip.getBoundingClientRect();
+                        const tooltipWidth = Math.max(320, tooltipRect.width || 320);
+                        const tooltipHeight = Math.max(200, tooltipRect.height || 200);
                             
-                            // Calculate positions AFTER effects are applied
-                            setTimeout(() => {
-                                const rect = target.getBoundingClientRect();
-                                const padding = 15;
-                            
-                            // Position and show the spotlight border around target
-                            tutorialSpotlightCutout.style.top = `${rect.top - padding}px`;
-                            tutorialSpotlightCutout.style.left = `${rect.left - padding}px`;
-                            tutorialSpotlightCutout.style.width = `${rect.width + (padding * 2)}px`;
-                            tutorialSpotlightCutout.style.height = `${rect.height + (padding * 2)}px`;
-                            tutorialSpotlightCutout.classList.add('pulse');
-                            tutorialSpotlight.style.display = 'block';
-                            
-                            // Position tooltip with correct dimensions
-                            let tooltipTop, tooltipLeft;
-                            const viewportWidth = window.innerWidth;
-                            const viewportHeight = window.innerHeight;
-                            
-                            // Get actual tooltip dimensions
-                            const tooltipRect = tutorialTooltip.getBoundingClientRect();
-                            const tooltipWidth = Math.max(320, tooltipRect.width || 320);
-                            const tooltipHeight = Math.max(200, tooltipRect.height || 200);
-                            
-                            const halfTooltipWidth = tooltipWidth / 2;
-                            const halfTooltipHeight = tooltipHeight / 2;
-                            const margin = 20; // Safe margin from viewport edges
-                            
-                            if (step.position === 'bottom') {
-                                tooltipTop = rect.bottom + padding + 15;
-                                tooltipLeft = rect.left + (rect.width / 2) - halfTooltipWidth;
-                                // Check if tooltip goes off bottom
-                                if (tooltipTop + tooltipHeight > viewportHeight - margin) {
-                                    tooltipTop = rect.top - padding - tooltipHeight;
-                                }
-                            } else if (step.position === 'top') {
+                        const halfTooltipWidth = tooltipWidth / 2;
+                        const halfTooltipHeight = tooltipHeight / 2;
+                        const margin = 20; // Safe margin from viewport edges
+                        
+                        if (step.position === 'bottom') {
+                            tooltipTop = rect.bottom + padding + 15;
+                            tooltipLeft = rect.left + (rect.width / 2) - halfTooltipWidth;
+                            // Check if tooltip goes off bottom
+                            if (tooltipTop + tooltipHeight > viewportHeight - margin) {
                                 tooltipTop = rect.top - padding - tooltipHeight;
-                                tooltipLeft = rect.left + (rect.width / 2) - halfTooltipWidth;
-                                // Check if tooltip goes off top
-                                if (tooltipTop < margin) {
-                                    tooltipTop = rect.bottom + padding + 15;
-                                }
-                            } else if (step.position === 'right') {
-                                tooltipTop = rect.top + (rect.height / 2) - halfTooltipHeight;
-                                tooltipLeft = rect.right + padding + 15;
-                                // Check if tooltip goes off right edge
-                                if (tooltipLeft + tooltipWidth > viewportWidth - margin) {
-                                    tooltipLeft = rect.left - padding - tooltipWidth;
-                                    // If still off screen, position above/below
-                                    if (tooltipLeft < margin) {
-                                        tooltipLeft = rect.left + (rect.width / 2) - halfTooltipWidth;
-                                        tooltipTop = rect.top > tooltipHeight + margin ? rect.top - padding - tooltipHeight : rect.bottom + padding + 15;
-                                    }
-                                }
-                            } else if (step.position === 'left') {
-                                tooltipTop = rect.top + (rect.height / 2) - halfTooltipHeight;
+                            }
+                        } else if (step.position === 'top') {
+                            tooltipTop = rect.top - padding - tooltipHeight;
+                            tooltipLeft = rect.left + (rect.width / 2) - halfTooltipWidth;
+                            // Check if tooltip goes off top
+                            if (tooltipTop < margin) {
+                                tooltipTop = rect.bottom + padding + 15;
+                            }
+                        } else if (step.position === 'right') {
+                            tooltipTop = rect.top + (rect.height / 2) - halfTooltipHeight;
+                            tooltipLeft = rect.right + padding + 15;
+                            // Check if tooltip goes off right edge
+                            if (tooltipLeft + tooltipWidth > viewportWidth - margin) {
                                 tooltipLeft = rect.left - padding - tooltipWidth;
-                                // Check if tooltip goes off left edge
+                                // If still off screen, position above/below
                                 if (tooltipLeft < margin) {
-                                    tooltipLeft = rect.right + padding + 15;
-                                    // If still off screen, position above/below
-                                    if (tooltipLeft + tooltipWidth > viewportWidth - margin) {
-                                        tooltipLeft = rect.left + (rect.width / 2) - halfTooltipWidth;
-                                        tooltipTop = rect.top > tooltipHeight + margin ? rect.top - padding - tooltipHeight : rect.bottom + padding + 15;
-                                    }
+                                    tooltipLeft = rect.left + (rect.width / 2) - halfTooltipWidth;
+                                    tooltipTop = rect.top > tooltipHeight + margin ? rect.top - padding - tooltipHeight : rect.bottom + padding + 15;
                                 }
                             }
-                            
-                                // Final safety check with proper margins
-                                tooltipTop = Math.max(margin, Math.min(tooltipTop, viewportHeight - tooltipHeight - margin));
-                                tooltipLeft = Math.max(margin, Math.min(tooltipLeft, viewportWidth - tooltipWidth - margin));
-                                
-                                tutorialTooltip.style.top = `${tooltipTop}px`;
-                                tutorialTooltip.style.left = `${tooltipLeft}px`;
-                                tutorialTooltip.style.transform = 'none';
-                                tutorialTooltip.style.display = 'block';
-                            }, 100); // Additional wait for effects to settle
-                        }, 300); // Wait for smooth scroll to complete
+                        } else if (step.position === 'left') {
+                            tooltipTop = rect.top + (rect.height / 2) - halfTooltipHeight;
+                            tooltipLeft = rect.left - padding - tooltipWidth;
+                            // Check if tooltip goes off left edge
+                            if (tooltipLeft < margin) {
+                                tooltipLeft = rect.right + padding + 15;
+                                // If still off screen, position above/below
+                                if (tooltipLeft + tooltipWidth > viewportWidth - margin) {
+                                    tooltipLeft = rect.left + (rect.width / 2) - halfTooltipWidth;
+                                    tooltipTop = rect.top > tooltipHeight + margin ? rect.top - padding - tooltipHeight : rect.bottom + padding + 15;
+                                }
+                            }
+                        }
+                        
+                        // Final safety check with proper margins
+                        tooltipTop = Math.max(margin, Math.min(tooltipTop, viewportHeight - tooltipHeight - margin));
+                        tooltipLeft = Math.max(margin, Math.min(tooltipLeft, viewportWidth - tooltipWidth - margin));
+                        
+                        tutorialTooltip.style.top = `${tooltipTop}px`;
+                        tutorialTooltip.style.left = `${tooltipLeft}px`;
+                        tutorialTooltip.style.transform = 'none';
+                        tutorialTooltip.style.display = 'block';
                     }
                 } else {
                     // Center tutorial (no target)
