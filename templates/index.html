@@ -1951,6 +1951,17 @@
             }
         }
 
+        @keyframes tutorialHighlight {
+            0%, 100% {
+                filter: brightness(1.4) contrast(1.2) drop-shadow(0 0 30px rgba(102, 126, 234, 1)) drop-shadow(0 0 50px rgba(118, 75, 162, 0.8));
+                transform: scale(1.05);
+            }
+            50% {
+                filter: brightness(1.6) contrast(1.3) drop-shadow(0 0 40px rgba(102, 126, 234, 1)) drop-shadow(0 0 70px rgba(118, 75, 162, 1));
+                transform: scale(1.08);
+            }
+        }
+
         .tutorial-tooltip h4 {
             margin: 0 0 0.8rem 0;
             font-size: 1.1rem;
@@ -2747,7 +2758,7 @@
                 {
                     title: "Choose Your Tone",
                     description: "Select multiple tones to create unique captions that blend different styles. Try combinations like 'funny + romantic' or 'professional + inspirational'.",
-                    target: ".tone-selector",
+                    target: ".tone-grid",
                     position: "right"
                 },
                 {
@@ -2792,6 +2803,9 @@
                     el.style.outline = '';
                     el.style.outlineOffset = '';
                     el.style.borderRadius = '';
+                    el.style.boxShadow = '';
+                    el.style.background = '';
+                    el.style.animation = '';
                 });
                 
                 // Hide spotlight
@@ -2835,12 +2849,17 @@
                         // Make target highly visible with enhanced highlighting
                         target.style.position = 'relative';
                         target.style.zIndex = '10003';
-                        target.style.filter = 'brightness(1.3) drop-shadow(0 0 25px rgba(102, 126, 234, 1))';
-                        target.style.transform = 'scale(1.02)';
+                        target.style.filter = 'brightness(1.4) contrast(1.2) drop-shadow(0 0 30px rgba(102, 126, 234, 1)) drop-shadow(0 0 50px rgba(118, 75, 162, 0.8))';
+                        target.style.transform = 'scale(1.05)';
                         target.style.transition = 'all 0.3s ease';
-                        target.style.outline = '3px solid rgba(102, 126, 234, 0.8)';
-                        target.style.outlineOffset = '5px';
-                        target.style.borderRadius = '8px';
+                        target.style.outline = '4px solid rgba(102, 126, 234, 1)';
+                        target.style.outlineOffset = '8px';
+                        target.style.borderRadius = '12px';
+                        target.style.boxShadow = '0 0 40px rgba(102, 126, 234, 0.8), 0 0 80px rgba(118, 75, 162, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)';
+                        target.style.background = target.style.background || 'rgba(102, 126, 234, 0.1)';
+                        
+                        // Add pulsing animation
+                        target.style.animation = 'tutorialHighlight 2s ease-in-out infinite';
                         
                         // Scroll target into view first
                         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2917,6 +2936,9 @@
                         el.style.outline = '';
                         el.style.outlineOffset = '';
                         el.style.borderRadius = '';
+                        el.style.boxShadow = '';
+                        el.style.background = '';
+                        el.style.animation = '';
                     });
                     
                     // Hide spotlight for center steps
