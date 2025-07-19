@@ -967,10 +967,10 @@
 
         .features-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
-            max-width: 1200px;
+            max-width: 1400px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -1025,6 +1025,11 @@
         .feature-card:nth-child(3) .feature-icon {
             background: linear-gradient(135deg, rgba(79, 172, 254, 0.15), rgba(0, 242, 254, 0.15));
             color: #6bb6ff;
+        }
+
+        .feature-card:nth-child(4) .feature-icon {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(34, 197, 94, 0.15));
+            color: #34d399;
         }
 
         .feature-title {
@@ -1490,7 +1495,7 @@
             
             .features-section {
                 max-width: 100%;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
                 gap: 1.8rem;
                 margin: 3rem 0;
                 padding: 0 1rem;
@@ -2163,6 +2168,14 @@
                         <h3 class="feature-title">Unlimited Possibilities</h3>
                         <p class="feature-description">Generate countless unique captions that capture your personality and boost engagement on every post.</p>
                         <div class="feature-highlight">Endless Creativity</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3 class="feature-title">Custom API Key</h3>
+                        <p class="feature-description">Use your own OpenAI API key for unlimited access. When quota limits are reached, easily input your personal key to continue generating captions seamlessly.</p>
+                        <div class="feature-highlight">Personal Access</div>
                     </div>
                 </div>
 

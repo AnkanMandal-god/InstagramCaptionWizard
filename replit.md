@@ -41,6 +41,7 @@ Preferred communication style: Simple, everyday language.
 - **Tone Variety**: Supports 27 different tone options for diverse caption styles
 - **Tone Memory**: LocalStorage-based system to remember previously used tones
 - **Quota Handling**: User-friendly quota exceeded detection with demo mode fallback
+- **Custom API Key Support**: Seamless personal OpenAI API key integration for unlimited access
 - **Mock Generation**: Enhanced tone-blending mock caption system with combined tone content
 
 ### Template System
@@ -48,7 +49,7 @@ Preferred communication style: Simple, everyday language.
 - **Form Handling**: POST method with loading animations and smooth transitions
 - **Flash Messages**: User feedback system with custom styling
 - **Interactive Elements**: Hover effects, copy-to-clipboard functionality, professional feature cards
-- **Statistics Display**: Centered feature cards with gradient icons and professional typography
+- **Features Display**: Four feature cards highlighting tone blending, AI power, unlimited possibilities, and custom API key support
 - **Loading States**: Spinner animations and smooth form submission feedback
 - **Section Separators**: Clean typography-based separators with gradient accent lines
 
@@ -67,6 +68,7 @@ Preferred communication style: Simple, everyday language.
 ### Quota Management
 - **Intelligent Detection**: Automatic detection of API quota exceeded errors
 - **User-Friendly Modal**: Beautiful modal interface explaining the situation
+- **Custom API Key Input**: Secure form for users to input their personal OpenAI API key
 - **Demo Mode Option**: One-click fallback to enhanced mock generation
 - **Helpful Tips**: Clear guidance on resolving quota issues
 - **Seamless Transition**: Preserves user's topic and tone selections
