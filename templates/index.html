@@ -1927,47 +1927,15 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             z-index: 10001;
             margin: 2rem;
+            position: relative;
         }
 
-        .tutorial-tooltip::before {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-style: solid;
+        .tutorial-tooltip::before, 
+        .tutorial-tooltip::after {
+            display: none !important;
         }
 
-        .tutorial-tooltip.top::before {
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 8px 8px 0 8px;
-            border-color: #667eea transparent transparent transparent;
-        }
 
-        .tutorial-tooltip.bottom::before {
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 0 8px 8px 8px;
-            border-color: transparent transparent #667eea transparent;
-        }
-
-        .tutorial-tooltip.left::before {
-            right: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-width: 8px 0 8px 8px;
-            border-color: transparent transparent transparent #667eea;
-        }
-
-        .tutorial-tooltip.right::before {
-            left: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-width: 8px 8px 8px 0;
-            border-color: transparent #667eea transparent transparent;
-        }
 
         @keyframes slideIn {
             from {
