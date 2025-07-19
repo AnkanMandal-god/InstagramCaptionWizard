@@ -1924,11 +1924,11 @@
             position: fixed;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem 1.2rem;
+            padding: 1.2rem 1.5rem;
             border-radius: 12px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            max-width: 280px;
-            min-width: 260px;
+            max-width: 320px;
+            min-width: 300px;
             font-size: 0.8rem;
             line-height: 1.3;
             backdrop-filter: blur(20px);
@@ -1987,13 +1987,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            flex-wrap: wrap;
         }
 
         .tutorial-nav-buttons {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            flex-shrink: 0;
         }
 
         .tutorial-progress {
@@ -2015,16 +2017,17 @@
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.4);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             white-space: nowrap;
-            min-width: 70px;
+            min-width: 65px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .tutorial-btn:hover {
@@ -2060,10 +2063,13 @@
         }
 
         .tutorial-step-counter {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
             white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 30px;
+            text-align: center;
         }
 
         .tutorial-start-btn {
@@ -2142,10 +2148,10 @@
                     <div class="tutorial-progress-bar" id="tutorialProgressBar"></div>
                 </div>
                 <div class="tutorial-buttons-row">
-                    <button class="tutorial-btn" id="tutorialSkip">Skip Tour</button>
+                    <button class="tutorial-btn" id="tutorialSkip">Skip</button>
                     <div class="tutorial-nav-buttons">
-                        <button class="tutorial-btn secondary" id="tutorialPrev" style="display: none;">Previous</button>
-                        <button class="tutorial-btn primary" id="tutorialNext">Start Tour</button>
+                        <button class="tutorial-btn secondary" id="tutorialPrev" style="display: none;">Prev</button>
+                        <button class="tutorial-btn primary" id="tutorialNext">Start</button>
                         <span class="tutorial-step-counter" id="tutorialCounter">1/6</span>
                     </div>
                 </div>
@@ -2847,9 +2853,9 @@
                 tutorialPrev.style.display = currentStep > 0 ? 'block' : 'none';
                 
                 if (currentStep === 0) {
-                    tutorialNext.textContent = 'Start Tour';
+                    tutorialNext.textContent = 'Start';
                 } else if (currentStep === totalSteps - 1) {
-                    tutorialNext.textContent = 'Finish';
+                    tutorialNext.textContent = 'Done';
                     tutorialNext.classList.add('primary');
                 } else {
                     tutorialNext.textContent = 'Next';
@@ -2939,8 +2945,8 @@
                             
                             // Get actual tooltip dimensions
                             const tooltipRect = tutorialTooltip.getBoundingClientRect();
-                            const tooltipWidth = Math.max(280, tooltipRect.width || 280);
-                            const tooltipHeight = Math.max(180, tooltipRect.height || 180);
+                            const tooltipWidth = Math.max(320, tooltipRect.width || 320);
+                            const tooltipHeight = Math.max(200, tooltipRect.height || 200);
                             
                             const halfTooltipWidth = tooltipWidth / 2;
                             const halfTooltipHeight = tooltipHeight / 2;
