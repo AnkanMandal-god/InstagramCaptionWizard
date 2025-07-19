@@ -2011,6 +2011,8 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             white-space: nowrap;
+            min-width: 70px;
+            text-align: center;
         }
 
         .tutorial-btn:hover {
@@ -2777,7 +2779,7 @@
                 {
                     title: "Generate Captions",
                     description: "Click this button to generate 3 unique captions that blend all your selected tones together. Each caption will capture your chosen mood perfectly.",
-                    target: "#generateBtn",
+                    target: ".generate-btn",
                     position: "left"
                 },
                 {
@@ -2860,7 +2862,7 @@
                 });
                 
                 // Also reset by common selectors to ensure cleanup
-                ['#topic', '.tone-grid', '#generateBtn', '.features-section', '#features-container', '.section-separator'].forEach(selector => {
+                ['#topic', '.tone-grid', '#generateBtn', '.generate-btn', '.features-section', '#features-container', '.section-separator'].forEach(selector => {
                     const element = document.querySelector(selector);
                     if (element) {
                         element.style.position = '';
