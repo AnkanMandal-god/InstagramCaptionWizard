@@ -2137,9 +2137,6 @@
 <body>
     <!-- Tutorial Overlay -->
     <div class="tutorial-overlay" id="tutorialOverlay">
-        <div class="tutorial-spotlight" id="tutorialSpotlight">
-            <div class="tutorial-spotlight-cutout" id="tutorialSpotlightCutout"></div>
-        </div>
         <div class="tutorial-tooltip" id="tutorialTooltip">
             <h4 id="tutorialTitle">Welcome to Caption Generator!</h4>
             <p id="tutorialDescription">Let's take a quick tour to help you create amazing Instagram captions.</p>
@@ -2915,13 +2912,9 @@
                         const baseRect = target.getBoundingClientRect();
                         const padding = 20; // Account for outline offset
                         
-                        // Position spotlight immediately based on unmodified element
-                        tutorialSpotlightCutout.style.top = `${baseRect.top - padding}px`;
-                        tutorialSpotlightCutout.style.left = `${baseRect.left - padding}px`;
-                        tutorialSpotlightCutout.style.width = `${baseRect.width + (padding * 2)}px`;
-                        tutorialSpotlightCutout.style.height = `${baseRect.height + (padding * 2)}px`;
-                        tutorialSpotlightCutout.classList.add('pulse');
-                        tutorialSpotlight.style.display = 'block';
+                        // Hide spotlight completely - no more blue boxes
+                        tutorialSpotlight.style.display = 'none';
+                        tutorialSpotlightCutout.classList.remove('pulse');
                         
                         // Apply visual effects AFTER positioning
                         target.style.position = 'relative';
