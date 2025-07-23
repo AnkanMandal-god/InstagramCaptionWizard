@@ -801,6 +801,63 @@
             margin-left: 26px;
         }
 
+        /* API Setup Prompt Styles */
+        .api-setup-prompt {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .setup-icon {
+            font-size: 2.5rem;
+            color: var(--bs-warning);
+            margin-bottom: 15px;
+        }
+
+        .setup-title {
+            color: var(--bs-warning);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .setup-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .setup-api-btn {
+            background: linear-gradient(135deg, var(--bs-warning), #ff9800);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .setup-api-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+            color: #000;
+        }
+
+        .setup-help {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            display: block;
+            margin-top: 10px;
+        }
+
         /* Session Active Styles */
         .session-active-section {
             margin: 1.5rem 0;
@@ -2476,44 +2533,8 @@
                                 </div>
                             </div>
 
-                            <!-- API Key Input Section -->
-                            {% if not has_session_key %}
-                            <div class="api-key-input-section">
-                                <label for="api_key" class="api-key-label">
-                                    <i class="fas fa-key me-2"></i>
-                                    OpenAI API Key (Required)
-                                </label>
-                                <input type="password" 
-                                       id="api_key" 
-                                       name="api_key" 
-                                       class="api-key-input-main" 
-                                       placeholder="sk-..." 
-                                       required>
-                                
-                                <!-- Session Storage Option -->
-                                <div class="session-option">
-                                    <label class="session-checkbox">
-                                        <input type="checkbox" name="save_api_key" value="true" id="save_api_key">
-                                        <span class="checkmark"></span>
-                                        <span class="session-text">
-                                            <i class="fas fa-clock me-1"></i>
-                                            Remember my API key for this session
-                                        </span>
-                                    </label>
-                                    <small class="session-help">
-                                        Your API key will be stored securely in your browser session and automatically cleared when you close the browser.
-                                    </small>
-                                </div>
-                                
-                                <div class="api-key-help">
-                                    <small class="text-muted">
-                                        <i class="fas fa-info-circle me-1"></i>
-                                        Your API key is processed securely and never permanently stored.
-                                        <a href="https://platform.openai.com/api-keys" target="_blank" class="help-link">Get your API key</a>
-                                    </small>
-                                </div>
-                            </div>
-                            {% else %}
+                            <!-- Session Key Status Section -->
+                            {% if has_session_key %}
                             <!-- Session Key Active Notice -->
                             <div class="session-active-section">
                                 <div class="session-active-notice">
@@ -2528,14 +2549,35 @@
                                 </div>
                                 <small class="session-notice-help">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Using your saved API key. You can generate captions without re-entering it.
+                                    Using your saved API key. Generate captions without re-entering it.
                                 </small>
                             </div>
                             {% endif %}
 
+                            {% if has_session_key %}
                             <button type="submit" class="generate-btn" id="generateBtn">
                                 Generate Captions
                             </button>
+                            {% else %}
+                            <!-- API Key Setup Prompt -->
+                            <div class="api-setup-prompt">
+                                <div class="setup-icon">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <h4 class="setup-title">Setup Required</h4>
+                                <p class="setup-description">
+                                    To generate captions, please provide your OpenAI API key. It will be securely saved for this session.
+                                </p>
+                                <button type="button" class="setup-api-btn" onclick="showApiKeySetup()">
+                                    <i class="fas fa-plus-circle me-2"></i>
+                                    Add API Key
+                                </button>
+                                <small class="setup-help">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Your API key stays secure in your browser session
+                                </small>
+                            </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -2560,7 +2602,7 @@
                         
                         <!-- API Key Input Form -->
                         <div class="api-key-section">
-                            <form method="POST" action="{{ url_for('index') }}" class="api-key-form">
+                            <form method="POST" action="{{ url_for('setup_api_key') }}" class="api-key-form">
                                 <input type="hidden" name="topic" value="{{ topic }}">
                                 <input type="hidden" name="tone" value="{{ tone }}">
                                 <div class="api-key-input-group">
@@ -2576,19 +2618,19 @@
                                            required>
                                     <button type="submit" class="update-key-btn">
                                         <i class="fas fa-magic me-1"></i>
-                                        Generate Captions
+                                        Save & Generate Captions
                                     </button>
                                 </div>
                                 <div class="api-key-security">
                                     <p class="api-key-note">
                                         <i class="fas fa-shield-alt me-1"></i>
-                                        <strong>Your API key is completely secure</strong>
+                                        <strong>Your API key will be saved for this session</strong>
                                     </p>
                                     <ul class="security-features">
-                                        <li><i class="fas fa-check me-1"></i>Never stored or saved anywhere</li>
-                                        <li><i class="fas fa-check me-1"></i>Used only for this single request</li>
+                                        <li><i class="fas fa-check me-1"></i>Stored securely in your browser session</li>
+                                        <li><i class="fas fa-check me-1"></i>Automatically cleared when you close browser</li>
                                         <li><i class="fas fa-check me-1"></i>Not shared with any third parties</li>
-                                        <li><i class="fas fa-check me-1"></i>Processed securely in memory only</li>
+                                        <li><i class="fas fa-check me-1"></i>No need to re-enter for subsequent captions</li>
                                     </ul>
                                 </div>
                             </form>
@@ -2946,6 +2988,39 @@
                 }
             }, 500);
             {% endif %}
+            
+            // API Key Setup functionality
+            window.showApiKeySetup = function() {
+                // Get current topic and tone values
+                const topic = document.getElementById('topic').value;
+                const tone = document.getElementById('tone').value;
+                
+                // Create a form with current values and trigger API key required modal
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.style.display = 'none';
+                
+                const topicInput = document.createElement('input');
+                topicInput.type = 'hidden';
+                topicInput.name = 'topic';
+                topicInput.value = topic;
+                form.appendChild(topicInput);
+                
+                const toneInput = document.createElement('input');
+                toneInput.type = 'hidden';
+                toneInput.name = 'tone';
+                toneInput.value = tone;
+                form.appendChild(toneInput);
+                
+                const submitInput = document.createElement('input');
+                submitInput.type = 'hidden';
+                submitInput.name = 'trigger_api_setup';
+                submitInput.value = 'true';
+                form.appendChild(submitInput);
+                
+                document.body.appendChild(form);
+                form.submit();
+            };
             
             // Tone selection functionality
             const toneInput = document.getElementById('tone');

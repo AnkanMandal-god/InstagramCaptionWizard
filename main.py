@@ -158,6 +158,61 @@ Format your response as exactly 3 numbered captions:
         else:
             raise Exception(f"OpenAI API error: {str(e)}")
 
+@app.route('/setup-api-key', methods=['POST'])
+def setup_api_key():
+    """Handle initial API key setup and save to session"""
+    
+    # Get form data
+    api_key = request.form.get('api_key', '').strip()
+    topic = request.form.get('topic', '').strip()
+    tone = request.form.get('tone', '').strip()
+    
+    if not api_key:
+        flash('Please enter a valid OpenAI API key.', 'error')
+        return render_template('index.html', 
+                             api_key_required=True,
+                             topic=topic,
+                             tone=tone,
+                             has_session_key=False)
+    
+    # Save the API key to session
+    session['api_key'] = api_key
+    flash('API key saved for this session!', 'success')
+    
+    # If topic and tone are provided, generate captions immediately
+    if topic and tone:
+        try:
+            captions = generate_instagram_captions(topic, tone, api_key=api_key)
+            flash('API key saved and captions generated successfully!', 'success')
+            return render_template('index.html', 
+                                 captions=captions, 
+                                 topic=topic, 
+                                 tone=tone,
+                                 has_session_key=True)
+        except Exception as e:
+            logging.error(f"Failed to generate captions: {e}")
+            error_message = str(e)
+            
+            if "authentication" in error_message.lower() or "invalid" in error_message.lower():
+                flash('Invalid API key. Please check your OpenAI API key and try again.', 'error')
+                session.pop('api_key', None)  # Remove invalid key
+                return render_template('index.html', 
+                                     api_key_required=True,
+                                     topic=topic,
+                                     tone=tone,
+                                     has_session_key=False)
+            elif "quota" in error_message.lower():
+                flash('The provided API key has exceeded its quota. Please try a different key or use demo mode.', 'error')
+                return render_template('index.html', 
+                                     quota_exceeded=True,
+                                     topic=topic,
+                                     tone=tone)
+            else:
+                flash('Failed to generate captions. Please try again.', 'error')
+    
+    # Redirect to main page with session key active
+    return redirect(url_for('index'))
+
 @app.route('/update-api-key', methods=['POST'])
 def update_api_key():
     """Handle API key update from quota exceeded modal"""
@@ -174,13 +229,13 @@ def update_api_key():
                              topic=topic,
                              tone=tone)
     
+    # Save the new API key to session first
+    session['api_key'] = new_api_key
+    
     # Try to generate captions with the new key
     try:
         captions = generate_instagram_captions(topic, tone, api_key=new_api_key)
-        
-        # Always save API key from quota exceeded modal to session
-        session['api_key'] = new_api_key
-        flash('API key updated and captions generated successfully! API key saved for this session.', 'success')
+        flash('API key saved and captions generated successfully!', 'success')
         
         return render_template('index.html', 
                              captions=captions, 
@@ -214,8 +269,15 @@ def index():
         topic = request.form.get('topic', '').strip()
         tone = request.form.get('tone', '').strip()
         use_mock = request.form.get('use_mock', '').strip() == 'true'
-        api_key = request.form.get('api_key', '').strip()
-        save_api_key = request.form.get('save_api_key', '').strip() == 'true'
+        trigger_api_setup = request.form.get('trigger_api_setup', '').strip() == 'true'
+        
+        # Handle API key setup trigger
+        if trigger_api_setup:
+            return render_template('index.html', 
+                                 api_key_required=True,
+                                 topic=topic,
+                                 tone=tone,
+                                 has_session_key=False)
         
         # Validate inputs
         if not topic:
@@ -236,10 +298,8 @@ def index():
                                  tone=tone,
                                  is_mock=True)
         
-        # Check if API key is provided (either from form or session)
-        if not api_key:
-            # Try to get API key from session
-            api_key = session.get('api_key', '')
+        # Get API key from session only
+        api_key = session.get('api_key', '')
         
         if not api_key:
             flash('Please provide your OpenAI API key to generate captions.', 'error')
@@ -247,18 +307,12 @@ def index():
                                  api_key_required=True,
                                  topic=topic,
                                  tone=tone,
-                                 has_session_key=bool(session.get('api_key')))
+                                 has_session_key=False)
         
         try:
-            # Generate captions with provided API key
+            # Generate captions with session API key
             captions = generate_instagram_captions(topic, tone, api_key=api_key)
-            
-            # Save API key to session if user opted to
-            if save_api_key and api_key:
-                session['api_key'] = api_key
-                flash('Captions generated successfully! API key saved for this session.', 'success')
-            else:
-                flash('Captions generated successfully!', 'success')
+            flash('Captions generated successfully!', 'success')
             
             return render_template('index.html', 
                                  captions=captions, 
