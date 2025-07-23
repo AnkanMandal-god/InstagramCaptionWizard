@@ -8,6 +8,7 @@ This is a Flask-based web application that generates Instagram captions using Op
 
 Preferred communication style: Simple, everyday language.
 API Key Preference: Users must provide their own OpenAI API key - no preloaded environment API keys.
+Session Storage: Users can optionally save their API key for the current browser session to avoid re-entering it repeatedly.
 
 ## System Architecture
 
@@ -43,6 +44,7 @@ API Key Preference: Users must provide their own OpenAI API key - no preloaded e
 - **Tone Memory**: LocalStorage-based system to remember previously used tones
 - **Quota Handling**: User-friendly quota exceeded detection with demo mode fallback
 - **Custom API Key Support**: Seamless personal OpenAI API key integration for unlimited access
+- **Session Management**: Optional API key storage in browser session to eliminate repeated entries
 - **Mock Generation**: Enhanced tone-blending mock caption system with combined tone content
 - **Tutorial System**: Animated walkthrough for first-time users with interactive spotlight and progress tracking
 
@@ -75,6 +77,13 @@ API Key Preference: Users must provide their own OpenAI API key - no preloaded e
 - **Demo Mode Option**: One-click fallback to enhanced mock generation
 - **Helpful Tips**: Clear guidance on resolving quota issues
 - **Seamless Transition**: Preserves user's topic and tone selections
+
+### Session-Based API Key Management
+- **Optional Session Storage**: Users can choose to save their API key for the current browser session
+- **Automatic Fallback**: System checks session storage if no API key is provided in the form
+- **Clear Session Option**: Users can manually clear their saved API key anytime
+- **Secure Storage**: API keys stored only in Flask session, automatically cleared when browser closes
+- **Visual Indicators**: Clear UI showing when a session key is active vs. when manual entry is required
 
 ### Enhanced Tone Blending System
 - **Multi-Tone Fusion**: Seamlessly blends multiple tones into unified captions (e.g., "funny + romantic")

@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, session
 
 # Set up logging for debugging
 logging.basicConfig(level=logging.DEBUG)
@@ -177,12 +177,16 @@ def update_api_key():
     # Try to generate captions with the new key
     try:
         captions = generate_instagram_captions(topic, tone, api_key=new_api_key)
-        flash('Captions generated successfully with your API key!', 'success')
+        
+        # Always save API key from quota exceeded modal to session
+        session['api_key'] = new_api_key
+        flash('API key updated and captions generated successfully! API key saved for this session.', 'success')
         
         return render_template('index.html', 
                              captions=captions, 
                              topic=topic, 
-                             tone=tone)
+                             tone=tone,
+                             has_session_key=True)
         
     except Exception as e:
         logging.error(f"Failed to generate captions with provided API key: {e}")
@@ -211,6 +215,7 @@ def index():
         tone = request.form.get('tone', '').strip()
         use_mock = request.form.get('use_mock', '').strip() == 'true'
         api_key = request.form.get('api_key', '').strip()
+        save_api_key = request.form.get('save_api_key', '').strip() == 'true'
         
         # Validate inputs
         if not topic:
@@ -231,23 +236,35 @@ def index():
                                  tone=tone,
                                  is_mock=True)
         
-        # Check if API key is provided
+        # Check if API key is provided (either from form or session)
+        if not api_key:
+            # Try to get API key from session
+            api_key = session.get('api_key', '')
+        
         if not api_key:
             flash('Please provide your OpenAI API key to generate captions.', 'error')
             return render_template('index.html', 
                                  api_key_required=True,
                                  topic=topic,
-                                 tone=tone)
+                                 tone=tone,
+                                 has_session_key=bool(session.get('api_key')))
         
         try:
             # Generate captions with provided API key
             captions = generate_instagram_captions(topic, tone, api_key=api_key)
-            flash('Captions generated successfully!', 'success')
+            
+            # Save API key to session if user opted to
+            if save_api_key and api_key:
+                session['api_key'] = api_key
+                flash('Captions generated successfully! API key saved for this session.', 'success')
+            else:
+                flash('Captions generated successfully!', 'success')
             
             return render_template('index.html', 
                                  captions=captions, 
                                  topic=topic, 
-                                 tone=tone)
+                                 tone=tone,
+                                 has_session_key=bool(session.get('api_key')))
             
         except Exception as e:
             logging.error(f"Error generating captions: {e}")
@@ -280,7 +297,14 @@ def index():
                                      tone=tone)
     
     # GET request - show the form
-    return render_template('index.html')
+    return render_template('index.html', has_session_key=bool(session.get('api_key')))
+
+@app.route('/clear-session', methods=['POST'])
+def clear_session():
+    """Clear the stored API key from session"""
+    session.pop('api_key', None)
+    flash('Session API key cleared successfully.', 'success')
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

@@ -740,6 +740,113 @@
             text-decoration: underline;
         }
 
+        /* Session Storage Option Styles */
+        .session-option {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.08);
+            border-radius: 10px;
+            border-left: 3px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .session-checkbox {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 0.5rem;
+        }
+
+        .session-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 18px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin-right: 0.8rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .session-checkbox input[type="checkbox"]:checked + .checkmark {
+            background: rgba(16, 185, 129, 0.8);
+            border-color: rgba(16, 185, 129, 1);
+        }
+
+        .session-checkbox input[type="checkbox"]:checked + .checkmark::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .session-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .session-help {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-left: 26px;
+        }
+
+        /* Session Active Styles */
+        .session-active-section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .session-active-notice {
+            display: flex;
+            align-items: center;
+            color: rgba(16, 185, 129, 0.9);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .session-active-text {
+            flex: 1;
+        }
+
+        .clear-session-btn {
+            background: rgba(220, 38, 38, 0.8);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-session-btn:hover {
+            background: rgba(220, 38, 38, 1);
+            transform: translateY(-1px);
+        }
+
+        .session-notice-help {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
         .highlight-text {
             color: rgba(102, 126, 234, 0.9);
             font-weight: 600;
@@ -2370,6 +2477,7 @@
                             </div>
 
                             <!-- API Key Input Section -->
+                            {% if not has_session_key %}
                             <div class="api-key-input-section">
                                 <label for="api_key" class="api-key-label">
                                     <i class="fas fa-key me-2"></i>
@@ -2381,14 +2489,49 @@
                                        class="api-key-input-main" 
                                        placeholder="sk-..." 
                                        required>
+                                
+                                <!-- Session Storage Option -->
+                                <div class="session-option">
+                                    <label class="session-checkbox">
+                                        <input type="checkbox" name="save_api_key" value="true" id="save_api_key">
+                                        <span class="checkmark"></span>
+                                        <span class="session-text">
+                                            <i class="fas fa-clock me-1"></i>
+                                            Remember my API key for this session
+                                        </span>
+                                    </label>
+                                    <small class="session-help">
+                                        Your API key will be stored securely in your browser session and automatically cleared when you close the browser.
+                                    </small>
+                                </div>
+                                
                                 <div class="api-key-help">
                                     <small class="text-muted">
                                         <i class="fas fa-info-circle me-1"></i>
-                                        Your API key is used only for this request and never stored.
+                                        Your API key is processed securely and never permanently stored.
                                         <a href="https://platform.openai.com/api-keys" target="_blank" class="help-link">Get your API key</a>
                                     </small>
                                 </div>
                             </div>
+                            {% else %}
+                            <!-- Session Key Active Notice -->
+                            <div class="session-active-section">
+                                <div class="session-active-notice">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span class="session-active-text">API key saved for this session</span>
+                                    <form method="POST" action="{{ url_for('clear_session') }}" style="display: inline-block; margin-left: auto;">
+                                        <button type="submit" class="clear-session-btn" title="Clear saved API key">
+                                            <i class="fas fa-times me-1"></i>
+                                            Clear
+                                        </button>
+                                    </form>
+                                </div>
+                                <small class="session-notice-help">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Using your saved API key. You can generate captions without re-entering it.
+                                </small>
+                            </div>
+                            {% endif %}
 
                             <button type="submit" class="generate-btn" id="generateBtn">
                                 Generate Captions
