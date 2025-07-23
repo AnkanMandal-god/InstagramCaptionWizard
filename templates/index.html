@@ -2509,6 +2509,15 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="length" class="form-label">Caption Length</label>
+                                <select class="form-input" id="length" name="length">
+                                    <option value="short" {{ 'selected' if length == 'short' else '' }}>Short (1-2 sentences)</option>
+                                    <option value="medium" {{ 'selected' if length == 'medium' else '' }} selected>Medium (3-4 sentences)</option>
+                                    <option value="long" {{ 'selected' if length == 'long' else '' }}>Long (5+ sentences)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="tone" class="form-label">Tone <span class="selection-info">(Select one or more, or type custom)</span></label>
                                 <input type="text" 
                                        class="form-input" 
@@ -2570,15 +2579,6 @@
                                     </button>
 
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="length" class="form-label">Caption Length</label>
-                                <select class="form-input" id="length" name="length">
-                                    <option value="short" {{ 'selected' if length == 'short' else '' }}>Short (1-2 sentences)</option>
-                                    <option value="medium" {{ 'selected' if length == 'medium' else '' }} selected>Medium (3-4 sentences)</option>
-                                    <option value="long" {{ 'selected' if length == 'long' else '' }}>Long (5+ sentences)</option>
-                                </select>
                             </div>
 
                             <!-- API Key Input Section -->
