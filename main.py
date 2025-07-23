@@ -141,7 +141,11 @@ Format your response as exactly 3 numbered captions:
             temperature=0.8
         )
         
-        content = response.choices[0].message.content.strip()
+        content = response.choices[0].message.content
+        if content:
+            content = content.strip()
+        else:
+            content = ""
         
         # Clean the content to remove tone headers
         cleaned_captions = clean_caption_content(content)

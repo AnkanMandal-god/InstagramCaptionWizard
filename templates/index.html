@@ -2540,12 +2540,10 @@
                                 <div class="session-active-notice">
                                     <i class="fas fa-check-circle me-2"></i>
                                     <span class="session-active-text">API key saved for this session</span>
-                                    <form method="POST" action="{{ url_for('clear_session') }}" style="display: inline-block; margin-left: auto;">
-                                        <button type="submit" class="clear-session-btn" title="Clear saved API key">
-                                            <i class="fas fa-times me-1"></i>
-                                            Clear
-                                        </button>
-                                    </form>
+                                    <button type="button" class="clear-session-btn" title="Clear saved API key" onclick="clearApiKeySession()">
+                                        <i class="fas fa-times me-1"></i>
+                                        Clear
+                                    </button>
                                 </div>
                                 <small class="session-notice-help">
                                     <i class="fas fa-info-circle me-1"></i>
@@ -3017,6 +3015,18 @@
                 submitInput.name = 'trigger_api_setup';
                 submitInput.value = 'true';
                 form.appendChild(submitInput);
+                
+                document.body.appendChild(form);
+                form.submit();
+            };
+            
+            // Clear API Key Session functionality
+            window.clearApiKeySession = function() {
+                // Create a form to submit the clear session request
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ url_for("clear_session") }}';
+                form.style.display = 'none';
                 
                 document.body.appendChild(form);
                 form.submit();
