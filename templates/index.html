@@ -2637,46 +2637,8 @@
                         </div>
                         <h3 class="quota-title">API Key Required</h3>
                         <p class="quota-description">
-                            Please provide your OpenAI API key to generate captions.
+                            Please provide your OpenAI API key to generate captions, or try our demo mode.
                         </p>
-                        
-                        <!-- API Key Input Form -->
-                        <div class="api-key-section">
-                            <form method="POST" action="{{ url_for('setup_api_key') }}" class="api-key-form">
-                                <input type="hidden" name="topic" value="{{ topic }}">
-                                <input type="hidden" name="tone" value="{{ tone }}">
-                                <div class="api-key-input-group">
-                                    <label for="modal_api_key" class="api-key-label">
-                                        <i class="fas fa-key me-1"></i>
-                                        Enter Your OpenAI API Key:
-                                    </label>
-                                    <input type="password" 
-                                           id="modal_api_key" 
-                                           name="api_key" 
-                                           class="api-key-input" 
-                                           placeholder="sk-..." 
-                                           required>
-                                    <button type="submit" class="update-key-btn">
-                                        <i class="fas fa-magic me-1"></i>
-                                        Save & Generate Captions
-                                    </button>
-                                </div>
-                                <div class="api-key-security">
-                                    <p class="api-key-note">
-                                        <i class="fas fa-shield-alt me-1"></i>
-                                        <strong>Your API key will be saved for this session</strong>
-                                    </p>
-                                    <ul class="security-features">
-                                        <li><i class="fas fa-check me-1"></i>Stored securely in your browser session</li>
-                                        <li><i class="fas fa-check me-1"></i>Automatically cleared when you close browser</li>
-                                        <li><i class="fas fa-check me-1"></i>Not shared with any third parties</li>
-                                        <li><i class="fas fa-check me-1"></i>No need to re-enter for subsequent captions</li>
-                                    </ul>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <div class="quota-divider"></div>
                         
                         <div class="quota-actions">
                             <form method="POST" style="display: inline-block;">
