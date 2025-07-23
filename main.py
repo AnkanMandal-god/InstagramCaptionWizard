@@ -302,8 +302,13 @@ def index():
                                  tone=tone,
                                  is_mock=True)
         
-        # Get API key from session only
-        api_key = session.get('api_key', '')
+        # Get API key from form or session (hybrid approach)
+        api_key = request.form.get('api_key', '').strip()
+        save_for_session = request.form.get('save_for_session') == 'true'
+        
+        # Use session key if no form key provided
+        if not api_key:
+            api_key = session.get('api_key', '')
         
         if not api_key:
             flash('Please provide your OpenAI API key to generate captions.', 'error')
@@ -311,7 +316,12 @@ def index():
                                  api_key_required=True,
                                  topic=topic,
                                  tone=tone,
-                                 has_session_key=False)
+                                 has_session_key=bool(session.get('api_key')))
+        
+        # Save to session if checkbox is checked
+        if save_for_session and api_key:
+            session['api_key'] = api_key
+            session.permanent = True
         
         try:
             # Generate captions with session API key
