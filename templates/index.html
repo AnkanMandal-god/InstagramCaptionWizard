@@ -2572,6 +2572,15 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label for="length" class="form-label">Caption Length</label>
+                                <select class="form-input" id="length" name="length">
+                                    <option value="short" {{ 'selected' if length == 'short' else '' }}>Short (1-2 sentences)</option>
+                                    <option value="medium" {{ 'selected' if length == 'medium' else '' }} selected>Medium (3-4 sentences)</option>
+                                    <option value="long" {{ 'selected' if length == 'long' else '' }}>Long (5+ sentences)</option>
+                                </select>
+                            </div>
+
                             <!-- API Key Input Section -->
                             <div class="form-group">
                                 <label for="api_key" class="form-label">

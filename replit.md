@@ -42,6 +42,7 @@ Session Storage: Users can optionally save their API key for the current browser
 - **Tone Blending**: Multiple selected tones are seamlessly combined into unified captions
 - **Tone Variety**: Supports 27 different tone options for diverse caption styles
 - **Tone Memory**: LocalStorage-based system to remember previously used tones
+- **Caption Length Control**: Three length options (Short: 1-2 sentences, Medium: 3-4 sentences, Long: 5+ sentences)
 - **Quota Handling**: User-friendly quota exceeded detection with demo mode fallback
 - **Custom API Key Support**: Seamless personal OpenAI API key integration for unlimited access
 - **Session Management**: Optional API key storage in browser session to eliminate repeated entries
@@ -60,13 +61,14 @@ Session Storage: Users can optionally save their API key for the current browser
 
 ## Data Flow
 
-1. **User Input**: User provides topic and selects multiple tones through web form
-2. **Request Processing**: Flask handles POST request and extracts form data
+1. **User Input**: User provides topic, selects multiple tones, and chooses caption length through web form
+2. **Request Processing**: Flask handles POST request and extracts form data including length preference
 3. **Tone Blending**: System combines multiple selected tones into unified prompts
-4. **API Call**: Application calls OpenAI API with tone-blending structured prompt
-5. **Response Generation**: GPT-4o generates 3 captions that blend all selected tones
-6. **Result Display**: Generated blended captions are displayed to user with success message
-7. **Error Handling**: Graceful quota handling with demo mode option
+4. **Length Processing**: System adapts prompt and generation logic based on selected length
+5. **API Call**: Application calls OpenAI API with tone-blending and length-aware structured prompt
+6. **Response Generation**: GPT-4o generates 3 captions that blend all selected tones with specified length
+7. **Result Display**: Generated blended captions are displayed to user with success message
+8. **Error Handling**: Graceful quota handling with demo mode option
 
 ## User Experience Features
 
