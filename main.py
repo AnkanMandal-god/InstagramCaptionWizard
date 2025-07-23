@@ -98,7 +98,7 @@ def generate_instagram_captions(topic, tone, api_key=None):
     except ImportError:
         raise Exception("OpenAI library not available.")
     except Exception as e:
-        raise Exception(f"Failed to initialize OpenAI client: {e}")
+        raise Exception(f"Failed to initialize OpenAI client: {str(e)}")
     
     try:
         # Build tone description for multiple tones
