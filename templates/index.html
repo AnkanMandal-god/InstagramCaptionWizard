@@ -677,6 +677,69 @@
             gap: 0.5rem;
         }
 
+        /* API Key Input Styles */
+        .api-key-input-section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .api-key-label {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .api-key-input-main {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.9rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .api-key-input-main:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .api-key-input-main::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'Courier New', monospace;
+        }
+
+        .api-key-help {
+            margin-top: 0.8rem;
+            padding: 0.8rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid rgba(102, 126, 234, 0.4);
+        }
+
+        .help-link {
+            color: rgba(102, 126, 234, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .help-link:hover {
+            color: rgba(102, 126, 234, 1);
+            text-decoration: underline;
+        }
+
         .highlight-text {
             color: rgba(102, 126, 234, 0.9);
             font-weight: 600;
@@ -2306,6 +2369,27 @@
                                 </div>
                             </div>
 
+                            <!-- API Key Input Section -->
+                            <div class="api-key-input-section">
+                                <label for="api_key" class="api-key-label">
+                                    <i class="fas fa-key me-2"></i>
+                                    OpenAI API Key (Required)
+                                </label>
+                                <input type="password" 
+                                       id="api_key" 
+                                       name="api_key" 
+                                       class="api-key-input-main" 
+                                       placeholder="sk-..." 
+                                       required>
+                                <div class="api-key-help">
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Your API key is used only for this request and never stored.
+                                        <a href="https://platform.openai.com/api-keys" target="_blank" class="help-link">Get your API key</a>
+                                    </small>
+                                </div>
+                            </div>
+
                             <button type="submit" class="generate-btn" id="generateBtn">
                                 Generate Captions
                             </button>
@@ -2318,6 +2402,83 @@
                     <div class="spinner"></div>
                     <p class="text-muted">Generating your awesome captions...</p>
                 </div>
+
+                <!-- API Key Required Modal -->
+                {% if api_key_required %}
+                <div class="quota-exceeded-modal">
+                    <div class="quota-modal-content">
+                        <div class="quota-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3 class="quota-title">API Key Required</h3>
+                        <p class="quota-description">
+                            Please provide your OpenAI API key to generate captions.
+                        </p>
+                        
+                        <!-- API Key Input Form -->
+                        <div class="api-key-section">
+                            <form method="POST" action="{{ url_for('index') }}" class="api-key-form">
+                                <input type="hidden" name="topic" value="{{ topic }}">
+                                <input type="hidden" name="tone" value="{{ tone }}">
+                                <div class="api-key-input-group">
+                                    <label for="modal_api_key" class="api-key-label">
+                                        <i class="fas fa-key me-1"></i>
+                                        Enter Your OpenAI API Key:
+                                    </label>
+                                    <input type="password" 
+                                           id="modal_api_key" 
+                                           name="api_key" 
+                                           class="api-key-input" 
+                                           placeholder="sk-..." 
+                                           required>
+                                    <button type="submit" class="update-key-btn">
+                                        <i class="fas fa-magic me-1"></i>
+                                        Generate Captions
+                                    </button>
+                                </div>
+                                <div class="api-key-security">
+                                    <p class="api-key-note">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        <strong>Your API key is completely secure</strong>
+                                    </p>
+                                    <ul class="security-features">
+                                        <li><i class="fas fa-check me-1"></i>Never stored or saved anywhere</li>
+                                        <li><i class="fas fa-check me-1"></i>Used only for this single request</li>
+                                        <li><i class="fas fa-check me-1"></i>Not shared with any third parties</li>
+                                        <li><i class="fas fa-check me-1"></i>Processed securely in memory only</li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="quota-divider"></div>
+                        
+                        <div class="quota-actions">
+                            <form method="POST" style="display: inline-block;">
+                                <input type="hidden" name="topic" value="{{ topic }}">
+                                <input type="hidden" name="tone" value="{{ tone }}">
+                                <input type="hidden" name="use_mock" value="true">
+                                <button type="submit" class="demo-btn">
+                                    <i class="fas fa-play-circle me-2"></i>
+                                    Try Demo Mode
+                                </button>
+                            </form>
+                            <a href="{{ url_for('index') }}" class="back-btn">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Go Back
+                            </a>
+                        </div>
+                        <div class="quota-tips">
+                            <p><strong>Get your free API key:</strong></p>
+                            <ul>
+                                <li><a href="https://platform.openai.com/api-keys" target="_blank">Visit OpenAI Platform</a></li>
+                                <li>Create an account or sign in</li>
+                                <li>Generate a new API key</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
 
                 <!-- Quota Exceeded Modal -->
                 {% if quota_exceeded %}

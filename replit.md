@@ -7,6 +7,7 @@ This is a Flask-based web application that generates Instagram captions using Op
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+API Key Preference: Users must provide their own OpenAI API key - no preloaded environment API keys.
 
 ## System Architecture
 

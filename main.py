@@ -8,21 +8,14 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key")
 
-# Initialize OpenAI client if API key is available
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+# No preloaded API key - users must provide their own
 openai_client = None
 
-if OPENAI_API_KEY:
-    try:
-        from openai import OpenAI
-        openai_client = OpenAI(api_key=OPENAI_API_KEY)
-        logging.info("OpenAI client initialized successfully")
-    except ImportError:
-        logging.warning("OpenAI library not available, using mock fallback")
-    except Exception as e:
-        logging.error(f"Failed to initialize OpenAI client: {e}")
-else:
-    logging.info("No OpenAI API key found, using mock fallback")
+try:
+    from openai import OpenAI
+    logging.info("OpenAI library available - users can provide their own API keys")
+except ImportError:
+    logging.warning("OpenAI library not available, using mock fallback")
 
 def clean_caption_content(content):
     """Remove tone headers and number prefixes from caption content"""
@@ -88,15 +81,24 @@ def mock_generate_instagram_captions(topic, tone):
     
     return clean_caption_content(captions)
 
-def generate_instagram_captions(topic, tone):
+def generate_instagram_captions(topic, tone, api_key=None):
     """Generate Instagram captions using OpenAI GPT-4o API that blend multiple tones"""
     
     # Handle multiple tones
     tones = [t.strip() for t in tone.split(',') if t.strip()]
     
-    if not openai_client:
-        # If no OpenAI client available, show error message
-        raise Exception("OpenAI API is not available. Please check your API key configuration.")
+    if not api_key:
+        # If no API key provided, require user to provide one
+        raise Exception("API key required. Please provide your OpenAI API key to generate captions.")
+    
+    # Create OpenAI client with provided API key
+    try:
+        from openai import OpenAI
+        client = OpenAI(api_key=api_key)
+    except ImportError:
+        raise Exception("OpenAI library not available.")
+    except Exception as e:
+        raise Exception(f"Failed to initialize OpenAI client: {e}")
     
     try:
         # Build tone description for multiple tones
@@ -129,7 +131,7 @@ Format your response as exactly 3 numbered captions:
         
         # the newest OpenAI model is "gpt-4o" which was released May 13, 2024.
         # do not change this unless explicitly requested by the user
-        response = openai_client.chat.completions.create(
+        response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are an expert social media content creator specializing in Instagram captions. You create engaging, authentic captions that drive engagement and match specific tones perfectly."},
@@ -159,7 +161,6 @@ Format your response as exactly 3 numbered captions:
 @app.route('/update-api-key', methods=['POST'])
 def update_api_key():
     """Handle API key update from quota exceeded modal"""
-    global openai_client
     
     # Get form data
     new_api_key = request.form.get('new_api_key', '').strip()
@@ -173,15 +174,10 @@ def update_api_key():
                              topic=topic,
                              tone=tone)
     
-    # Update the OpenAI client with the new key
+    # Try to generate captions with the new key
     try:
-        from openai import OpenAI
-        openai_client = OpenAI(api_key=new_api_key)
-        logging.info("OpenAI client updated with new API key")
-        
-        # Try to generate captions with the new key
-        captions = generate_instagram_captions(topic, tone)
-        flash('API key updated successfully! Captions generated.', 'success')
+        captions = generate_instagram_captions(topic, tone, api_key=new_api_key)
+        flash('Captions generated successfully with your API key!', 'success')
         
         return render_template('index.html', 
                              captions=captions, 
@@ -189,19 +185,19 @@ def update_api_key():
                              tone=tone)
         
     except Exception as e:
-        logging.error(f"Failed to update API key or generate captions: {e}")
+        logging.error(f"Failed to generate captions with provided API key: {e}")
         error_message = str(e)
         
         # Check for specific error types
         if "authentication" in error_message.lower() or "invalid" in error_message.lower():
             flash('Invalid API key. Please check your OpenAI API key and try again.', 'error')
         elif "quota" in error_message.lower():
-            flash('The provided API key has also exceeded its quota. Please try a different key or use demo mode.', 'error')
+            flash('The provided API key has exceeded its quota. Please try a different key or use demo mode.', 'error')
         else:
-            flash('Failed to update API key. Please try again.', 'error')
+            flash('Failed to generate captions. Please check your API key and try again.', 'error')
         
         return render_template('index.html', 
-                             quota_exceeded=True,
+                             api_key_required=True,
                              topic=topic,
                              tone=tone)
 
@@ -214,6 +210,7 @@ def index():
         topic = request.form.get('topic', '').strip()
         tone = request.form.get('tone', '').strip()
         use_mock = request.form.get('use_mock', '').strip() == 'true'
+        api_key = request.form.get('api_key', '').strip()
         
         # Validate inputs
         if not topic:
@@ -234,9 +231,17 @@ def index():
                                  tone=tone,
                                  is_mock=True)
         
+        # Check if API key is provided
+        if not api_key:
+            flash('Please provide your OpenAI API key to generate captions.', 'error')
+            return render_template('index.html', 
+                                 api_key_required=True,
+                                 topic=topic,
+                                 tone=tone)
+        
         try:
-            # Generate captions
-            captions = generate_instagram_captions(topic, tone)
+            # Generate captions with provided API key
+            captions = generate_instagram_captions(topic, tone, api_key=api_key)
             flash('Captions generated successfully!', 'success')
             
             return render_template('index.html', 
@@ -248,21 +253,31 @@ def index():
             logging.error(f"Error generating captions: {e}")
             error_message = str(e)
             
-            # Check if it's a quota exceeded error
+            # Check for specific error types
             if "quota exceeded" in error_message.lower() or "rate" in error_message.lower():
-                # Show quota exceeded page with option to use mock
                 return render_template('index.html', 
                                      quota_exceeded=True,
                                      topic=topic,
+                                     tone=tone,
+                                     api_key=api_key)
+            elif "API key required" in error_message:
+                flash('Please provide your OpenAI API key to generate captions.', 'error')
+                return render_template('index.html', 
+                                     api_key_required=True,
+                                     topic=topic,
                                      tone=tone)
-            elif "OpenAI API is not available" in error_message:
-                flash('OpenAI API is not configured. Please check your API key setup.', 'error')
-            elif "authentication failed" in error_message.lower():
-                flash('OpenAI API authentication failed. Please check your API key.', 'error')
+            elif "authentication" in error_message.lower() or "invalid" in error_message.lower():
+                flash('Invalid API key. Please check your OpenAI API key and try again.', 'error')
+                return render_template('index.html', 
+                                     api_key_required=True,
+                                     topic=topic,
+                                     tone=tone)
             else:
                 flash('An error occurred while generating captions. Please try again.', 'error')
-            
-            return redirect(url_for('index'))
+                return render_template('index.html', 
+                                     api_key_required=True,
+                                     topic=topic,
+                                     tone=tone)
     
     # GET request - show the form
     return render_template('index.html')
